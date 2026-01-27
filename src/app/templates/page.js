@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function Templates() {
@@ -82,9 +83,11 @@ function Templates() {
               >
                 {/* Overlay Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="bg-[#1E1E1E] text-white px-6 py-3 rounded-lg font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    Use Template
-                  </button>
+                  <Link href={`/builder`}>
+                    <button className="bg-[#1E1E1E] text-white px-6 py-3 rounded-lg font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      Use Template
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
