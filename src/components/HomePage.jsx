@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function HomePage() {
@@ -37,7 +38,10 @@ function HomePage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-primary text-white text-lg font-bold rounded-xl shadow-xl shadow-primary/30 bg-[#1617e8] hover:-translate-y-1 transition-all flex items-center gap-2">
+              <Link
+                href="/templates"
+                className="px-8 py-4 bg-primary text-white text-lg font-bold rounded-xl shadow-xl shadow-primary/30 bg-[#1617e8] hover:-translate-y-1 transition-all flex items-center gap-2"
+              >
                 <span>Start Building Now</span>
                 <svg
                   className="w-6 h-6 text-gray-800 "
@@ -56,10 +60,13 @@ function HomePage() {
                     d="M19 12H5m14 0-4 4m4-4-4-4"
                   />
                 </svg>
-              </button>
-              <button className="px-8 py-4 bg-white  border border-[#e7e7f3]  text-[#0d0d1b]  text-lg font-bold rounded-xl hover:bg-gray-600 hover:text-white  transition-all">
+              </Link>
+              <Link
+                href="/templates"
+                className="px-8 py-4 bg-white  border border-[#e7e7f3]  text-[#0d0d1b]  text-lg font-bold rounded-xl hover:bg-gray-600 hover:text-white  transition-all"
+              >
                 View Templates
-              </button>
+              </Link>
             </div>
             <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
               <div className="flex -space-x-2">
