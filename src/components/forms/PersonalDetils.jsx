@@ -2,7 +2,7 @@ import React from "react";
 
 function PersonalDetils() {
   return (
-    <div className="max-w-[720px] mx-auto">
+    <div className="">
       {/* <!-- Breadcrumbs --> */}
       <div className="flex items-center gap-2 mb-6">
         <a
@@ -34,7 +34,7 @@ function PersonalDetils() {
       </div>
 
       {/* detils form */}
-      <div className="space-y-8 mb-20">
+      <div className="space-y-8 ">
         <div className="bg-[#f6f6f8]  border border-[#e7e7f3] rounded-xl p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2 flex flex-col gap-1.5">
@@ -111,20 +111,17 @@ function PersonalDetils() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* <!-- Footer Navigation --> */}
-      <div className="fixed   bottom-0 max-w-screen mx-auto bg-white pt-6 pb-8 border-t border-[#e7e7f3] flex items-center justify-between">
-        <button className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
-          Previous Step
-        </button>
-        <div className="flex items-center gap-4">
-          <button className="px-6 py-3 text-sm font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">
-            Skip for now
+        {/* <!-- Footer Navigation --> */}
+        <div className=" bg-white pt-6 flex justify-between">
+          <button className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
+            Previous Step
           </button>
-          <button className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all">
-            Save & Continue
-          </button>
+          <div className="flex items-center gap-4">
+            <button className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all">
+              Save & Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -11,8 +11,9 @@ function builder() {
                     <Simple />
                 </section>
                 {/* <!-- Right Side: Editor Form --> */}
-                <section className="flex-1 overflow-y-auto bg-white p-6 md:p-12">
+                <section className="flex-1 overflow-y-auto relative bg-white p-6 md:p-12">
                     <PersonalDetils />
+
                 </section>
             </main>
 

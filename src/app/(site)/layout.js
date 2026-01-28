@@ -13,12 +13,10 @@ const inter = Inter({
 
 export default function SiteLayout({ children }) {
     return (
-        <html lang="en" className={inter.variable}>
-            <body className="font-sans ">
-                <Header />
-                <div className="min-h-screen">{children}</div>
-                <Footer />
-            </body>
-        </html>
+        <>
+            <Header />
+            <div className="min-h-screen">{children}</div>
+            <Footer />
+        </>
     );
 }
