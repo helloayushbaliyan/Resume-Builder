@@ -1,6 +1,10 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePersonal } from "../../redux/slices/resumeSlice";
 
 function PersonalDetils() {
+  const dispatch = useDispatch();
+
   return (
     <div className="">
       {/* <!-- Breadcrumbs --> */}
@@ -36,13 +40,17 @@ function PersonalDetils() {
       {/* detils form */}
       <div className="space-y-8 ">
         <div className="bg-[#f6f6f8]  border border-[#e7e7f3] rounded-xl p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2 flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
                 Full Name
               </label>
               <div className="relative">
                 <input
+                  name="name"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ name: e.target.value }))
+                  }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="e.g. Alexander Hamilton"
                   type="text"
@@ -55,6 +63,10 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <input
+                  name="role"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ role: e.target.value }))
+                  }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="e.g. Senior Software Engineer"
                   type="text"
@@ -67,6 +79,10 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <textarea
+                  name="summary"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ summary: e.target.value }))
+                  }
                   className="w-full h-[150px] resize-none bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium "
                   placeholder="e.g. 5 years of experience in software development"
                   type="text"
@@ -79,6 +95,10 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <input
+                  name="email"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ email: e.target.value }))
+                  }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="name@example.com"
                   type="email"
@@ -91,6 +111,10 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <input
+                  name="phone"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ phone: e.target.value }))
+                  }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="+1 (555) 000-0000"
                   type="tel"
@@ -103,13 +127,17 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <input
+                  name="city"
+                  onChange={(e) =>
+                    dispatch(updatePersonal({ city: e.target.value }))
+                  }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="e.g. New York, NY"
                   type="text"
                 />
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

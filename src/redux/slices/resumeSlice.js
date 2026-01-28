@@ -34,6 +34,15 @@ const initialState = {
                 startDate: "2020",
                 endDate: "Present",
                 description: "Lead developer for the core product dashboard, improving performance by 40%.",
+            },
+            {
+                id: 1,
+                company: "Tech Innovations Inc.",
+                position: "Senior Frontend Developer",
+                city: "San Francisco, CA",
+                startDate: "2020",
+                endDate: "Present",
+                description: "Lead developer for the core product dashboard, improving performance by 40%.",
             }
         ],
         skills: ["JavaScript", "React", "Redux", "Node.js", "Tailwind CSS", "TypeScript"],
@@ -65,12 +74,21 @@ const resumeSlice = createSlice({
         },
         updatePersonal(state, action) {
             state.resumeData.personal = { ...state.resumeData.personal, ...action.payload }
+        },
+        updateEducation(state, action) {
+            state.resumeData.education = { ...state.resumeData.education, ...action.payload }
+        },
+        updateExperience(state, action) {
+            state.resumeData.experience = { ...state.resumeData.experience, ...action.payload }
+        },
+        updateSkills(state, action) {
+            state.resumeData.skills = { ...state.resumeData.skills, ...action.payload }
         }
     }
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal } = resumeSlice.actions
+export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills } = resumeSlice.actions
 
 
 export default resumeSlice.reducer
