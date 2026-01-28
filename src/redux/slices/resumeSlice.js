@@ -22,21 +22,20 @@ const initialState = {
     },
 };
 
-console.log(initialState);
 
 
 const resumeSlice = createSlice({
     name: "resume",
     initialState,
     reducers: {
-        setTemplate(staet, action) {
+        selectTemplate(staet, action) {
             staet.selectedTemplate = action.payload
         }
     }
 })
 
 
-export const { setTemplate } = resumeSlice.actions
+export const { selectTemplate } = resumeSlice.actions
 
 
 export default resumeSlice.reducer

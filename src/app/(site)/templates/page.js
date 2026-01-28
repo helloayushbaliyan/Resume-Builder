@@ -1,8 +1,22 @@
+"use client";
 import { templates } from "@/data/replate";
+import { selectTemplate } from "@/redux/slices/resumeSlice";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 function Templates() {
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleTemplate = (template) => {
+    dispatch(selectTemplate(template));
+    router.push('/builder');
+
+  }
+
   return (
     <div className="container mx-auto mt-20">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -53,11 +67,12 @@ function Templates() {
               >
                 {/* Overlay Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Link href={`/builder`}>
-                    <button className="bg-[#1E1E1E] text-white px-6 py-3 rounded-lg font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <div>
+                    <button onClick={() => handleTemplate(template.name)}
+                      className="bg-[#1E1E1E] text-white px-6 py-3 rounded-lg font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                       Use Template
                     </button>
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
