@@ -53,11 +53,12 @@ function builder() {
                     {/* <!-- Footer Navigation --> */}
                     <div className=" bg-white pt-6 flex justify-between">
                         <button onClick={handlePrevious} className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
-                            Previous Step
+                            <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>
                         </button>
                         <div className="flex items-center gap-4">
                             <button onClick={handleSubmit} className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all">
-                                Save & Continue
+                                <span className={`${step === 4 ? "hidden" : ""}`}>Save & Continue</span>
+                                <span className={`${step === 4 ? "" : "hidden"}`}>Submit</span>
                             </button>
                         </div>
                     </div>
