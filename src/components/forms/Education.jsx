@@ -54,6 +54,7 @@ function Education() {
                 </label>
                 <div className="relative">
                   <input
+                    value={edu.school}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -76,6 +77,7 @@ function Education() {
                 </label>
                 <div className="relative">
                   <input
+                    value={edu.degree}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -98,6 +100,7 @@ function Education() {
                 </label>
                 <div className="relative">
                   <input
+                    value={edu.startDate}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -119,6 +122,7 @@ function Education() {
                 </label>
                 <div className="relative">
                   <input
+                    value={edu.endDate}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({

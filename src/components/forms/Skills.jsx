@@ -53,6 +53,7 @@ function Skills() {
                 </label>
                 <div className="relative">
                   <input
+                    value={skill.skill}
                     onChange={(e) =>
                       dispatch(
                         updateSkills({

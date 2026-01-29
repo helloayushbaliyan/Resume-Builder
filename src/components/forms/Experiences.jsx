@@ -40,9 +40,9 @@ function Experiences() {
       </div>
 
       <div className="space-y-8">
-        {experience.map((exp, index) => (
+        {experience.map((exp) => (
           <div
-            key={index}
+            key={exp.id}
             className="bg-[#f6f6f8] border border-[#e7e7f3] rounded-xl p-8"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -52,6 +52,7 @@ function Experiences() {
                 </label>
                 <div className="relative">
                   <input
+                    value={exp.company}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -73,6 +74,7 @@ function Experiences() {
                 </label>
                 <div className="relative">
                   <input
+                    value={exp.position}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -94,6 +96,7 @@ function Experiences() {
                 </label>
                 <div className="relative">
                   <input
+                    value={exp.startDate}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -115,6 +118,7 @@ function Experiences() {
                 </label>
                 <div className="relative">
                   <input
+                    value={exp.endDate}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -136,6 +140,7 @@ function Experiences() {
                 </label>
                 <div className="relative">
                   <textarea
+                    value={exp.description}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({

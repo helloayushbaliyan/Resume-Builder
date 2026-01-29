@@ -5,7 +5,7 @@ import Modern from '@/components/templates/Modern'
 import Simple from '@/components/templates/Simple'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { nextStep, previousStep } from '@/redux/slices/resumeSlice'
+import { nextStep, previousStep, resetResume } from '@/redux/slices/resumeSlice'
 import Experiences from '@/components/forms/Experiences'
 import Skills from '@/components/forms/Skills'
 import { useEffect, useRef } from 'react'
@@ -37,6 +37,7 @@ function builder() {
     }, [step]);
 
     const router = useRouter();
+
 
     return (
         <div>

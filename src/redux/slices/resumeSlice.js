@@ -43,15 +43,6 @@ const initialState = {
                 description: "Lead developer for the core product dashboard, improving performance by 40%.",
             },
 
-            {
-                id: 1,
-                company: "Tech Innovations Inc.",
-                position: "Senior Frontend Developer",
-                city: "San Francisco, CA",
-                startDate: "2020",
-                endDate: "Present",
-                description: "Lead developer for the core product dashboard, improving performance by 40%.",
-            },
         ],
         skills: [
             { id: 1, skill: "JavaScript" },
@@ -132,12 +123,18 @@ const resumeSlice = createSlice({
             if (skill) {
                 skill[field] = value;
             }
-        }
+        },
+
+        resetResume(state) {
+            state.resumeData = initialState.resumeData;
+            state.step = 1;
+            state.selectedTemplate = null;
+        },
     }
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation, addExperience, addSkills } = resumeSlice.actions
+export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation, addExperience, addSkills, resetResume } = resumeSlice.actions
 
 
 export default resumeSlice.reducer
