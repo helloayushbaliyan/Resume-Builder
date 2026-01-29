@@ -16,6 +16,6 @@ export default function Home() {
 }
 
 export const metadata = {
-  title: "Resume Builder",
-  description: "Build your resume with our easy-to-use resume builder.",
+  title: "Create Your Resume",
+  description: "Start building your professional resume today. Choose a template and customize it to your needs.",
 }; 
