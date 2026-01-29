@@ -48,11 +48,11 @@ const Modern = () => {
   ];
 
   const dummySkills = [
-    { skill: "JavaScript" },
-    { skill: "React" },
-    { skill: "Node.js" },
-    { skill: "Python" },
-    { skill: "SQL" },
+    { skill: "skill1" },
+    { skill: "skill2" },
+    { skill: "skill3" },
+    { skill: "skill4" },
+    { skill: "skill5" },
   ];
 
   // Helper to check if object is empty
@@ -144,13 +144,18 @@ const Modern = () => {
               <div className="space-y-6">
                 {displayExperience.map((exp, index) => (
                   <div key={index}>
-                    <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="text-sm font-bold text-[#2d2d2d]">
-                        {exp.company}
+                    <div className="mb-3">
+                      <div className="flex justify-between items-baseline ">
+                        <h4 className="text-lg font-bold text-[#2d2d2d]">
+                          {exp.company}
+                        </h4>
+                        <span className="text-xs text-gray-500 italic">
+                          {exp.startDate} – {exp.endDate}
+                        </span>
+                      </div>
+                      <h4 className="text-sm  text-[#2d2d2d]">
+                        {exp.position}
                       </h4>
-                      <span className="text-xs text-gray-500 italic">
-                        {exp.startDate} – {exp.endDate}
-                      </span>
                     </div>
 
                     <p className="text-xs text-gray-600 leading-relaxed">
@@ -172,14 +177,14 @@ const Modern = () => {
                 {displayEducation.map((edu, index) => (
                   <div key={index}>
                     <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="text-sm font-bold text-[#2d2d2d]">
+                      <h4 className="text-lg font-bold text-[#2d2d2d]">
                         {edu.school}
                       </h4>
                       <span className="text-xs text-gray-500 italic">
                         {edu.startDate} – {edu.endDate}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-600">{edu.degree}</p>
+                    <h4 className="text-sm   text-[#2d2d2d]">{edu.degree}</h4>
                   </div>
                 ))}
               </div>

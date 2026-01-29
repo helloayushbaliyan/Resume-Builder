@@ -133,10 +133,10 @@ function PersonalDetils() {
               </label>
               <div className="relative">
                 <input
-                  name="city"
-                  value={personal.city || ""}
+                  name="location"
+                  value={personal.location || ""}
                   onChange={(e) =>
-                    dispatch(updatePersonal({ city: e.target.value }))
+                    dispatch(updatePersonal({ location: e.target.value }))
                   }
                   className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
                   placeholder="e.g. New York, NY"
