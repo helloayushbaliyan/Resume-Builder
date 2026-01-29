@@ -39,7 +39,7 @@ const Modern = () => {
 
       <div className="flex flex-1">
         {/* Left Column (Sidebar) */}
-        <div className="w-1/3 bg-white p-6 pr-4 border-r border-gray-100">
+        <div className="w-1/3 bg-[#f0ece6] p-6 pr-4 border-r border-gray-100">
           {/* Summary */}
           {personal?.summary && (
             <div className="mb-8">

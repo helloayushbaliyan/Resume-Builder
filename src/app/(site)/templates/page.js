@@ -1,10 +1,10 @@
 "use client";
-import { templates } from "@/data/replate";
+import { templates } from "@/data/templateData";
 import { selectTemplate } from "@/redux/slices/resumeSlice";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 
 function Templates() {
 
@@ -18,7 +18,7 @@ function Templates() {
   }
 
   return (
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto mt-20 p-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div className="max-w-2xl">
           <h2 className="text-4xl font-black tracking-tight mb-3">
@@ -53,18 +53,21 @@ function Templates() {
       </div>
 
       {/* <!-- Template Grid --> */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
         {/* <!-- Card 1 --> */}
         {templates.map((template) => (
           <div key={template.id} className="group flex flex-col gap-4">
-            <div className="relative overflow-hidden rounded-xl bg-white  dark:bg-white/5 p-4 shadow-sm group-hover:shadow-xl transition-all duration-300 border border-transparent group-hover:border-primary/30">
+            <div className="relative overflow-hidden rounded-xl   dark:bg-white/5  shadow-sm group-hover:shadow-xl transition-all duration-300 border border-transparent group-hover:border-primary/30">
               <div
                 className="relative w-full aspect-[3/4.2] rounded-lg bg-cover bg-center overflow-hidden"
-                data-alt={template.name}
-                style={{
-                  backgroundImage: `url(${template.image})`,
-                }}
               >
+
+                <Image
+                  src={template.image}
+                  alt={template.name}
+                  fill
+                  className="object-cover"
+                />
                 {/* Overlay Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div>
