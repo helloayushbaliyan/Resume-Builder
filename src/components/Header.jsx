@@ -1,11 +1,12 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 function Header() {
   return (
     <header className="sticky top-0 l z-50 w-full border-b border-solid border-[#e7e7f3] bg-white/80 backdrop-blur-md">
       <div className="container px-4 md:mx-auto h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="size-8 text-[#1617e8]">
             <svg
               fill="currentColor"
@@ -16,7 +17,7 @@ function Header() {
             </svg>
           </div>
           <h2 className="text-xl font-extrabold tracking-tight">ResumePro</h2>
-        </div>
+        </Link>
         {/* <nav className="hidden md:flex items-center gap-10">
           <a
             className="text-sm font-semibold hover:text-primary transition-colors"

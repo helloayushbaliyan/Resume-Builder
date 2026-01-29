@@ -1,8 +1,8 @@
 "use client";
 import { templates } from "@/data/templateData";
-import { selectTemplate } from "@/redux/slices/resumeSlice";
+import { selectTemplate, resetResume } from "@/redux/slices/resumeSlice";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 
@@ -10,6 +10,10 @@ function Templates() {
 
   const router = useRouter();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetResume());
+  }, [dispatch]);
 
   const handleTemplate = (template) => {
     dispatch(selectTemplate(template));
