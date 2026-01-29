@@ -53,7 +53,7 @@ function HomePage() {
               >
                 <span>Start Building Now</span>
                 <svg
-                  className="w-6 h-6 text-gray-800 "
+                  className="w-6 h-6 text-white "
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
