@@ -60,15 +60,11 @@ const Modern = () => {
               </h3>
               <ul className="space-y-2">
                 {skills.map((skill, index) => (
-                  <li key={index} className="text-xs text-gray-600">
-                    <span className="font-semibold block text-[#444]">
-                      {skill.name}
-                    </span>
-                    {skill.level && (
-                      <span className="text-gray-400 text-[10px]">
-                        {skill.level}
-                      </span>
-                    )}
+                  <li
+                    key={index}
+                    className="text-xs list-disc list-inside font-semibold text-gray-600"
+                  >
+                    {skill.skill}
                   </li>
                 ))}
               </ul>
@@ -89,16 +85,13 @@ const Modern = () => {
                   <div key={index}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h4 className="text-sm font-bold text-[#2d2d2d]">
-                        {exp.role}
+                        {exp.company}
                       </h4>
                       <span className="text-xs text-gray-500 italic">
                         {exp.startDate} – {exp.endDate}
                       </span>
                     </div>
-                    <p className="text-xs font-semibold text-gray-600 mb-2">
-                      {exp.company}
-                      {exp.location && ` - ${exp.location}`}
-                    </p>
+
                     <p className="text-xs text-gray-600 leading-relaxed">
                       {exp.description}
                     </p>

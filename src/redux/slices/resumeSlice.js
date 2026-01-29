@@ -3,6 +3,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const initialState = {
     selectedTemplate: 1,
     step: 1,
@@ -22,7 +23,14 @@ const initialState = {
                 degree: "Bachelor of Science in Computer Science",
                 startDate: "2015",
                 endDate: "2019",
-            }
+            },
+            {
+                id: 2,
+                school: "State University",
+                degree: "Bachelor of Science in Computer Science",
+                startDate: "2015",
+                endDate: "2019",
+            },
         ],
         experience: [
             {
@@ -34,8 +42,28 @@ const initialState = {
                 endDate: "Present",
                 description: "Lead developer for the core product dashboard, improving performance by 40%.",
             },
+
+            {
+                id: 1,
+                company: "Tech Innovations Inc.",
+                position: "Senior Frontend Developer",
+                city: "San Francisco, CA",
+                startDate: "2020",
+                endDate: "Present",
+                description: "Lead developer for the core product dashboard, improving performance by 40%.",
+            },
         ],
-        skills: ["JavaScript", "React", "Redux", "Node.js", "Tailwind CSS", "TypeScript"],
+        skills: [
+            { id: 1, skill: "JavaScript" },
+            { id: 2, skill: "React" },
+            { id: 3, skill: "Node.js" },
+            { id: 4, skill: "TypeScript" },
+            { id: 5, skill: "Next.js" },
+            { id: 6, skill: "Redux" },
+            { id: 7, skill: "Tailwind CSS" },
+            { id: 8, skill: "HTML5" },
+            { id: 9, skill: "CSS3" },
+        ],
     },
 };
 
@@ -92,14 +120,24 @@ const resumeSlice = createSlice({
             }
         },
 
+        addSkills(state, action) {
+            state.resumeData.skills.push({
+                id: state.resumeData.skills.length + 1,
+                skill: "",
+            })
+        },
         updateSkills(state, action) {
-            state.resumeData.skills = { ...state.resumeData.skills, ...action.payload }
+            const { id, field, value } = action.payload;
+            const skill = state.resumeData.skills.find((e) => e.id === id);
+            if (skill) {
+                skill[field] = value;
+            }
         }
     }
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation, addExperience } = resumeSlice.actions
+export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation, addExperience, addSkills } = resumeSlice.actions
 
 
 export default resumeSlice.reducer

@@ -107,16 +107,16 @@ function Simple() {
           <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 border-b border-gray-100 pb-1 text-center">
             Skills
           </h3>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
             {skills.map((skill, index) => (
-              <div key={index} className="text-xs text-gray-700">
-                <span className="font-semibold">{skill.name}</span>
-                {skill.level && (
-                  <span className="text-gray-400 ml-1">- {skill.level}</span>
-                )}
-              </div>
+              <li
+                key={index}
+                className="text-xs list-disc list-inside text-gray-700"
+              >
+                <span className="font-semibold">{skill.skill}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
     </div>
