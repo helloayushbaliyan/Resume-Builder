@@ -9,8 +9,8 @@ import { nextStep, previousStep } from '@/redux/slices/resumeSlice'
 import Experiences from '@/components/forms/Experiences'
 import Skills from '@/components/forms/Skills'
 import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 function builder() {
-
 
 
     const { selectedTemplate, step } = useSelector((state) => state.resume)
@@ -33,7 +33,10 @@ function builder() {
             top: 0,
             behavior: "smooth",
         });
+
     }, [step]);
+
+    const router = useRouter();
 
     return (
         <div>
@@ -59,10 +62,12 @@ function builder() {
                         <div className="flex items-center gap-4">
                             <button onClick={handleSubmit} className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all">
                                 <span className={`${step === 4 ? "hidden" : ""}`}>Save & Continue</span>
-                                <span className={`${step === 4 ? "" : "hidden"}`}>Submit</span>
+                                {step === 4 && <div className={`${step === 4 ? "" : "hidden"}`} onClick={() => router.push("/preview")}>Submit</div>}
                             </button>
                         </div>
                     </div>
+
+
 
 
 
