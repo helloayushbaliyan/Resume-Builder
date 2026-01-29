@@ -49,7 +49,7 @@ function PersonalDetils() {
               <div className="relative">
                 <input
                   name="name"
-                  value={personal.name}
+                  value={personal.name || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ name: e.target.value }))
                   }
@@ -66,7 +66,7 @@ function PersonalDetils() {
               <div className="relative">
                 <input
                   name="role"
-                  value={personal.role}
+                  value={personal.role || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ role: e.target.value }))
                   }
@@ -83,7 +83,7 @@ function PersonalDetils() {
               <div className="relative">
                 <textarea
                   name="summary"
-                  value={personal.summary}
+                  value={personal.summary || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ summary: e.target.value }))
                   }
@@ -100,7 +100,7 @@ function PersonalDetils() {
               <div className="relative">
                 <input
                   name="email"
-                  value={personal.email}
+                  value={personal.email || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ email: e.target.value }))
                   }
@@ -117,7 +117,7 @@ function PersonalDetils() {
               <div className="relative">
                 <input
                   name="phone"
-                  value={personal.phone}
+                  value={personal.phone || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ phone: e.target.value }))
                   }
@@ -134,7 +134,7 @@ function PersonalDetils() {
               <div className="relative">
                 <input
                   name="city"
-                  value={personal.city}
+                  value={personal.city || ""}
                   onChange={(e) =>
                     dispatch(updatePersonal({ city: e.target.value }))
                   }

@@ -9,51 +9,31 @@ const initialState = {
     step: 1,
 
     resumeData: {
-        personal: {
-            name: "John Doe",
-            email: "john.doe@example.com",
-            phone: "+1 234 567 890",
-            role: "Software Engineer",
-            summary: "Highly motivated and detail-oriented Software Engineer with 5+ years of experience in developing scalable web applications and working with modern JavaScript frameworks.",
-        },
+        personal: {},
         education: [
             {
                 id: 1,
-                school: "State University",
-                degree: "Bachelor of Science in Computer Science",
-                startDate: "2015",
-                endDate: "2019",
-            },
-            {
-                id: 2,
-                school: "State University",
-                degree: "Bachelor of Science in Computer Science",
-                startDate: "2015",
-                endDate: "2019",
-            },
+                school: "",
+                degree: "",
+                startDate: "",
+                endDate: "",
+            }
         ],
         experience: [
             {
                 id: 1,
-                company: "Tech Innovations Inc.",
-                position: "Senior Frontend Developer",
-                city: "San Francisco, CA",
-                startDate: "2020",
-                endDate: "Present",
-                description: "Lead developer for the core product dashboard, improving performance by 40%.",
-            },
-
+                company: "",
+                position: "",
+                startDate: "",
+                endDate: "",
+                description: "",
+            }
         ],
         skills: [
-            { id: 1, skill: "JavaScript" },
-            { id: 2, skill: "React" },
-            { id: 3, skill: "Node.js" },
-            { id: 4, skill: "TypeScript" },
-            { id: 5, skill: "Next.js" },
-            { id: 6, skill: "Redux" },
-            { id: 7, skill: "Tailwind CSS" },
-            { id: 8, skill: "HTML5" },
-            { id: 9, skill: "CSS3" },
+            {
+                id: 1,
+                skill: "",
+            }
         ],
     },
 };
