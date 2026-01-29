@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Education() {
   const dispatch = useDispatch();
-
   const education = useSelector((state) => state.resume.resumeData.education);
 
   return (
