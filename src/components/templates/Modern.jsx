@@ -7,7 +7,7 @@ const Modern = () => {
   );
 
   return (
-    <div className="w-full max-w-[600px] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col relative overflow-hidden text-[#333]">
+    <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col relative overflow-hidden text-[#333]">
       {/* Header */}
       <div className="bg-[#f0ece6] p-8 flex items-center gap-6">
         {/* Placeholder Avatar */}

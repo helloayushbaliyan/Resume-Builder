@@ -7,7 +7,7 @@ function Simple() {
   );
 
   return (
-    <div className="w-full max-w-[600px] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col p-10 relative overflow-hidden text-[#333]">
+    <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col p-10 relative overflow-hidden text-[#333]">
       {/* Header */}
       <div className="text-center border-b-2 border-gray-300 pb-5 mb-5">
         <h1 className="text-3xl font-bold uppercase tracking-wide mb-1">
