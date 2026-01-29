@@ -1,7 +1,16 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { resetResume } from "@/redux/slices/resumeSlice";
 
 function HomePage() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetResume());
+  }, [dispatch]);
+
   return (
     <>
       <section className="container px-4 md:mx-auto  py-20  md:py-24">
