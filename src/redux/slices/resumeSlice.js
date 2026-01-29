@@ -20,7 +20,6 @@ const initialState = {
                 id: 1,
                 school: "State University",
                 degree: "Bachelor of Science in Computer Science",
-                city: "New York, NY",
                 startDate: "2015",
                 endDate: "2019",
             }
@@ -46,14 +45,6 @@ const initialState = {
             }
         ],
         skills: ["JavaScript", "React", "Redux", "Node.js", "Tailwind CSS", "TypeScript"],
-        projects: [
-            {
-                id: 1,
-                name: "E-commerce Platform",
-                description: "Built a full-stack e-commerce solution with integrated payment gateways.",
-                link: "https://github.com/johndoe/ecommerce",
-            }
-        ],
     },
 };
 
@@ -75,12 +66,41 @@ const resumeSlice = createSlice({
         updatePersonal(state, action) {
             state.resumeData.personal = { ...state.resumeData.personal, ...action.payload }
         },
+        addEducation(state, action) {
+            state.resumeData.education.push({
+                id: state.resumeData.education.length + 1,
+                school: "",
+                degree: "",
+                startDate: "",
+                endDate: "",
+            })
+        },
         updateEducation(state, action) {
-            state.resumeData.education = { ...state.resumeData.education, ...action.payload }
+            const { id, field, value } = action.payload;
+            const edu = state.resumeData.education.find((e) => e.id === id);
+            if (edu) {
+                edu[field] = value;
+            }
         },
+        addExperience(state, action) {
+            state.resumeData.experience.push({
+                id: state.resumeData.experience.length + 1,
+                company: "",
+                position: "",
+                startDate: "",
+                endDate: "",
+                description: "",
+            })
+        },
+
         updateExperience(state, action) {
-            state.resumeData.experience = { ...state.resumeData.experience, ...action.payload }
+            const { id, field, value } = action.payload;
+            const exp = state.resumeData.experience.find((e) => e.id === id);
+            if (exp) {
+                exp[field] = value;
+            }
         },
+
         updateSkills(state, action) {
             state.resumeData.skills = { ...state.resumeData.skills, ...action.payload }
         }
@@ -88,7 +108,7 @@ const resumeSlice = createSlice({
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills } = resumeSlice.actions
+export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation } = resumeSlice.actions
 
 
 export default resumeSlice.reducer
