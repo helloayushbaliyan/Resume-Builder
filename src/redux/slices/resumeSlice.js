@@ -1,7 +1,8 @@
 
 "use client";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
+
 
 
 const initialState = {
@@ -10,31 +11,9 @@ const initialState = {
 
     resumeData: {
         personal: {},
-        education: [
-            {
-                id: 1,
-                school: "",
-                degree: "",
-                startDate: "",
-                endDate: "",
-            }
-        ],
-        experience: [
-            {
-                id: 1,
-                company: "",
-                position: "",
-                startDate: "",
-                endDate: "",
-                description: "",
-            }
-        ],
-        skills: [
-            {
-                id: 1,
-                skill: "",
-            }
-        ],
+        education: [],
+        experience: [],
+        skills: [],
     },
 };
 
@@ -58,7 +37,7 @@ const resumeSlice = createSlice({
         },
         addEducation(state, action) {
             state.resumeData.education.push({
-                id: state.resumeData.education.length + 1,
+                id: nanoid(),
                 school: "",
                 degree: "",
                 startDate: "",
@@ -74,7 +53,7 @@ const resumeSlice = createSlice({
         },
         addExperience(state, action) {
             state.resumeData.experience.push({
-                id: state.resumeData.experience.length + 1,
+                id: nanoid(),
                 company: "",
                 position: "",
                 startDate: "",
@@ -93,7 +72,7 @@ const resumeSlice = createSlice({
 
         addSkills(state, action) {
             state.resumeData.skills.push({
-                id: state.resumeData.skills.length + 1,
+                id: nanoid(),
                 skill: "",
             })
         },

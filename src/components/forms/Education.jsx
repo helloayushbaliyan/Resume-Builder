@@ -21,7 +21,7 @@ function Education() {
       <div className="flex flex-col gap-2 mb-10">
         <div className="flex justify-between items-center">
           <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
-            Step 1 of 4
+            Step 2 of 4
           </p>
           <p className="text-sm font-bold text-primary">25% Complete</p>
         </div>

@@ -6,6 +6,67 @@ const Modern = () => {
     (state) => state.resume.resumeData,
   );
 
+  // Dummy Data
+  const dummyPersonal = {
+    name: "John Doe",
+    role: "Software Engineer",
+    email: "john.doe@example.com",
+    phone: "+1 234 567 890",
+    location: "New York, USA",
+    summary:
+      "Passionate software engineer with 5+ years of experience in building scalable web applications. Proficient in JavaScript, React, and Node.js.",
+  };
+
+  const dummyExperience = [
+    {
+      role: "Senior Developer",
+      company: "Tech Solutions Inc.",
+      location: "San Francisco, CA",
+      startDate: "2020",
+      endDate: "Present",
+      description:
+        "Led a team of developers to build a cloud-based SaaS platform. Improved system performance by 40%.",
+    },
+    {
+      role: "Web Developer",
+      company: "Creative Agency",
+      location: "New York, NY",
+      startDate: "2018",
+      endDate: "2020",
+      description:
+        "Developed responsive websites for various clients. Collaborated with designers to implement UI/UX best practices.",
+    },
+  ];
+
+  const dummyEducation = [
+    {
+      school: "University of Technology",
+      degree: "Bachelor of Science in Computer Science",
+      startDate: "2014",
+      endDate: "2018",
+    },
+  ];
+
+  const dummySkills = [
+    { skill: "JavaScript" },
+    { skill: "React" },
+    { skill: "Node.js" },
+    { skill: "Python" },
+    { skill: "SQL" },
+  ];
+
+  // Helper to check if object is empty
+  const isEmpty = (obj) => {
+    return !obj || Object.keys(obj).filter((k) => obj[k]).length === 0;
+  };
+
+  const displayPersonal = isEmpty(personal) ? dummyPersonal : personal;
+  const displayExperience =
+    !experience || experience.length === 0 ? dummyExperience : experience;
+  const displayEducation =
+    !education || education.length === 0 ? dummyEducation : education;
+  const displaySkills = !skills || skills.length === 0 ? dummySkills : skills;
+
   return (
     <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col relative overflow-hidden text-[#333]">
       {/* Header */}
@@ -24,15 +85,15 @@ const Modern = () => {
 
         <div className="flex-1">
           <h1 className="text-3xl font-serif font-bold text-[#2d2d2d] mb-1">
-            {personal?.name || "Your Name"}
+            {displayPersonal.name || "Your Name"}
           </h1>
           <p className="text-lg font-medium text-gray-600 mb-3">
-            {personal?.role || "Professional Title"}
+            {displayPersonal.role || "Professional Title"}
           </p>
           <div className="text-xs text-gray-500 space-y-1">
-            {personal?.location && <p>{personal.location}</p>}
-            {personal?.email && <p>{personal.email}</p>}
-            {personal?.phone && <p>{personal.phone}</p>}
+            {displayPersonal.location && <p>{displayPersonal.location}</p>}
+            {displayPersonal.email && <p>{displayPersonal.email}</p>}
+            {displayPersonal.phone && <p>{displayPersonal.phone}</p>}
           </div>
         </div>
       </div>
@@ -41,25 +102,25 @@ const Modern = () => {
         {/* Left Column (Sidebar) */}
         <div className="w-1/3 bg-[#f0ece6] p-6 pr-4 border-r border-gray-100">
           {/* Summary */}
-          {personal?.summary && (
+          {displayPersonal.summary && (
             <div className="mb-8">
               <h3 className="text-xs font-bold uppercase tracking-widest text-[#2d2d2d] mb-3 border-b-2 border-[#2d2d2d] pb-1 w-fit">
                 Summary
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed text-justify">
-                {personal.summary}
+                {displayPersonal.summary}
               </p>
             </div>
           )}
 
           {/* Skills */}
-          {skills && skills.length > 0 && (
+          {displaySkills && displaySkills.length > 0 && (
             <div className="mb-8">
               <h3 className="text-xs font-bold uppercase tracking-widest text-[#2d2d2d] mb-3 border-b-2 border-[#2d2d2d] pb-1 w-fit">
                 Skills
               </h3>
               <ul className="space-y-2">
-                {skills.map((skill, index) => (
+                {displaySkills.map((skill, index) => (
                   <li
                     key={index}
                     className="text-xs list-disc list-inside font-semibold text-gray-600"
@@ -75,13 +136,13 @@ const Modern = () => {
         {/* Right Column (Main Content) */}
         <div className="w-2/3 p-6 pl-6">
           {/* Experience */}
-          {experience && experience.length > 0 && (
+          {displayExperience && displayExperience.length > 0 && (
             <div className="mb-8">
               <h3 className="text-sm font-bold uppercase tracking-widest text-[#2d2d2d] mb-5">
                 Experience
               </h3>
               <div className="space-y-6">
-                {experience.map((exp, index) => (
+                {displayExperience.map((exp, index) => (
                   <div key={index}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h4 className="text-sm font-bold text-[#2d2d2d]">
@@ -102,13 +163,13 @@ const Modern = () => {
           )}
 
           {/* Education */}
-          {education && education.length > 0 && (
+          {displayEducation && displayEducation.length > 0 && (
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest text-[#2d2d2d] mb-5">
                 Education
               </h3>
               <div className="space-y-4">
-                {education.map((edu, index) => (
+                {displayEducation.map((edu, index) => (
                   <div key={index}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h4 className="text-sm font-bold text-[#2d2d2d]">
