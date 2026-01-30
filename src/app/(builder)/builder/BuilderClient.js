@@ -15,6 +15,7 @@ function BuilderClient() {
     const dispatch = useDispatch()
     const router = useRouter();
 
+
     const [error, setError] = useState("");
     const [showErrors, setShowErrors] = useState(false);
 
@@ -22,9 +23,9 @@ function BuilderClient() {
         setError(""); // Clear previous errors
         switch (step) {
             case 1: // Personal Details
-                const { name, email, phone, role, location } = resumeData.personal || {};
-                if (!name || !email || !phone || !role || !location) {
-                    setError("Please fill in all required fields (Name, Email, Phone, Role, Location).");
+                const { name, email, phone, role, location, summary } = resumeData.personal || {};
+                if (!name || !email || !phone || !role || !location || !summary) {
+                    setError("Please fill in all required fields (Name, Email, Phone, Role, Location, Summary).");
                     return false;
                 }
                 return true;
@@ -68,7 +69,7 @@ function BuilderClient() {
             default:
                 return true;
         }
-    }, [step, resumeData]);
+    }, [step, resumeData, setError]);
 
     const handleSubmit = useCallback(() => {
         if (validateCurrentStep()) {
@@ -180,11 +181,11 @@ function BuilderClient() {
                     {/* <!-- Footer Navigation --> */}
                     <div className="bg-white p-6 border-t border-gray-100 z-10 w-full">
                         <div className="flex flex-col gap-2 w-full">
-                            {error && (
+                            {/* {error && (
                                 <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100 mb-2">
                                     {error}
                                 </div>
-                            )}
+                            )} */}
                             <div className="flex justify-between items-center w-full">
                                 <button onClick={handlePrevious} className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
                                     <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>

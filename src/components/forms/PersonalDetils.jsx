@@ -6,8 +6,12 @@ function PersonalDetils({ showError }) {
   const dispatch = useDispatch();
   const personal = useSelector((state) => state.resume.resumeData.personal);
 
-  const getInputClass = (value) => {
-    return `w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12 focus:ring-primary ${
+  const getInputClass = (value, isTextArea = false) => {
+    const baseClass = isTextArea
+      ? "w-full h-[150px] resize-none bg-white border-2 p-3 rounded-xl text-sm font-medium"
+      : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
+
+    return `${baseClass} focus:ring-primary ${
       showError && !value
         ? "border-red-500 focus:border-red-500"
         : "border-[#e7e7f3] focus:border-primary"
@@ -95,7 +99,7 @@ function PersonalDetils({ showError }) {
                   onChange={(e) =>
                     dispatch(updatePersonal({ summary: e.target.value }))
                   }
-                  className="w-full h-[150px] resize-none bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium "
+                  className={getInputClass(personal.summary, true)}
                   placeholder="e.g. 5 years of experience in software development"
                   type="text"
                 />
