@@ -1,5 +1,6 @@
 import Simple from "@/components/templates/Simple";
 import Modern from "@/components/templates/Modern";
+import Creative from "@/components/templates/Creative";
 export const templates = [
     {
         id: 1,
@@ -17,5 +18,11 @@ export const templates = [
         image:
             "/images/modern-template.png",
     },
-
+    {
+        id: 3,
+        name: "creative",
+        component: Creative,
+        description: "Bold & Professional. High impact design.",
+        image: "/images/creative-template.png", // logic to add image later
+    }
 ];
