@@ -150,10 +150,11 @@ function BuilderClient() {
         }
     };
 
+
     // Resolve the selected template (ID or string fallback)
     const activeTemplate = templates.find((t) => t.id === selectedTemplate)
 
-    const ActiveComponent = activeTemplate ? activeTemplate.component : Modern;
+    const ActiveComponent = activeTemplate && activeTemplate.component;
 
     return (
         <div>

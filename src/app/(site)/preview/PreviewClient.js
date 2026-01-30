@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { toPng } from 'html-to-image'
 import jsPDF from 'jspdf'
 import { FaDownload } from "react-icons/fa";
+import { templates } from '@/data/templateData'
 
 function PreviewClient() {
     const { selectedTemplate } = useSelector((state) => state.resume)
@@ -73,6 +74,10 @@ function PreviewClient() {
         }
     };
 
+    const activeTemplate = templates.find((t) => t.id === selectedTemplate)
+
+    const ActiveComponent = activeTemplate ? activeTemplate.component : Modern;
+
     return (
         <main className="flex flex-col justify-center items-center min-h-screen bg-gray-100 relative">
 
@@ -97,7 +102,7 @@ function PreviewClient() {
                         }}
                         className="shadow-2xl bg-white"
                     >
-                        {selectedTemplate === "simple" ? <Simple /> : <Modern />}
+                        <ActiveComponent />
                     </div>
                 </div>
             </section>
