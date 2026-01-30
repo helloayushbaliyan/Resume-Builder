@@ -51,6 +51,9 @@ const resumeSlice = createSlice({
                 edu[field] = value;
             }
         },
+        removeEducation(state, action) {
+            state.resumeData.education = state.resumeData.education.filter(edu => edu.id !== action.payload);
+        },
         addExperience(state, action) {
             state.resumeData.experience.push({
                 id: nanoid(),
@@ -69,6 +72,9 @@ const resumeSlice = createSlice({
                 exp[field] = value;
             }
         },
+        removeExperience(state, action) {
+            state.resumeData.experience = state.resumeData.experience.filter(exp => exp.id !== action.payload);
+        },
 
         addSkills(state, action) {
             state.resumeData.skills.push({
@@ -83,6 +89,9 @@ const resumeSlice = createSlice({
                 skill[field] = value;
             }
         },
+        removeSkills(state, action) {
+            state.resumeData.skills = state.resumeData.skills.filter(skill => skill.id !== action.payload);
+        },
 
         resetResume(state) {
             state.resumeData = initialState.resumeData;
@@ -93,7 +102,7 @@ const resumeSlice = createSlice({
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, updateExperience, updateSkills, addEducation, addExperience, addSkills, resetResume } = resumeSlice.actions
+export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, removeEducation, updateExperience, removeExperience, updateSkills, addEducation, addExperience, addSkills, removeSkills, resetResume } = resumeSlice.actions
 
 
 export default resumeSlice.reducer
