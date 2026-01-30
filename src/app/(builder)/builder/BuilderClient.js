@@ -9,6 +9,7 @@ import { nextStep, previousStep } from '@/redux/slices/resumeSlice'
 import Experiences from '@/components/forms/Experiences'
 import Skills from '@/components/forms/Skills'
 import { useRouter } from 'next/navigation'
+import { templates } from '@/data/templateData'
 
 function BuilderClient() {
     const { selectedTemplate, step, resumeData } = useSelector((state) => state.resume)
@@ -149,6 +150,11 @@ function BuilderClient() {
         }
     };
 
+    // Resolve the selected template (ID or string fallback)
+    const activeTemplate = templates.find((t) => t.id === selectedTemplate)
+
+    const ActiveComponent = activeTemplate ? activeTemplate.component : Modern;
+
     return (
         <div>
             <main className="grid grid-cols-1 lg:grid-cols-2 h-screen overflow-hidden">
@@ -174,7 +180,7 @@ function BuilderClient() {
                             }}
                             className="shadow-2xl bg-white"
                         >
-                            {selectedTemplate === "simple" ? <Simple /> : <Modern />}
+                            <ActiveComponent />
                         </div>
                     </div>
                 </section>

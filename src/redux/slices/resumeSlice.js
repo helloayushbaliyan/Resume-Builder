@@ -6,7 +6,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 
 const initialState = {
-    selectedTemplate: 1,
+    selectedTemplate: null,
     step: 1,
 
     resumeData: {
