@@ -113,9 +113,11 @@ function BuilderClient() {
                                 <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>
                             </button>
                             <div className="flex items-center gap-4">
-                                <button onClick={handleSubmit} className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all">
-                                    <span className={`${step === 4 ? "hidden" : ""}`}>Save & Continue</span>
-                                    {step === 4 && <div className={`${step === 4 ? "" : "hidden"}`} onClick={() => router.push("/preview")}>Submit</div>}
+                                <button
+                                    onClick={step === 4 ? () => router.push("/preview") : handleSubmit}
+                                    className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg"
+                                >
+                                    {step === 4 ? "Submit" : "Save & Continue"}
                                 </button>
                             </div>
                         </div>
