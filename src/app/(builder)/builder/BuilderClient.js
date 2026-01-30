@@ -45,7 +45,7 @@ function BuilderClient() {
                 if (!resumeData.experience || resumeData.experience.length === 0) {
                     // Ensure at least one experience is added
                     setError("Please add at least one work experience.");
-                    return false;
+                    return true;
                 }
                 for (const exp of resumeData.experience) {
                     if (!exp.company || !exp.position || !exp.startDate || !exp.endDate || !exp.description) {
@@ -57,7 +57,7 @@ function BuilderClient() {
             case 4: // Skills
                 if (!resumeData.skills || resumeData.skills.length === 0) {
                     setError("Please add at least one skill.");
-                    return false;
+                    return true;
                 }
                 for (const skill of resumeData.skills) {
                     if (!skill.skill) {
