@@ -23,9 +23,9 @@ function BuilderClient() {
         setError(""); // Clear previous errors
         switch (step) {
             case 1: // Personal Details
-                const { name, email, phone, role, location, summary } = resumeData.personal || {};
-                if (!name || !email || !phone || !role || !location || !summary) {
-                    setError("Please fill in all required fields (Name, Email, Phone, Role, Location, Summary).");
+                const { name, email, phone, role, location, summary, photo } = resumeData.personal || {};
+                if (!name || !email || !phone || !role || !location || !summary || !photo) {
+                    setError("Please fill in all required fields (Name, Email, Phone, Role, Location, Summary, Photo).");
                     return false;
                 }
                 return true;

@@ -18,6 +18,16 @@ function PersonalDetils({ showError }) {
     }`;
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        dispatch(updatePersonal({ photo: e.target.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div className="">
       {/* <!-- Breadcrumbs --> */}
@@ -153,6 +163,21 @@ function PersonalDetils({ showError }) {
                   className={getInputClass(personal.location)}
                   placeholder="e.g. New York, NY"
                   type="text"
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-2 flex flex-col gap-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
+                Photo
+              </label>
+              <div className="relative">
+                <input
+                  onChange={handleImageUpload}
+                  className={getInputClass()}
+                  placeholder="Upload your photo"
+                  type="file"
+                  accept="image/*"
                 />
               </div>
             </div>
