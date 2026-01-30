@@ -16,6 +16,7 @@ function BuilderClient() {
     const router = useRouter();
 
     const [error, setError] = useState("");
+    const [showErrors, setShowErrors] = useState(false);
 
     const validateCurrentStep = useCallback(() => {
         setError(""); // Clear previous errors
@@ -74,11 +75,14 @@ function BuilderClient() {
             if (step < 4) {
                 dispatch(nextStep())
             }
+        } else {
+            setShowErrors(true);
         }
     }, [dispatch, step, validateCurrentStep])
 
     const handlePrevious = useCallback(() => {
         setError(""); // Clear error when going back
+        setShowErrors(false);
         if (step > 1) {
             dispatch(previousStep())
         }
@@ -101,6 +105,7 @@ function BuilderClient() {
             behavior: "smooth",
         });
         setError("");
+        setShowErrors(false);
     }, [step]);
 
     // Handle Scaling for Preview Section
@@ -127,6 +132,8 @@ function BuilderClient() {
     const handleFinalSubmit = () => {
         if (validateCurrentStep()) {
             router.push("/preview");
+        } else {
+            setShowErrors(true);
         }
     };
 
@@ -164,10 +171,10 @@ function BuilderClient() {
                 {/* <!-- Right Side: Editor Form --> */}
                 <section className="flex flex-col h-full bg-white relative overflow-hidden">
                     <div ref={formContainerRef} className="flex-1 overflow-y-auto p-6 md:p-12">
-                        {step === 1 && <PersonalDetils key={step} />}
-                        {step === 2 && <Education key={step} />}
-                        {step === 3 && <Experiences key={step} />}
-                        {step === 4 && <Skills key={step} />}
+                        {step === 1 && <PersonalDetils key={step} showError={showErrors} />}
+                        {step === 2 && <Education key={step} showError={showErrors} />}
+                        {step === 3 && <Experiences key={step} showError={showErrors} />}
+                        {step === 4 && <Skills key={step} showError={showErrors} />}
                     </div>
 
                     {/* <!-- Footer Navigation --> */}

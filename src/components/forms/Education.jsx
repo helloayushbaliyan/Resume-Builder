@@ -2,9 +2,17 @@ import { addEducation, updateEducation } from "@/redux/slices/resumeSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function Education() {
+function Education({ showError }) {
   const dispatch = useDispatch();
   const education = useSelector((state) => state.resume.resumeData.education);
+
+  const getInputClass = (value) => {
+    return `w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12 focus:ring-primary ${
+      showError && !value
+        ? "border-red-500 focus:border-red-500"
+        : "border-[#e7e7f3] focus:border-primary"
+    }`;
+  };
 
   return (
     <div className="">
@@ -64,7 +72,7 @@ function Education() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(edu.school)}
                     placeholder="e.g. Harvard University"
                     type="text"
                   />
@@ -87,7 +95,7 @@ function Education() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(edu.degree)}
                     placeholder="e.g. Bachelor of Science in Computer Science"
                     type="text"
                   />
@@ -110,7 +118,7 @@ function Education() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(edu.startDate)}
                     placeholder="MM/YYYY"
                     type="month"
                   />
@@ -132,7 +140,7 @@ function Education() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(edu.endDate)}
                     placeholder="MM/YYYY"
                     type="month"
                   />

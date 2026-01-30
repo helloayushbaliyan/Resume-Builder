@@ -3,10 +3,19 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-function Skills() {
+function Skills({ showError }) {
   const dispatch = useDispatch();
   const skills = useSelector((state) => state.resume.resumeData.skills);
   console.log(skills);
+
+  const getInputClass = (value) => {
+    return `w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12 focus:ring-primary ${
+      showError && !value
+        ? "border-red-500 focus:border-red-500"
+        : "border-[#e7e7f3] focus:border-primary"
+    }`;
+  };
+
   return (
     <div className="">
       {/* <!-- Breadcrumbs --> */}
@@ -63,7 +72,7 @@ function Skills() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(skill.skill)}
                     placeholder="e.g. JavaScript, Project Management, UI Design"
                     type="text"
                   />

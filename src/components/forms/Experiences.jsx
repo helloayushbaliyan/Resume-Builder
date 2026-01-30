@@ -2,9 +2,22 @@ import { addExperience, updateExperience } from "@/redux/slices/resumeSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function Experiences() {
+function Experiences({ showError }) {
   const dispatch = useDispatch();
   const experience = useSelector((state) => state.resume.resumeData.experience);
+
+  const getInputClass = (value, isTextArea = false) => {
+    const baseClass = isTextArea
+      ? "w-full h-[150px] resize-none bg-white border-2 p-3 rounded-xl text-sm font-medium"
+      : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
+
+    return `${baseClass} focus:ring-primary ${
+      showError && !value
+        ? "border-red-500 focus:border-red-500"
+        : "border-[#e7e7f3] focus:border-primary"
+    }`;
+  };
+
   return (
     <div className="">
       {/* <!-- Breadcrumbs --> */}
@@ -62,7 +75,7 @@ function Experiences() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(exp.company)}
                     placeholder="e.g. Google"
                     type="text"
                   />
@@ -84,7 +97,7 @@ function Experiences() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(exp.position)}
                     placeholder="e.g. Senior Software Engineer"
                     type="text"
                   />
@@ -106,7 +119,7 @@ function Experiences() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(exp.startDate)}
                     placeholder="MM/YYYY"
                     type="month"
                   />
@@ -128,7 +141,7 @@ function Experiences() {
                         }),
                       )
                     }
-                    className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                    className={getInputClass(exp.endDate)}
                     placeholder="MM/YYYY"
                     type="month"
                   />
@@ -150,7 +163,7 @@ function Experiences() {
                         }),
                       )
                     }
-                    className="w-full h-[150px] resize-none bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium"
+                    className={getInputClass(exp.description, true)}
                     placeholder="e.g. Led a team of 5 to develop a cloud-based infrastructure..."
                   />
                 </div>

@@ -2,9 +2,17 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePersonal } from "../../redux/slices/resumeSlice";
 
-function PersonalDetils() {
+function PersonalDetils({ showError }) {
   const dispatch = useDispatch();
   const personal = useSelector((state) => state.resume.resumeData.personal);
+
+  const getInputClass = (value) => {
+    return `w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12 focus:ring-primary ${
+      showError && !value
+        ? "border-red-500 focus:border-red-500"
+        : "border-[#e7e7f3] focus:border-primary"
+    }`;
+  };
 
   return (
     <div className="">
@@ -53,7 +61,7 @@ function PersonalDetils() {
                   onChange={(e) =>
                     dispatch(updatePersonal({ name: e.target.value }))
                   }
-                  className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                  className={getInputClass(personal.name)}
                   placeholder="e.g. Alexander Hamilton"
                   type="text"
                 />
@@ -70,7 +78,7 @@ function PersonalDetils() {
                   onChange={(e) =>
                     dispatch(updatePersonal({ role: e.target.value }))
                   }
-                  className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                  className={getInputClass(personal.role)}
                   placeholder="e.g. Senior Software Engineer"
                   type="text"
                 />
@@ -104,7 +112,7 @@ function PersonalDetils() {
                   onChange={(e) =>
                     dispatch(updatePersonal({ email: e.target.value }))
                   }
-                  className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                  className={getInputClass(personal.email)}
                   placeholder="name@example.com"
                   type="email"
                 />
@@ -121,7 +129,7 @@ function PersonalDetils() {
                   onChange={(e) =>
                     dispatch(updatePersonal({ phone: e.target.value }))
                   }
-                  className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                  className={getInputClass(personal.phone)}
                   placeholder="+1 (555) 000-0000"
                   type="tel"
                 />
@@ -138,7 +146,7 @@ function PersonalDetils() {
                   onChange={(e) =>
                     dispatch(updatePersonal({ location: e.target.value }))
                   }
-                  className="w-full bg-white border-2 p-3 border-[#e7e7f3] rounded-xl focus:border-primary focus:ring-primary text-sm font-medium h-12"
+                  className={getInputClass(personal.location)}
                   placeholder="e.g. New York, NY"
                   type="text"
                 />
