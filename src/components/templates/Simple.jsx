@@ -6,66 +6,15 @@ function Simple() {
     (state) => state.resume.resumeData,
   );
 
-  // Dummy Data
-  const dummyPersonal = {
-    name: "John Doe",
-    role: "Software Engineer",
-    email: "john.doe@example.com",
-    phone: "+1 234 567 890",
-    location: "New York, USA",
-    summary:
-      "Passionate software engineer with 5+ years of experience in building scalable web applications. Proficient in JavaScript, React, and Node.js.",
-  };
-
-  const dummyExperience = [
-    {
-      role: "Senior Developer",
-      company: "Tech Solutions Inc.",
-      location: "San Francisco, CA",
-      startDate: "2020",
-      endDate: "Present",
-      description:
-        "Led a team of developers to build a cloud-based SaaS platform. Improved system performance by 40%.",
-    },
-    {
-      role: "Web Developer",
-      company: "Creative Agency",
-      location: "New York, NY",
-      startDate: "2018",
-      endDate: "2020",
-      description:
-        "Developed responsive websites for various clients. Collaborated with designers to implement UI/UX best practices.",
-    },
-  ];
-
-  const dummyEducation = [
-    {
-      school: "University of Technology",
-      degree: "Bachelor of Science in Computer Science",
-      startDate: "2014",
-      endDate: "2018",
-    },
-  ];
-
-  const dummySkills = [
-    { skill: "JavaScript" },
-    { skill: "React" },
-    { skill: "Node.js" },
-    { skill: "Python" },
-    { skill: "SQL" },
-  ];
-
   // Helper to check if object is empty
   const isEmpty = (obj) => {
     return !obj || Object.keys(obj).filter((k) => obj[k]).length === 0;
   };
 
-  const displayPersonal = isEmpty(personal) ? dummyPersonal : personal;
-  const displayExperience =
-    !experience || experience.length === 0 ? dummyExperience : experience;
-  const displayEducation =
-    !education || education.length === 0 ? dummyEducation : education;
-  const displaySkills = !skills || skills.length === 0 ? dummySkills : skills;
+  const displayPersonal = personal || {};
+  const displayExperience = experience || [];
+  const displayEducation = education || [];
+  const displaySkills = skills || [];
 
   return (
     <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col p-10 relative overflow-hidden text-[#333]">
