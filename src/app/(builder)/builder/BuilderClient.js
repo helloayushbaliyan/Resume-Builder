@@ -35,7 +35,12 @@ function BuilderClient() {
                     return false;
                 }
                 for (const edu of resumeData.education) {
-                    if (!edu.school || !edu.degree || !edu.startDate || !edu.endDate) {
+                    if (
+                        !edu.school ||
+                        !edu.degree ||
+                        !edu.startDate ||
+                        (!edu.endDate && !edu.currentlyStudying)
+                    ) {
                         setError("Please fill in all fields for each education entry.");
                         return false;
                     }
@@ -48,7 +53,13 @@ function BuilderClient() {
                     return true;
                 }
                 for (const exp of resumeData.experience) {
-                    if (!exp.company || !exp.position || !exp.startDate || !exp.endDate || !exp.description) {
+                    if (
+                        !exp.company ||
+                        !exp.position ||
+                        !exp.startDate ||
+                        (!exp.description) ||
+                        (!exp.endDate && !exp.currentlyWorking)
+                    ) {
                         setError("Please fill in all fields for each experience entry.");
                         return false;
                     }
@@ -181,11 +192,11 @@ function BuilderClient() {
                     {/* <!-- Footer Navigation --> */}
                     <div className="bg-white p-6 border-t border-gray-100 z-10 w-full">
                         <div className="flex flex-col gap-2 w-full">
-                            {/* {error && (
+                            {error && (
                                 <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100 mb-2">
                                     {error}
                                 </div>
-                            )} */}
+                            )}
                             <div className="flex justify-between items-center w-full">
                                 <button onClick={handlePrevious} className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
                                     <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>

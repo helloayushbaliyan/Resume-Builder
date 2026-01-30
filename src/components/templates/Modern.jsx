@@ -107,7 +107,8 @@ const Modern = () => {
                           {exp.company}
                         </h4>
                         <span className="text-xs text-gray-500 italic">
-                          {exp.startDate} – {exp.endDate}
+                          {exp.startDate} –{" "}
+                          {exp.currentlyWorking ? "Present" : exp.endDate}
                         </span>
                       </div>
                       <h4 className="text-sm  text-[#2d2d2d]">
@@ -138,7 +139,8 @@ const Modern = () => {
                         {edu.school}
                       </h4>
                       <span className="text-xs text-gray-500 italic">
-                        {edu.startDate} – {edu.endDate}
+                        {edu.startDate} –{" "}
+                        {edu.currentlyStudying ? "Present" : edu.endDate}
                       </span>
                     </div>
                     <h4 className="text-sm   text-[#2d2d2d]">{edu.degree}</h4>

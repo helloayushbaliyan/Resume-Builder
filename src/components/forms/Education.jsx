@@ -153,11 +153,12 @@ function Education({ showError }) {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  End Date (or Expected)
+                  End Date
                 </label>
                 <div className="relative">
                   <input
                     value={edu.endDate}
+                    disabled={edu.currentlyStudying}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -171,6 +172,29 @@ function Education({ showError }) {
                     placeholder="MM/YYYY"
                     type="month"
                   />
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <input
+                    type="checkbox"
+                    checked={edu.currentlyStudying || false}
+                    onChange={(e) =>
+                      dispatch(
+                        updateEducation({
+                          id: edu.id,
+                          field: "currentlyStudying",
+                          value: e.target.checked,
+                        }),
+                      )
+                    }
+                    id={`currentlyStudying-${edu.id}`}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <label
+                    htmlFor={`currentlyStudying-${edu.id}`}
+                    className="text-sm text-gray-600 cursor-pointer"
+                  >
+                    I currently study here
+                  </label>
                 </div>
               </div>
             </div>

@@ -42,6 +42,7 @@ const resumeSlice = createSlice({
                 degree: "",
                 startDate: "",
                 endDate: "",
+                currentlyStudying: false,
             })
         },
         updateEducation(state, action) {
@@ -62,6 +63,7 @@ const resumeSlice = createSlice({
                 startDate: "",
                 endDate: "",
                 description: "",
+                currentlyWorking: false,
             })
         },
 

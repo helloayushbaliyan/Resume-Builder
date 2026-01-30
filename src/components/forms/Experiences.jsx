@@ -153,11 +153,12 @@ function Experiences({ showError }) {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  End Date (or Present)
+                  End Date
                 </label>
                 <div className="relative">
                   <input
                     value={exp.endDate}
+                    disabled={exp.currentlyWorking}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -171,6 +172,29 @@ function Experiences({ showError }) {
                     placeholder="MM/YYYY"
                     type="month"
                   />
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <input
+                    type="checkbox"
+                    checked={exp.currentlyWorking || false}
+                    onChange={(e) =>
+                      dispatch(
+                        updateExperience({
+                          id: exp.id,
+                          field: "currentlyWorking",
+                          value: e.target.checked,
+                        }),
+                      )
+                    }
+                    id={`currentlyWorking-${exp.id}`}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <label
+                    htmlFor={`currentlyWorking-${exp.id}`}
+                    className="text-sm text-gray-600 cursor-pointer"
+                  >
+                    I currently work here
+                  </label>
                 </div>
               </div>
               <div className="md:col-span-2 flex flex-col gap-1.5">

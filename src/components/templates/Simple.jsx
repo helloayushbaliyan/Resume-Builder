@@ -71,7 +71,8 @@ function Simple() {
                     {exp.role || exp.position}
                   </h4>
                   <span className="text-xs text-gray-500 whitespace-nowrap">
-                    {exp.startDate} – {exp.endDate}
+                    {exp.startDate} –{" "}
+                    {exp.currentlyWorking ? "Present" : exp.endDate}
                   </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
@@ -105,7 +106,8 @@ function Simple() {
                   <p className="text-xs text-gray-600 italic">{edu.degree}</p>
                 </div>
                 <span className="text-xs text-gray-500 whitespace-nowrap">
-                  {edu.startDate} – {edu.endDate}
+                  {edu.startDate} –{" "}
+                  {edu.currentlyStudying ? "Present" : edu.endDate}
                 </span>
               </div>
             ))}
