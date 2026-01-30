@@ -44,14 +44,14 @@ function Header() {
             Resources
           </a>
         </nav> */}
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <button className="hidden sm:block px-4 py-2 text-sm font-bold hover:bg-[#e7e7f3] hover:text-primary rounded-xl transition-all">
             Login
           </button>
           <button className="px-5 py-2.5 bg-[#1617e8] text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
             Sign Up
           </button>
-        </div>
+        </div> */}
       </div>
     </header>
   );
