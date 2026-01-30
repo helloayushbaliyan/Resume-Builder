@@ -11,17 +11,74 @@ import Skills from '@/components/forms/Skills'
 import { useRouter } from 'next/navigation'
 
 function BuilderClient() {
-    const { selectedTemplate, step } = useSelector((state) => state.resume)
+    const { selectedTemplate, step, resumeData } = useSelector((state) => state.resume)
     const dispatch = useDispatch()
     const router = useRouter();
 
-    const handleSubmit = useCallback(() => {
-        if (step < 4) {
-            dispatch(nextStep())
+    const [error, setError] = useState("");
+
+    const validateCurrentStep = useCallback(() => {
+        setError(""); // Clear previous errors
+        switch (step) {
+            case 1: // Personal Details
+                const { name, email, phone, role, location } = resumeData.personal || {};
+                if (!name || !email || !phone || !role || !location) {
+                    setError("Please fill in all required fields (Name, Email, Phone, Role, Location).");
+                    return false;
+                }
+                return true;
+            case 2: // Education
+                if (!resumeData.education || resumeData.education.length === 0) {
+                    setError("Please add at least one education entry.");
+                    return false;
+                }
+                for (const edu of resumeData.education) {
+                    if (!edu.school || !edu.degree || !edu.startDate || !edu.endDate) {
+                        setError("Please fill in all fields for each education entry.");
+                        return false;
+                    }
+                }
+                return true;
+            case 3: // Experience
+                if (!resumeData.experience || resumeData.experience.length === 0) {
+                    // Ensure at least one experience is added
+                    setError("Please add at least one work experience.");
+                    return false;
+                }
+                for (const exp of resumeData.experience) {
+                    if (!exp.company || !exp.position || !exp.startDate || !exp.endDate || !exp.description) {
+                        setError("Please fill in all fields for each experience entry.");
+                        return false;
+                    }
+                }
+                return true;
+            case 4: // Skills
+                if (!resumeData.skills || resumeData.skills.length === 0) {
+                    setError("Please add at least one skill.");
+                    return false;
+                }
+                for (const skill of resumeData.skills) {
+                    if (!skill.skill) {
+                        setError("Please ensure all skills are filled out.");
+                        return false;
+                    }
+                }
+                return true;
+            default:
+                return true;
         }
-    }, [dispatch, step])
+    }, [step, resumeData]);
+
+    const handleSubmit = useCallback(() => {
+        if (validateCurrentStep()) {
+            if (step < 4) {
+                dispatch(nextStep())
+            }
+        }
+    }, [dispatch, step, validateCurrentStep])
 
     const handlePrevious = useCallback(() => {
+        setError(""); // Clear error when going back
         if (step > 1) {
             dispatch(previousStep())
         }
@@ -37,12 +94,13 @@ function BuilderClient() {
     const PX_PER_MM = 3.7795275591;
     const A4_WIDTH_PX = Math.floor(A4_WIDTH_MM * PX_PER_MM); // ~794px
 
-    // Scroll to top on step change
+    // Scroll to top on step change and clear error
     useEffect(() => {
         formContainerRef.current?.scrollTo({
             top: 0,
             behavior: "smooth",
         });
+        setError("");
     }, [step]);
 
     // Handle Scaling for Preview Section
@@ -65,6 +123,12 @@ function BuilderClient() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    const handleFinalSubmit = () => {
+        if (validateCurrentStep()) {
+            router.push("/preview");
+        }
+    };
 
     return (
         <div>
@@ -108,17 +172,24 @@ function BuilderClient() {
 
                     {/* <!-- Footer Navigation --> */}
                     <div className="bg-white p-6 border-t border-gray-100 z-10 w-full">
-                        <div className="flex justify-between items-center w-full">
-                            <button onClick={handlePrevious} className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
-                                <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>
-                            </button>
-                            <div className="flex items-center gap-4">
-                                <button
-                                    onClick={step === 4 ? () => router.push("/preview") : handleSubmit}
-                                    className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg"
-                                >
-                                    {step === 4 ? "Submit" : "Save & Continue"}
+                        <div className="flex flex-col gap-2 w-full">
+                            {error && (
+                                <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100 mb-2">
+                                    {error}
+                                </div>
+                            )}
+                            <div className="flex justify-between items-center w-full">
+                                <button onClick={handlePrevious} className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-[#4c4c9a] hover:text-[#0d0d1b] transition-colors">
+                                    <span className={`${step === 1 ? "hidden" : ""}`}>Previous Step</span>
                                 </button>
+                                <div className="flex items-center gap-4">
+                                    <button
+                                        onClick={step === 4 ? handleFinalSubmit : handleSubmit}
+                                        className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg hover:bg-[#1617e8]/90 transition-colors"
+                                    >
+                                        {step === 4 ? "Submit" : "Save & Continue"}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
