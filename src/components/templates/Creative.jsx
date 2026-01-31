@@ -2,14 +2,23 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Creative = () => {
-  const { personal, experience, education, skills } = useSelector(
-    (state) => state.resume.resumeData,
-  );
+  const {
+    personal,
+    experience,
+    education,
+    skills,
+    certifications,
+    languages,
+    references,
+  } = useSelector((state) => state.resume.resumeData);
 
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
+  const displayCertifications = certifications || [];
+  const displayLanguages = languages || [];
+  const displayReferences = references || [];
 
   return (
     <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white flex flex-row overflow-hidden text-[#333] shadow-lg font-sans">
@@ -78,6 +87,29 @@ const Creative = () => {
                 <li key={index} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white rounded-full opacity-80"></span>
                   {skill.skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Languages Section */}
+        {displayLanguages && displayLanguages.length > 0 && (
+          <div className="w-full mb-10">
+            <h3 className="text-lg font-bold uppercase tracking-widest mb-4 border-b border-gray-500/50 pb-2 text-white">
+              Languages
+            </h3>
+            <ul className="space-y-2 text-sm font-light text-gray-300">
+              {displayLanguages.map((lang, index) => (
+                <li key={index}>
+                  <div className="flex justify-between items-baseline">
+                    <span className="font-semibold text-white">
+                      {lang.language}
+                    </span>
+                    <span className="text-xs opacity-80">
+                      {lang.proficiency}
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -160,6 +192,59 @@ const Creative = () => {
                     </h4>
                     <p className="text-sm text-gray-600 italic">{edu.school}</p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certifications Section */}
+        {displayCertifications && displayCertifications.length > 0 && (
+          <div className="mt-10">
+            <h3 className="text-xl font-bold text-[#2e3b4e] mb-2">
+              Certifications
+            </h3>
+            <div className="w-10 h-1 bg-[#2e3b4e] mb-6"></div>
+
+            <div className="space-y-4">
+              {displayCertifications.map((cert, index) => (
+                <div key={index} className="flex gap-6">
+                  <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
+                    <span className="whitespace-nowrap">{cert.date}</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-[#2e3b4e] leading-snug">
+                      {cert.name}
+                    </h4>
+                    <p className="text-sm text-gray-600 italic">
+                      {cert.issuer}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* References Section */}
+        {displayReferences && displayReferences.length > 0 && (
+          <div className="mt-10">
+            <h3 className="text-xl font-bold text-[#2e3b4e] mb-2">
+              References
+            </h3>
+            <div className="w-10 h-1 bg-[#2e3b4e] mb-6"></div>
+
+            <div className="grid grid-cols-2 gap-6">
+              {displayReferences.map((ref, index) => (
+                <div key={index}>
+                  <h4 className="text-lg font-bold text-[#2e3b4e] leading-snug">
+                    {ref.name}
+                  </h4>
+                  <p className="text-sm font-medium text-gray-500 italic mb-1">
+                    {ref.position}
+                  </p>
+                  <p className="text-sm text-gray-600">{ref.email}</p>
+                  <p className="text-sm text-gray-600">{ref.phone}</p>
                 </div>
               ))}
             </div>

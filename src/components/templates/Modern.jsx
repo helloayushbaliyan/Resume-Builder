@@ -2,9 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Modern = () => {
-  const { personal, experience, education, skills } = useSelector(
-    (state) => state.resume.resumeData,
-  );
+  const {
+    personal,
+    experience,
+    education,
+    skills,
+    certifications,
+    languages,
+    references,
+  } = useSelector((state) => state.resume.resumeData);
 
   // Helper to check if object is empty
   const isEmpty = (obj) => {
@@ -15,6 +21,9 @@ const Modern = () => {
   const displayExperience = experience || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
+  const displayCertifications = certifications || [];
+  const displayLanguages = languages || [];
+  const displayReferences = references || [];
 
   return (
     <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col relative overflow-hidden text-[#333]">
@@ -88,6 +97,26 @@ const Modern = () => {
               </ul>
             </div>
           )}
+          {/* Languages */}
+          {displayLanguages.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#2d2d2d] mb-3 border-b-2 border-[#2d2d2d] pb-1 w-fit">
+                Languages
+              </h3>
+              <ul className="space-y-2">
+                {displayLanguages.map((lang, index) => (
+                  <li key={index} className="text-xs text-gray-600">
+                    <span className="font-semibold block text-[#2d2d2d]">
+                      {lang.language}
+                    </span>
+                    <span className="text-gray-500 text-[10px]">
+                      {lang.proficiency}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Right Column (Main Content) */}
@@ -144,6 +173,53 @@ const Modern = () => {
                       </span>
                     </div>
                     <h4 className="text-sm   text-[#2d2d2d]">{edu.degree}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Certifications */}
+          {displayCertifications.length > 0 && (
+            <div className="mb-8 mt-8">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#2d2d2d] mb-5">
+                Certifications
+              </h3>
+              <div className="space-y-4">
+                {displayCertifications.map((cert, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h4 className="text-base font-bold text-[#2d2d2d]">
+                        {cert.name}
+                      </h4>
+                      <span className="text-xs text-gray-500 italic">
+                        {cert.date}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 italic">
+                      {cert.issuer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* References */}
+          {displayReferences.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-[#2d2d2d] mb-5">
+                References
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {displayReferences.map((ref, index) => (
+                  <div key={index}>
+                    <h4 className="text-sm font-bold text-[#2d2d2d]">
+                      {ref.name}
+                    </h4>
+                    <p className="text-xs text-gray-600">{ref.position}</p>
+                    <p className="text-xs text-gray-500 mt-1">{ref.email}</p>
+                    <p className="text-xs text-gray-500">{ref.phone}</p>
                   </div>
                 ))}
               </div>

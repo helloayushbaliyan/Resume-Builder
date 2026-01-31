@@ -2,19 +2,23 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 function Simple() {
-  const { personal, experience, education, skills } = useSelector(
-    (state) => state.resume.resumeData,
-  );
-
-  // Helper to check if object is empty
-  const isEmpty = (obj) => {
-    return !obj || Object.keys(obj).filter((k) => obj[k]).length === 0;
-  };
+  const {
+    personal,
+    experience,
+    education,
+    skills,
+    certifications,
+    languages,
+    references,
+  } = useSelector((state) => state.resume.resumeData);
 
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
+  const displayCertifications = certifications || [];
+  const displayLanguages = languages || [];
+  const displayReferences = references || [];
 
   return (
     <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white rounded-sm resume-shadow flex flex-col p-10 relative overflow-hidden text-[#333]">
@@ -115,7 +119,74 @@ function Simple() {
         </div>
       )}
 
-      {/* Skills */}
+      {/* Certifications */}
+      {displayCertifications.length > 0 && (
+        <div className="mb-6 section">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+            Certifications
+          </h3>
+          <div className="space-y-3">
+            {displayCertifications.map((cert, index) => (
+              <div key={index} className="flex justify-between items-start">
+                <div>
+                  <h4 className="text-sm font-bold text-gray-800">
+                    {cert.name}
+                  </h4>
+                  <p className="text-xs text-gray-600 italic">{cert.issuer}</p>
+                </div>
+                <span className="text-xs text-gray-500 whitespace-nowrap">
+                  {cert.date}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Languages */}
+      {displayLanguages.length > 0 && (
+        <div className="mb-6 section">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+            Languages
+          </h3>
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+            {displayLanguages.map((lang, index) => (
+              <li
+                key={index}
+                className="text-xs list-disc list-inside text-gray-700"
+              >
+                <span className="font-semibold">{lang.language}</span>
+                {lang.proficiency && (
+                  <span className="text-gray-500 text-[10px] ml-2">
+                    ({lang.proficiency})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* References */}
+      {displayReferences.length > 0 && (
+        <div className="mb-6 section">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+            References
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            {displayReferences.map((ref, index) => (
+              <div key={index}>
+                <h4 className="text-sm font-bold text-gray-800">{ref.name}</h4>
+                <p className="text-xs text-gray-600 italic">{ref.position}</p>
+                <p className="text-xs text-gray-500 mt-1">{ref.email}</p>
+                <p className="text-xs text-gray-500">{ref.phone}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Skills (Rendered last or before references) */}
       {displaySkills && displaySkills.length > 0 && (
         <div className="section">
           <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 border-b border-gray-100 pb-1 text-center">

@@ -1,8 +1,7 @@
 "use client"
 import Education from '@/components/forms/Education'
 import PersonalDetils from '@/components/forms/PersonalDetils'
-import Modern from '@/components/templates/Modern'
-import Simple from '@/components/templates/Simple'
+import AdditionalDetails from '@/components/forms/AdditionalDetails'
 import { useCallback, useState, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { nextStep, previousStep } from '@/redux/slices/resumeSlice'
@@ -82,7 +81,7 @@ function BuilderClient() {
 
     const handleSubmit = useCallback(() => {
         if (validateCurrentStep()) {
-            if (step < 4) {
+            if (step < 5) {
                 dispatch(nextStep())
             }
         } else {
@@ -191,6 +190,7 @@ function BuilderClient() {
                         {step === 2 && <Education key={step} showError={showErrors} />}
                         {step === 3 && <Experiences key={step} showError={showErrors} />}
                         {step === 4 && <Skills key={step} showError={showErrors} />}
+                        {step === 5 && <AdditionalDetails key={step} showError={showErrors} />}
                     </div>
 
                     {/* <!-- Footer Navigation --> */}
@@ -207,10 +207,10 @@ function BuilderClient() {
                                 </button>
                                 <div className="flex items-center gap-4">
                                     <button
-                                        onClick={step === 4 ? handleFinalSubmit : handleSubmit}
+                                        onClick={step === 5 ? handleFinalSubmit : handleSubmit}
                                         className="flex items-center gap-2 px-8 py-3 bg-[#1617e8] text-white text-sm font-bold rounded-lg hover:bg-[#1617e8]/90 transition-colors"
                                     >
-                                        {step === 4 ? "Submit" : "Save & Continue"}
+                                        {step === 5 ? "Submit" : "Save & Continue"}
                                     </button>
                                 </div>
                             </div>

@@ -14,6 +14,9 @@ const initialState = {
         education: [],
         experience: [],
         skills: [],
+        certifications: [],
+        languages: [],
+        references: [],
     },
 };
 
@@ -95,6 +98,60 @@ const resumeSlice = createSlice({
             state.resumeData.skills = state.resumeData.skills.filter(skill => skill.id !== action.payload);
         },
 
+        // Certifications
+        addCertification(state, action) {
+            state.resumeData.certifications.push({
+                id: nanoid(),
+                name: "",
+                issuer: "",
+                date: "",
+            });
+        },
+        updateCertification(state, action) {
+            const { id, field, value } = action.payload;
+            const cert = state.resumeData.certifications.find((c) => c.id === id);
+            if (cert) cert[field] = value;
+        },
+        removeCertification(state, action) {
+            state.resumeData.certifications = state.resumeData.certifications.filter((c) => c.id !== action.payload);
+        },
+
+        // Languages
+        addLanguage(state, action) {
+            state.resumeData.languages.push({
+                id: nanoid(),
+                language: "",
+                proficiency: "", // e.g., Fluent, Native, Intermediate
+            });
+        },
+        updateLanguage(state, action) {
+            const { id, field, value } = action.payload;
+            const lang = state.resumeData.languages.find((l) => l.id === id);
+            if (lang) lang[field] = value;
+        },
+        removeLanguage(state, action) {
+            state.resumeData.languages = state.resumeData.languages.filter((l) => l.id !== action.payload);
+        },
+
+        // References
+        addReference(state, action) {
+            state.resumeData.references.push({
+                id: nanoid(),
+                name: "",
+                position: null,
+                phone: "",
+                email: "",
+            });
+        },
+        updateReference(state, action) {
+            const { id, field, value } = action.payload;
+            const ref = state.resumeData.references.find((r) => r.id === id);
+            if (ref) ref[field] = value;
+        },
+        removeReference(state, action) {
+            state.resumeData.references = state.resumeData.references.filter((r) => r.id !== action.payload);
+        },
+
         resetResume(state) {
             state.resumeData = initialState.resumeData;
             state.step = 1;
@@ -104,7 +161,31 @@ const resumeSlice = createSlice({
 })
 
 
-export const { selectTemplate, nextStep, previousStep, updatePersonal, updateEducation, removeEducation, updateExperience, removeExperience, updateSkills, addEducation, addExperience, addSkills, removeSkills, resetResume } = resumeSlice.actions
+export const {
+    selectTemplate,
+    nextStep,
+    previousStep,
+    updatePersonal,
+    updateEducation,
+    removeEducation,
+    updateExperience,
+    removeExperience,
+    updateSkills,
+    addEducation,
+    addExperience,
+    addSkills,
+    removeSkills,
+    resetResume,
+    addCertification,
+    updateCertification,
+    removeCertification,
+    addLanguage,
+    updateLanguage,
+    removeLanguage,
+    addReference,
+    updateReference,
+    removeReference
+} = resumeSlice.actions
 
 
 export default resumeSlice.reducer
