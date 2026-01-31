@@ -179,7 +179,7 @@ function AdditionalDetails({ showError }) {
                         Certification Name
                       </label>
                       <input
-                        value={cert.name}
+                        value={cert.name || ""}
                         onChange={(e) =>
                           dispatch(
                             updateCertification({
@@ -198,7 +198,7 @@ function AdditionalDetails({ showError }) {
                         Issuer
                       </label>
                       <input
-                        value={cert.issuer}
+                        value={cert.issuer || ""}
                         onChange={(e) =>
                           dispatch(
                             updateCertification({
@@ -217,7 +217,7 @@ function AdditionalDetails({ showError }) {
                         Date
                       </label>
                       <input
-                        value={cert.date}
+                        value={cert.date || ""}
                         onChange={(e) =>
                           dispatch(
                             updateCertification({
@@ -288,7 +288,7 @@ function AdditionalDetails({ showError }) {
                         Language
                       </label>
                       <input
-                        value={lang.language}
+                        value={lang.language || ""}
                         onChange={(e) =>
                           dispatch(
                             updateLanguage({
@@ -307,7 +307,7 @@ function AdditionalDetails({ showError }) {
                         Proficiency
                       </label>
                       <input
-                        value={lang.proficiency}
+                        value={lang.proficiency || ""}
                         onChange={(e) =>
                           dispatch(
                             updateLanguage({
@@ -377,7 +377,7 @@ function AdditionalDetails({ showError }) {
                         Name
                       </label>
                       <input
-                        value={ref.name}
+                        value={ref.name || ""}
                         onChange={(e) =>
                           dispatch(
                             updateReference({
@@ -396,7 +396,7 @@ function AdditionalDetails({ showError }) {
                         Position & Company
                       </label>
                       <input
-                        value={ref.position}
+                        value={ref.position || ""}
                         onChange={(e) =>
                           dispatch(
                             updateReference({
@@ -415,7 +415,7 @@ function AdditionalDetails({ showError }) {
                         Phone
                       </label>
                       <input
-                        value={ref.phone}
+                        value={ref.phone || ""}
                         onChange={(e) =>
                           dispatch(
                             updateReference({
@@ -434,7 +434,7 @@ function AdditionalDetails({ showError }) {
                         Email
                       </label>
                       <input
-                        value={ref.email}
+                        value={ref.email || ""}
                         onChange={(e) =>
                           dispatch(
                             updateReference({

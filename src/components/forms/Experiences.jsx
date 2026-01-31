@@ -91,7 +91,7 @@ function Experiences({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={exp.company}
+                    value={exp.company || ""}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -113,7 +113,7 @@ function Experiences({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={exp.position}
+                    value={exp.position || ""}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -135,7 +135,7 @@ function Experiences({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={exp.startDate}
+                    value={exp.startDate || ""}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({
@@ -157,7 +157,7 @@ function Experiences({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={exp.endDate}
+                    value={exp.endDate || ""}
                     disabled={exp.currentlyWorking}
                     onChange={(e) =>
                       dispatch(
@@ -177,15 +177,25 @@ function Experiences({ showError }) {
                   <input
                     type="checkbox"
                     checked={exp.currentlyWorking || false}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
                       dispatch(
                         updateExperience({
                           id: exp.id,
                           field: "currentlyWorking",
-                          value: e.target.checked,
+                          value: isChecked,
                         }),
-                      )
-                    }
+                      );
+                      if (isChecked) {
+                        dispatch(
+                          updateExperience({
+                            id: exp.id,
+                            field: "endDate",
+                            value: "",
+                          }),
+                        );
+                      }
+                    }}
                     id={`currentlyWorking-${exp.id}`}
                     className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                   />
@@ -203,7 +213,7 @@ function Experiences({ showError }) {
                 </label>
                 <div className="relative">
                   <textarea
-                    value={exp.description}
+                    value={exp.description || ""}
                     onChange={(e) =>
                       dispatch(
                         updateExperience({

@@ -89,7 +89,7 @@ function Education({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={edu.school}
+                    value={edu.school || ""}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -112,7 +112,7 @@ function Education({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={edu.degree}
+                    value={edu.degree || ""}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -135,7 +135,7 @@ function Education({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={edu.startDate}
+                    value={edu.startDate || ""}
                     onChange={(e) =>
                       dispatch(
                         updateEducation({
@@ -157,7 +157,7 @@ function Education({ showError }) {
                 </label>
                 <div className="relative">
                   <input
-                    value={edu.endDate}
+                    value={edu.endDate || ""}
                     disabled={edu.currentlyStudying}
                     onChange={(e) =>
                       dispatch(
@@ -177,15 +177,25 @@ function Education({ showError }) {
                   <input
                     type="checkbox"
                     checked={edu.currentlyStudying || false}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
                       dispatch(
                         updateEducation({
                           id: edu.id,
                           field: "currentlyStudying",
-                          value: e.target.checked,
+                          value: isChecked,
                         }),
-                      )
-                    }
+                      );
+                      if (isChecked) {
+                        dispatch(
+                          updateEducation({
+                            id: edu.id,
+                            field: "endDate",
+                            value: "",
+                          }),
+                        );
+                      }
+                    }}
                     id={`currentlyStudying-${edu.id}`}
                     className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                   />
