@@ -1,12 +1,19 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react'
-import Simple from '@/components/templates/Simple'
-import Modern from '@/components/templates/Modern'
 import { useSelector } from 'react-redux'
 import { toPng } from 'html-to-image'
 import jsPDF from 'jspdf'
 import { FaDownload } from "react-icons/fa";
 import { templates } from '@/data/templateData'
+import { A4_WIDTH_PX, A4_HEIGHT_PX } from '@/components/layout/ResumePage'
+
+/**
+ * PreviewClient Component
+ * 
+ * Displays the resume preview and handles PDF export.
+ * Supports multi-page resumes by capturing each page separately
+ * and combining them into a single PDF document.
+ */
 
 function PreviewClient() {
     const { selectedTemplate } = useSelector((state) => state.resume)
@@ -14,11 +21,9 @@ function PreviewClient() {
     const [loading, setLoading] = useState(false)
     const [scale, setScale] = useState(1);
 
-    // Resume A4 Dimensions
+    // Resume A4 Dimensions in mm
     const A4_WIDTH_MM = 210;
     const A4_HEIGHT_MM = 297;
-    const PX_PER_MM = 3.7795275591; // approx 96 DPI
-    const A4_WIDTH_PX = Math.floor(A4_WIDTH_MM * PX_PER_MM); // ~794px
 
     useEffect(() => {
         const handleResize = () => {
@@ -38,34 +43,61 @@ function PreviewClient() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    /**
+     * Handles multi-page PDF download
+     * Captures each .resume-page element separately and adds to PDF
+     */
     const handleDownload = async () => {
-        const element = resumeRef.current;
-        if (!element) return;
+        const container = resumeRef.current;
+        if (!container) return;
 
         setLoading(true);
 
         try {
-            const dataUrl = await toPng(element, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                // Force dimensions for PDF quality
-                width: A4_WIDTH_PX,
-                height: Math.floor(A4_HEIGHT_MM * PX_PER_MM),
-                style: {
-                    transform: 'scale(1)', // Reset scale for capture
-                    transformOrigin: 'top left'
-                }
-            });
+            // Find all resume pages within the container
+            const pages = container.querySelectorAll('.resume-page');
 
+            if (pages.length === 0) {
+                console.error("No resume pages found");
+                alert("No pages found to export");
+                setLoading(false);
+                return;
+            }
+
+            // Create PDF document
             const pdf = new jsPDF('p', 'mm', 'a4');
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
 
-            // Calculate aspect ratio to fit image exactly on PDF page
-            const componentHeight = (A4_HEIGHT_MM * pdfWidth) / A4_WIDTH_MM;
+            // Capture each page and add to PDF
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
 
-            pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, componentHeight);
+                // Capture the page as PNG
+                const dataUrl = await toPng(page, {
+                    cacheBust: true,
+                    backgroundColor: '#ffffff',
+                    width: A4_WIDTH_PX,
+                    height: A4_HEIGHT_PX,
+                    style: {
+                        transform: 'scale(1)',
+                        transformOrigin: 'top left'
+                    },
+                    pixelRatio: 2 // Higher quality
+                });
+
+                // Add new page for pages after the first
+                if (i > 0) {
+                    pdf.addPage();
+                }
+
+                // Add image to current PDF page
+                pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            }
+
+            // Save the PDF
             pdf.save('my-resume.pdf');
+
         } catch (error) {
             console.error("Error generating PDF:", error);
             alert("Failed to generate PDF. Please try again.");
@@ -74,42 +106,33 @@ function PreviewClient() {
         }
     };
 
+    // Get the active template component
     const activeTemplate = templates.find((t) => t.id === selectedTemplate)
-
-    const ActiveComponent = activeTemplate ? activeTemplate.component : Modern;
+    const ActiveComponent = activeTemplate ? activeTemplate.component : templates[0]?.component;
 
     return (
-        <main className="flex flex-col justify-center items-center min-h-screen bg-gray-100 relative">
-
+        <main className="flex flex-col justify-center items-center min-h-screen bg-gray-100 relative py-8">
 
             {/* Container for the scaled resume */}
-            {/* Container for the scaled resume */}
-            <section className="flex bg-[#e2e2ec] relative items-start justify-center overflow-y-auto p-8 hide-scrollbar w-full h-full">
+            <section className="flex bg-[#e2e2ec] relative items-start justify-center overflow-y-auto p-8 hide-scrollbar w-full flex-1">
                 <div
+                    ref={resumeRef}
                     style={{
-                        width: `${A4_WIDTH_MM * scale}mm`,
-                        height: `${A4_HEIGHT_MM * scale}mm`,
-                        marginBottom: '5vh'
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'top center',
+                        marginBottom: '2rem',
                     }}
                 >
-                    <div
-                        ref={resumeRef}
-                        style={{
-                            transform: `scale(${scale})`,
-                            transformOrigin: 'top left',
-                            width: `${A4_WIDTH_MM}mm`,
-                            minHeight: `${A4_HEIGHT_MM}mm`,
-                        }}
-                        className="shadow-2xl bg-white"
-                    >
-                        <ActiveComponent />
-                    </div>
+                    {/* Template renders multiple pages internally */}
+                    <ActiveComponent />
                 </div>
             </section>
+
+            {/* Download Button */}
             <button
                 onClick={handleDownload}
                 disabled={loading}
-                className="z-50 mt-5  flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="z-50 mt-5 mb-5 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
                 {loading ? (
                     <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>

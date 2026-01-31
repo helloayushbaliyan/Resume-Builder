@@ -156,29 +156,23 @@ function BuilderClient() {
         <div>
             <main className="grid grid-cols-1 lg:grid-cols-2 h-screen overflow-hidden">
 
-                {/* <!-- Left Side: Live Preview (Sticky) --> */}
+                {/* <-- Left Side: Live Preview (Sticky) --> */}
+                {/* Supports multiple A4 pages stacked vertically */}
                 <section
                     ref={containerRef}
                     className="hidden lg:flex bg-[#e2e2ec] items-start justify-center overflow-y-auto p-8 hide-scrollbar"
                 >
                     <div
                         style={{
-                            width: `${A4_WIDTH_MM * scale}mm`,
-                            height: `${A4_HEIGHT_MM * scale}mm`,
-                            marginBottom: '2rem'
+                            // Container scales to fit, but allows vertical scrolling for multiple pages
+                            transform: `scale(${scale})`,
+                            transformOrigin: 'top center',
+                            marginBottom: '2rem',
+                            paddingBottom: '2rem',
                         }}
                     >
-                        <div
-                            style={{
-                                transform: `scale(${scale})`,
-                                transformOrigin: 'top left',
-                                width: `${A4_WIDTH_MM}mm`,
-                                minHeight: `${A4_HEIGHT_MM}mm`,
-                            }}
-                            className="shadow-2xl bg-white"
-                        >
-                            <ActiveComponent />
-                        </div>
+                        {/* Template renders its own pages now - no fixed height wrapper */}
+                        <ActiveComponent />
                     </div>
                 </section>
 
