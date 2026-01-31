@@ -45,12 +45,12 @@ function PersonalDetils({ showError }) {
           <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
             Step 1 of 4
           </p>
-          <p className="text-sm font-bold text-primary">25% Complete</p>
+          <p className="text-sm font-bold text-primary">20% Complete</p>
         </div>
         <div className="h-2 w-full bg-[#cfcfe7] rounded-full overflow-hidden">
           <div
             className="h-full bg-[#4c4c9a] rounded-full transition-all duration-500"
-            style={{ width: "25%" }}
+            style={{ width: "20%" }}
           ></div>
         </div>
       </div>

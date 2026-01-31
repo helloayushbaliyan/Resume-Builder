@@ -37,12 +37,12 @@ function Skills({ showError }) {
           <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
             Step 4 of 4
           </p>
-          <p className="text-sm font-bold text-primary">100% Complete</p>
+          <p className="text-sm font-bold text-primary">80% Complete</p>
         </div>
         <div className="h-2 w-full bg-[#cfcfe7] rounded-full overflow-hidden">
           <div
             className="h-full bg-[#4c4c9a] rounded-full transition-all duration-500"
-            style={{ width: "100%" }}
+            style={{ width: "80%" }}
           ></div>
         </div>
       </div>
