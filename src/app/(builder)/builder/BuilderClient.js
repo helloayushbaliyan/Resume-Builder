@@ -148,9 +148,9 @@ function BuilderClient() {
 
 
     // Resolve the selected template (ID or string fallback)
-    const activeTemplate = templates.find((t) => t.id === selectedTemplate)
+    const activeTemplate = templates.find((t) => t.id === selectedTemplate) || templates[0];
 
-    const ActiveComponent = activeTemplate && activeTemplate.component;
+    const ActiveComponent = activeTemplate?.component;
 
     return (
         <div>
@@ -172,7 +172,7 @@ function BuilderClient() {
                         }}
                     >
                         {/* Template renders its own pages now - no fixed height wrapper */}
-                        <ActiveComponent />
+                        {ActiveComponent ? <ActiveComponent /> : <div className="text-gray-500">Loading template...</div>}
                     </div>
                 </section>
 

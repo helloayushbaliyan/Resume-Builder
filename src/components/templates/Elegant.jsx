@@ -1,5 +1,288 @@
-import React from "react";
+"use client";
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { useSelector } from "react-redux";
+import ResumePage, {
+  A4_WIDTH_PX,
+  USABLE_HEIGHT_PX,
+  PAGE_PADDING_PX,
+} from "@/components/layout/ResumePage";
+
+/**
+ * Elegant Resume Template with Automatic Multi-Page Pagination
+ *
+ * Dark header with photo, two-column layout below.
+ * Content dynamically flows to additional pages when it exceeds A4 height.
+ */
+
+const SECTION_GAP = 24;
+
+// ============================================================================
+// HEADER SECTION
+// ============================================================================
+
+const HeaderSection = React.forwardRef(({ personal }, ref) => (
+  <div
+    ref={ref}
+    className="bg-[#484848] text-white h-52 flex items-center print:bg-[#484848] relative"
+  >
+    <div className="flex w-full h-full">
+      {/* Photo Area */}
+      <div className="w-[33%] h-full flex items-center justify-center relative">
+        <div className="w-40 h-40 rounded-full border-4 border-white overflow-hidden shadow-md bg-gray-200 z-10">
+          {personal.photo ? (
+            <img
+              className="w-full h-full object-cover"
+              src={personal.photo}
+              alt="photo"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs text-center p-2">
+              No Photo
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Name & Title */}
+      <div className="w-[67%] flex flex-col justify-center px-8">
+        <h1 className="text-5xl font-bold uppercase tracking-wide mb-1 leading-none">
+          {personal.name || "Richard Wilson"}
+        </h1>
+        <p className="text-xl font-light tracking-widest uppercase opacity-90">
+          {personal.role || "Marketing Manager"}
+        </p>
+      </div>
+    </div>
+  </div>
+));
+HeaderSection.displayName = "HeaderSection";
+
+// ============================================================================
+// LEFT SIDEBAR SECTIONS
+// ============================================================================
+
+const ContactSection = React.forwardRef(({ personal }, ref) => {
+  if (!personal.phone && !personal.email && !personal.location) return null;
+  return (
+    <div ref={ref} className="mb-8">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        Contact
+      </h3>
+      <div className="space-y-3 text-sm text-gray-600 font-medium">
+        {personal.phone && (
+          <div className="flex flex-col">
+            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+              Phone:
+            </span>
+            <span>{personal.phone}</span>
+          </div>
+        )}
+        {personal.email && (
+          <div className="flex flex-col">
+            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+              E-Mail:
+            </span>
+            <span className="break-all">{personal.email}</span>
+          </div>
+        )}
+        {personal.location && (
+          <div className="flex flex-col">
+            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+              Address:
+            </span>
+            <span>{personal.location}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+ContactSection.displayName = "ContactSection";
+
+const SidebarEducationSection = React.forwardRef(({ education }, ref) => {
+  if (!education || education.length === 0) return null;
+  return (
+    <div ref={ref} className="mb-8">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        Education
+      </h3>
+      <div className="space-y-4">
+        {education.map((edu, index) => (
+          <div key={index} className="text-sm text-gray-600">
+            <p className="font-bold text-[#484848] leading-tight mb-0.5">
+              {edu.degree}
+            </p>
+            <p className="text-[#484848] font-medium mb-0.5">{edu.school}</p>
+            <p className="text-gray-500 text-xs">
+              {edu.startDate} -{" "}
+              {edu.currentlyStudying ? "Present" : edu.endDate}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+SidebarEducationSection.displayName = "SidebarEducationSection";
+
+const SkillsSection = React.forwardRef(({ skills }, ref) => {
+  if (!skills || skills.length === 0) return null;
+  return (
+    <div ref={ref} className="mb-8">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        Skills
+      </h3>
+      <div className="space-y-2 text-sm text-gray-600">
+        {skills.map((skill, index) => (
+          <div key={index} className="block">
+            <span className="font-medium">{skill.skill}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+SkillsSection.displayName = "SkillsSection";
+
+const LanguagesSection = React.forwardRef(({ languages }, ref) => {
+  if (!languages || languages.length === 0) return null;
+  return (
+    <div ref={ref} className="mb-8">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        Language
+      </h3>
+      <ul className="space-y-2 text-sm text-gray-600">
+        {languages.map((lang, index) => (
+          <li key={index} className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-[#484848] rounded-full"></span>
+            <span className="font-medium">{lang.language}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+});
+LanguagesSection.displayName = "LanguagesSection";
+
+// ============================================================================
+// RIGHT CONTENT SECTIONS
+// ============================================================================
+
+const AboutSection = React.forwardRef(({ summary }, ref) => {
+  if (!summary) return null;
+  return (
+    <div ref={ref} className="mb-10">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        About Me
+      </h3>
+      <p className="text-sm text-gray-600 leading-relaxed text-justify">
+        {summary}
+      </p>
+    </div>
+  );
+});
+AboutSection.displayName = "AboutSection";
+
+const ExperienceHeader = React.forwardRef((props, ref) => (
+  <div ref={ref} className="mb-4">
+    <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] border-b pb-1 border-gray-300">
+      Experience
+    </h3>
+  </div>
+));
+ExperienceHeader.displayName = "ExperienceHeader";
+
+const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
+  <div ref={ref} className={!isFirst ? "mt-6" : ""}>
+    <div className="flex justify-between items-baseline mb-1">
+      <h4 className="text-base font-bold text-[#484848]">{exp.position}</h4>
+      <span className="text-sm font-medium text-[#484848]">
+        {exp.startDate} – {exp.currentlyWorking ? "Present" : exp.endDate}
+      </span>
+    </div>
+    <p className="text-sm font-medium text-gray-500 mb-2 italic">
+      {exp.company} | {exp.location}
+    </p>
+    <p className="text-sm text-gray-600 leading-relaxed text-justify">
+      {exp.description}
+    </p>
+  </div>
+));
+ExperienceItem.displayName = "ExperienceItem";
+
+const CertificationsSection = React.forwardRef(({ certifications }, ref) => {
+  if (!certifications || certifications.length === 0) return null;
+  return (
+    <div ref={ref} className="mb-10 mt-10">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        Certifications
+      </h3>
+      <div className="space-y-3">
+        {certifications.map((cert, index) => (
+          <div
+            key={index}
+            className="flex flex-col sm:flex-row sm:justify-between sm:items-start"
+          >
+            <div className="mb-1 sm:mb-0">
+              <h4 className="text-sm font-bold text-[#484848]">{cert.name}</h4>
+              <p className="text-xs text-gray-600 italic">{cert.issuer}</p>
+            </div>
+            <span className="text-xs text-gray-500 whitespace-nowrap">
+              {cert.date}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+CertificationsSection.displayName = "CertificationsSection";
+
+const ReferencesSection = React.forwardRef(({ references }, ref) => {
+  if (!references || references.length === 0) return null;
+  return (
+    <div ref={ref} className="mt-10">
+      <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
+        References
+      </h3>
+      <div className="grid grid-cols-2 gap-6">
+        {references.map((refItem, index) => (
+          <div key={index}>
+            <h4 className="text-sm font-bold text-[#484848]">{refItem.name}</h4>
+            <p className="text-xs text-gray-600 font-semibold mb-1">
+              {refItem.position}
+            </p>
+            <div className="text-xs text-gray-500 space-y-0.5">
+              {refItem.phone && (
+                <div className="block">
+                  <span className="font-bold">Phone: </span>
+                  <span>{refItem.phone}</span>
+                </div>
+              )}
+              {refItem.email && (
+                <div className="block">
+                  <span className="font-bold">Email: </span>
+                  <span>{refItem.email}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+ReferencesSection.displayName = "ReferencesSection";
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 const Elegant = () => {
   const {
@@ -20,251 +303,263 @@ const Elegant = () => {
   const displayLanguages = languages || [];
   const displayReferences = references || [];
 
+  const [pages, setPages] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+  const measureContainerRef = useRef(null);
+  const sectionRefs = useRef({});
+
+  const mainSections = useMemo(() => {
+    const result = [];
+
+    // About Me
+    if (displayPersonal.summary) {
+      result.push({
+        type: "about",
+        key: "about",
+        content: { summary: displayPersonal.summary },
+      });
+    }
+
+    // Experience
+    if (displayExperience.length > 0) {
+      result.push({
+        type: "experience-header",
+        key: "experience-header",
+        content: {},
+      });
+      displayExperience.forEach((exp, index) => {
+        result.push({
+          type: "experience-item",
+          key: `experience-${index}`,
+          content: { exp, isFirst: index === 0 },
+        });
+      });
+    }
+
+    // Certifications
+    if (displayCertifications.length > 0) {
+      result.push({
+        type: "certifications",
+        key: "certifications",
+        content: { certifications: displayCertifications },
+      });
+    }
+
+    // References
+    if (displayReferences.length > 0) {
+      result.push({
+        type: "references",
+        key: "references",
+        content: { references: displayReferences },
+      });
+    }
+
+    return result;
+  }, [
+    displayPersonal,
+    displayExperience,
+    displayCertifications,
+    displayReferences,
+  ]);
+
+  const registerRef = useCallback((key, element) => {
+    if (element) sectionRefs.current[key] = element;
+  }, []);
+
+  const renderSectionForMeasurement = (section) => {
+    const { type, key, content } = section;
+    switch (type) {
+      case "about":
+        return (
+          <AboutSection
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            summary={content.summary}
+          />
+        );
+      case "experience-header":
+        return (
+          <ExperienceHeader key={key} ref={(el) => registerRef(key, el)} />
+        );
+      case "experience-item":
+        return (
+          <ExperienceItem
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "certifications":
+        return (
+          <CertificationsSection
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            certifications={content.certifications}
+          />
+        );
+      case "references":
+        return (
+          <ReferencesSection
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            references={content.references}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderSection = (section) => {
+    const { type, key, content } = section;
+    switch (type) {
+      case "about":
+        return <AboutSection key={key} summary={content.summary} />;
+      case "experience-header":
+        return <ExperienceHeader key={key} />;
+      case "experience-item":
+        return (
+          <ExperienceItem
+            key={key}
+            exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "certifications":
+        return (
+          <CertificationsSection
+            key={key}
+            certifications={content.certifications}
+          />
+        );
+      case "references":
+        return <ReferencesSection key={key} references={content.references} />;
+      default:
+        return null;
+    }
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(() => {
+        const measurements = mainSections.map((section) => {
+          const element = sectionRefs.current[section.key];
+          return { ...section, height: element ? element.offsetHeight : 0 };
+        });
+
+        // First page has header (208px) so less space
+        const HEADER_HEIGHT = 208;
+        const firstPageHeight = USABLE_HEIGHT_PX - HEADER_HEIGHT - 32;
+        const otherPageHeight = USABLE_HEIGHT_PX - 32;
+
+        const paginatedPages = [];
+        let currentPage = [];
+        let currentPageHeight = 0;
+        let isFirstPage = true;
+
+        for (const section of measurements) {
+          const maxHeight = isFirstPage ? firstPageHeight : otherPageHeight;
+          const gapHeight = currentPage.length > 0 ? SECTION_GAP : 0;
+          const totalRequired = section.height + gapHeight;
+
+          if (currentPageHeight + totalRequired <= maxHeight) {
+            currentPage.push(section);
+            currentPageHeight += totalRequired;
+          } else {
+            if (currentPage.length > 0) paginatedPages.push(currentPage);
+            currentPage = [section];
+            currentPageHeight = section.height;
+            isFirstPage = false;
+          }
+        }
+
+        if (currentPage.length > 0) paginatedPages.push(currentPage);
+        setPages(paginatedPages.length > 0 ? paginatedPages : [[]]);
+        setIsReady(true);
+      });
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [mainSections]);
+
   return (
-    <div className="w-[210mm] min-w-[210mm] aspect-[1/1.414] bg-white flex flex-col overflow-hidden text-[#333] shadow-lg font-sans relative">
-      {/* Header Section */}
-      <div className="bg-[#484848] text-white h-52 flex items-center print:bg-[#484848] relative">
-        {/* Profile Details Container */}
-        <div className="flex w-full h-full">
-          {/* Photo Area (Left 33%) */}
-          <div className="w-[33%] h-full flex items-center justify-center relative">
-            <div className="w-40 h-40 rounded-full border-4 border-white overflow-hidden shadow-md bg-gray-200 z-10">
-              {displayPersonal.photo ? (
-                <img
-                  className="w-full h-full object-cover"
-                  src={displayPersonal.photo}
-                  alt="photo"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs text-center p-2">
-                  No Photo
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Name & Title (Right 67%) */}
-          <div className="w-[67%] flex flex-col justify-center px-8">
-            <h1 className="text-5xl font-bold uppercase tracking-wide mb-1 leading-none">
-              {displayPersonal.name || "Richard Wilson"}
-            </h1>
-            <p className="text-xl font-light tracking-widest uppercase opacity-90">
-              {displayPersonal.role || "Marketing Manager"}
-            </p>
-          </div>
-        </div>
+    <>
+      {/* Hidden measurement container */}
+      <div
+        ref={measureContainerRef}
+        style={{
+          position: "absolute",
+          visibility: "hidden",
+          width: `${(A4_WIDTH_PX - PAGE_PADDING_PX * 2) * 0.67}px`,
+          padding: 0,
+          margin: 0,
+        }}
+        aria-hidden="true"
+      >
+        {mainSections.map(renderSectionForMeasurement)}
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-1">
-        {/* Left Sidebar (33%) */}
-        <div className="w-[33%] pl-8 pr-4 py-8 border-r border-gray-100/50">
-          {/* Contact */}
-          {(displayPersonal.phone ||
-            displayPersonal.email ||
-            displayPersonal.location) && (
-            <div className="mb-8">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Contact
-              </h3>
-              <div className="space-y-3 text-sm text-gray-600 font-medium">
-                {displayPersonal.phone && (
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-                      Phone:
-                    </span>
-                    <span>{displayPersonal.phone}</span>
-                  </div>
+      {/* Rendered pages */}
+      <div
+        className="resume-pages-container flex flex-col"
+        style={{ gap: "32px" }}
+      >
+        {isReady ? (
+          pages.map((pageSections, pageIndex) => (
+            <ResumePage
+              key={pageIndex}
+              pageNumber={pageIndex + 1}
+              isLast={pageIndex === pages.length - 1}
+            >
+              <div className="flex flex-col h-full -m-10">
+                {/* Header only on first page */}
+                {pageIndex === 0 && (
+                  <HeaderSection personal={displayPersonal} />
                 )}
-                {displayPersonal.email && (
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-                      E-Mail:
-                    </span>
-                    <span className="break-all">{displayPersonal.email}</span>
-                  </div>
-                )}
-                {displayPersonal.location && (
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-                      Address:
-                    </span>
-                    <span>{displayPersonal.location}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
 
-          {/* Education */}
-          {displayEducation && displayEducation.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Education
-              </h3>
-              <div className="space-y-4">
-                {displayEducation.map((edu, index) => (
-                  <div key={index} className="text-sm text-gray-600">
-                    <p className="font-bold text-[#484848] leading-tight mb-0.5">
-                      {edu.degree}
-                    </p>
-                    <p className="text-[#484848] font-medium mb-0.5">
-                      {edu.school}
-                    </p>
-                    <p className="text-gray-500 text-xs">
-                      {edu.startDate} -{" "}
-                      {edu.currentlyStudying ? "Present" : edu.endDate}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Skills */}
-          {displaySkills && displaySkills.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Skills
-              </h3>
-              <div className="space-y-2 text-sm text-gray-600">
-                {displaySkills.map((skill, index) => (
-                  <div key={index} className="block">
-                    <span className="font-medium">{skill.skill}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Languages */}
-          {displayLanguages && displayLanguages.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Language
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                {displayLanguages.map((lang, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-[#484848] rounded-full"></span>
-                    <span className="font-medium">{lang.language}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        {/* Right Content (67%) */}
-        <div className="w-[67%] px-8 py-8">
-          {/* About Me */}
-          {displayPersonal.summary && (
-            <div className="mb-10">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                About Me
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed text-justify">
-                {displayPersonal.summary}
-              </p>
-            </div>
-          )}
-
-          {/* Experience */}
-          {displayExperience && displayExperience.length > 0 && (
-            <div className="mb-10">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Experience
-              </h3>
-              <div className="space-y-6">
-                {displayExperience.map((exp, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="text-base font-bold text-[#484848]">
-                        {exp.position}
-                      </h4>
-                      <span className="text-sm font-medium text-[#484848]">
-                        {exp.startDate} –{" "}
-                        {exp.currentlyWorking ? "Present" : exp.endDate}
-                      </span>
+                {/* Two-column layout */}
+                <div className="flex flex-1">
+                  {/* Left Sidebar - only on first page */}
+                  {pageIndex === 0 && (
+                    <div className="w-[33%] pl-8 pr-4 py-8 border-r border-gray-100/50">
+                      <ContactSection personal={displayPersonal} />
+                      <SidebarEducationSection education={displayEducation} />
+                      <SkillsSection skills={displaySkills} />
+                      <LanguagesSection languages={displayLanguages} />
                     </div>
-                    <p className="text-sm font-medium text-gray-500 mb-2 italic">
-                      {exp.company} | {exp.location}
-                    </p>
-                    <p className="text-sm text-gray-600 leading-relaxed text-justify">
-                      {exp.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+                  )}
 
-          {/* Certifications - Moved to right col as per flow, or keep here if it fits */}
-          {displayCertifications && displayCertifications.length > 0 && (
-            <div className="mb-10">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                Certifications
-              </h3>
-              <div className="space-y-3">
-                {displayCertifications.map((cert, index) => (
+                  {/* Right Content */}
                   <div
-                    key={index}
-                    className="flex flex-col sm:flex-row sm:justify-between sm:items-start"
+                    className={`${pageIndex === 0 ? "w-[67%]" : "w-full"} px-8 py-8`}
                   >
-                    <div className="mb-1 sm:mb-0">
-                      <h4 className="text-sm font-bold text-[#484848]">
-                        {cert.name}
-                      </h4>
-                      <p className="text-xs text-gray-600 italic">
-                        {cert.issuer}
-                      </p>
-                    </div>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">
-                      {cert.date}
-                    </span>
+                    {pageSections.map(renderSection)}
                   </div>
-                ))}
+                </div>
+              </div>
+            </ResumePage>
+          ))
+        ) : (
+          <ResumePage pageNumber={1} isLast={true}>
+            <div className="flex flex-col h-full -m-10">
+              <HeaderSection personal={displayPersonal} />
+              <div className="flex flex-1">
+                <div className="w-[33%] pl-8 pr-4 py-8 border-r border-gray-100/50">
+                  <ContactSection personal={displayPersonal} />
+                  <SidebarEducationSection education={displayEducation} />
+                  <SkillsSection skills={displaySkills} />
+                  <LanguagesSection languages={displayLanguages} />
+                </div>
+                <div className="w-[67%] px-8 py-8">
+                  {mainSections.map(renderSection)}
+                </div>
               </div>
             </div>
-          )}
-
-          {/* References */}
-          {displayReferences && displayReferences.length > 0 && (
-            <div>
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
-                References
-              </h3>
-              <div className="grid grid-cols-2 gap-6">
-                {displayReferences.map((ref, index) => (
-                  <div key={index}>
-                    <h4 className="text-sm font-bold text-[#484848]">
-                      {ref.name}
-                    </h4>
-                    <p className="text-xs text-gray-600 font-semibold mb-1">
-                      {ref.position}
-                    </p>
-                    <div className="text-xs text-gray-500 space-y-0.5">
-                      {ref.phone && (
-                        <div className="block">
-                          <span className="font-bold">Phone: </span>
-                          <span>{ref.phone}</span>
-                        </div>
-                      )}
-                      {ref.email && (
-                        <div className="block">
-                          <span className="font-bold">Email: </span>
-                          <span>{ref.email}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+          </ResumePage>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
