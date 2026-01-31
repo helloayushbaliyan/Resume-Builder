@@ -9,16 +9,16 @@ export const templates = [
         name: "simple",
         component: Simple,
         description: "Structured &amp; Reliable. Best for Finance and Law.",
-        image:
-            "/images/simple-template.png",
+        image: "/images/simple-template.png",
+        hasPhoto: false, // Simple template doesn't have a photo
     },
     {
         id: "template-modern",
         name: "modern",
         component: Modern,
         description: "Structured &amp; Reliable. Best for Finance and Law.",
-        image:
-            "/images/modern-template.png",
+        image: "/images/modern-template.png",
+        hasPhoto: true, // Modern has photo in header
     },
     {
         id: "template-creative",
@@ -26,6 +26,7 @@ export const templates = [
         component: Creative,
         description: "Bold & Professional. High impact design.",
         image: "/images/creative-template.png",
+        hasPhoto: true, // Creative has photo in sidebar
     },
     {
         id: "template-elegant",
@@ -33,6 +34,7 @@ export const templates = [
         component: Elegant,
         description: "Sophisticated & polished. Ideal for executives.",
         image: "/images/elegant-template.png",
+        hasPhoto: true, // Elegant has photo in header
     }
 ];
 

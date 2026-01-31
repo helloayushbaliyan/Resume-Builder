@@ -1,10 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePersonal } from "../../redux/slices/resumeSlice";
+import { templates } from "@/data/templateData";
 
 function PersonalDetils({ showError }) {
   const dispatch = useDispatch();
   const personal = useSelector((state) => state.resume.resumeData.personal);
+  const selectedTemplate = useSelector(
+    (state) => state.resume.selectedTemplate,
+  );
+
+  // Check if the current template supports photos
+  const currentTemplate =
+    templates.find((t) => t.id === selectedTemplate) || templates[0];
+  const showPhotoUpload = currentTemplate?.hasPhoto;
 
   const getInputClass = (value, isTextArea = false) => {
     const baseClass = isTextArea
@@ -167,20 +176,25 @@ function PersonalDetils({ showError }) {
               </div>
             </div>
 
-            <div className="md:col-span-2 flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Photo
-              </label>
-              <div className="relative">
-                <input
-                  onChange={handleImageUpload}
-                  className={getInputClass()}
-                  placeholder="Upload your photo"
-                  type="file"
-                  accept="image/*"
-                />
+            {/* Photo upload - only show for templates with photos */}
+            {showPhotoUpload && (
+              <div className="md:col-span-2 flex flex-col gap-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
+                  Photo
+                </label>
+                <div className="relative">
+                  <input
+                    onChange={handleImageUpload}
+                    className={
+                      "w-full bg-white border-2 p-3 border-gray-200 active:border-primary focus:border-primary rounded-xl text-sm font-medium h-12 "
+                    }
+                    placeholder="Upload your photo"
+                    type="file"
+                    accept="image/*"
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </form>
         </div>
       </div>
