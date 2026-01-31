@@ -2,9 +2,10 @@ import Simple from "@/components/templates/Simple";
 import Modern from "@/components/templates/Modern";
 import Creative from "@/components/templates/Creative";
 import Elegant from "@/components/templates/Elegant";
+import { nanoid } from "@reduxjs/toolkit";
 export const templates = [
     {
-        id: 1,
+        id: nanoid(),
         name: "simple",
         component: Simple,
         description: "Structured &amp; Reliable. Best for Finance and Law.",
@@ -12,7 +13,7 @@ export const templates = [
             "/images/simple-template.png",
     },
     {
-        id: 2,
+        id: nanoid(),
         name: "modern",
         component: Modern,
         description: "Structured &amp; Reliable. Best for Finance and Law.",
@@ -20,14 +21,14 @@ export const templates = [
             "/images/modern-template.png",
     },
     {
-        id: 3,
+        id: nanoid(),
         name: "creative",
         component: Creative,
         description: "Bold & Professional. High impact design.",
         image: "/images/creative-template.png", // logic to add image later
     },
     {
-        id: 4,
+        id: nanoid(),
         name: "elegant",
         component: Elegant,
         description: "Sophisticated & polished. Ideal for executives.",
