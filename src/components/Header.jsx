@@ -18,40 +18,6 @@ function Header() {
           </div>
           <h2 className="text-xl font-extrabold tracking-tight">ResumePro</h2>
         </Link>
-        {/* <nav className="hidden md:flex items-center gap-10">
-          <a
-            className="text-sm font-semibold hover:text-primary transition-colors"
-            href="#"
-          >
-            Templates
-          </a>
-          <a
-            className="text-sm font-semibold hover:text-primary transition-colors"
-            href="#"
-          >
-            Examples
-          </a>
-          <a
-            className="text-sm font-semibold hover:text-primary transition-colors"
-            href="#"
-          >
-            Pricing
-          </a>
-          <a
-            className="text-sm font-semibold hover:text-primary transition-colors"
-            href="#"
-          >
-            Resources
-          </a>
-        </nav> */}
-        {/* <div className="flex items-center gap-3">
-          <button className="hidden sm:block px-4 py-2 text-sm font-bold hover:bg-[#e7e7f3] hover:text-primary rounded-xl transition-all">
-            Login
-          </button>
-          <button className="px-5 py-2.5 bg-[#1617e8] text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
-            Sign Up
-          </button>
-        </div> */}
       </div>
     </header>
   );

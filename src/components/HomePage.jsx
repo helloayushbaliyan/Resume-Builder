@@ -35,7 +35,9 @@ function HomePage() {
                     />
                   </svg>
                 </span>{" "}
-                <span className="text-blue-800">New: AI Resume Writer</span>
+                <span className="text-blue-800">
+                  New: Expert-Designed Templates
+                </span>
               </div>
               <h1 className="text-5xl md:text-[68px] font-black leading-[1.1] tracking-tight text-[#0d0d1b] ">
                 Build Your Professional <br /> Resume{" "}
@@ -43,7 +45,7 @@ function HomePage() {
               </h1>
               <p className="text-xl md:text-xl text-slate-600  leading-relaxed max-w-[540px]">
                 Land your dream job with our ATS-friendly templates and
-                expert-guided builder. Join 1M+ professionals who got hired.
+                expert-guided builder. Create a professional resume in minutes.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -104,7 +106,7 @@ function HomePage() {
                   }}
                 ></div>
               </div>
-              <span>4.9/5 from 10k+ reviews</span>
+              <span>Trusted by job seekers worldwide</span>
             </div>
           </div>
           <div className="relative group">
@@ -225,12 +227,11 @@ function HomePage() {
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="text-[22px] font-bold leading-tight">
-                  Real-time AI Suggestions
+                  Expert Content Tips
                 </h3>
                 <p className="text-[#64748b]  leading-relaxed text-[18px]">
                   Smart content suggestions help you describe your experience
-                  using powerful industry keywords that recruiters actually look
-                  for.
+                  effectively using industry-standard formats.
                 </p>
               </div>
             </div>
@@ -276,13 +277,16 @@ function HomePage() {
               Ready to land your dream job?
             </h2>
             <p className="text-blue-100 text-lg md:text-xl max-w-[600px] mx-auto">
-              Join over 2 million job seekers who have built their careers with
-              ResumePro. Start your professional journey today.
+              Start your professional journey today with our easy-to-use resume
+              builder.
             </p>
           </div>
-          <button className="relative z-10 px-10 py-5 bg-white text-[#1617e8] text-primary text-xl font-black rounded-2xl hover:bg-background-light hover:scale-105 active:scale-95 transition-all shadow-2xl">
+          <Link
+            href="/templates"
+            className="relative z-10 px-10 py-5 bg-white text-[#1617e8] text-primary text-xl font-black rounded-2xl hover:bg-blue-50 hover:scale-105 active:scale-95 transition-all shadow-2xl"
+          >
             Create My Resume Now
-          </button>
+          </Link>
         </div>
       </section>
     </>
