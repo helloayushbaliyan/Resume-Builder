@@ -464,6 +464,7 @@ const Creative = () => {
   }, [
     displayPersonal,
     displayExperience,
+    displayProjects, // Ensure projects is included
     displayEducation,
     displayCertifications,
     displayReferences,

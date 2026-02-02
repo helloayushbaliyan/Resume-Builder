@@ -434,6 +434,7 @@ const Modern = () => {
 
     return result;
   }, [
+    displayPersonal,
     displayExperience,
     displayProjects,
     displayEducation,

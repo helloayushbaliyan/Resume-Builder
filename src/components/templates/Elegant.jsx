@@ -465,6 +465,8 @@ const Elegant = () => {
   }, [
     displayPersonal,
     displayExperience,
+    displayProjects,
+    displayEducation,
     displayCertifications,
     displayReferences,
   ]);
