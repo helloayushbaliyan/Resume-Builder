@@ -13,13 +13,23 @@ function Experiences({ showError }) {
   const dispatch = useDispatch();
   const experience = useSelector((state) => state.resume.resumeData.experience);
 
+  const isQuillEmpty = (value) => {
+    if (!value) return true;
+    return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+  };
+
   const getInputClass = (value, isTextArea = false) => {
     const baseClass = isTextArea
-      ? "w-full h-[150px] resize-none bg-white border-2 p-3 rounded-xl text-sm font-medium"
+      ? "w-full resize-none bg-white border-2 rounded-xl text-sm font-medium flex flex-col"
       : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
 
-    return `${baseClass} focus:ring-primary ${
-      showError && !value
+    // For Text Area (Quill), we want specific height handling
+    const heightClass = isTextArea ? "h-[200px]" : "";
+
+    const isInvalid = showError && (isTextArea ? isQuillEmpty(value) : !value);
+
+    return `${baseClass} ${heightClass} focus:ring-primary ${
+      isInvalid
         ? "border-red-500 focus:border-red-500"
         : "border-[#e7e7f3] focus:border-primary"
     }`;
@@ -195,7 +205,10 @@ function Experiences({ showError }) {
                         }),
                       )
                     }
-                    className="bg-white rounded-xl [&_.ql-editor]:min-h-[150px]"
+                    className={`${getInputClass(
+                      exp.description,
+                      true,
+                    )} [&_.ql-toolbar]:border-none [&_.ql-container]:border-none`}
                     modules={{
                       toolbar: [
                         ["bold", "italic", "underline", "strike"],

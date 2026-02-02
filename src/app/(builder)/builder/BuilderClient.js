@@ -117,8 +117,8 @@ function BuilderClient() {
             case 4: // Projects
                 // Optional
                 for (const proj of resumeData.projects) {
-                    if (!proj.name) {
-                        setError("Project Name is required.");
+                    if (!proj.name || isQuillEmpty(proj.description)) {
+                        setError("Please fill in required fields for projects.");
                         return false;
                     }
                 }
