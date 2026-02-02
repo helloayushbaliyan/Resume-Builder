@@ -1,4 +1,8 @@
 import React from "react";
+import dynamic from "next/dynamic";
+import "quill/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import { useDispatch, useSelector } from "react-redux";
 import { updatePersonal } from "../../redux/slices/resumeSlice";
 import { templates } from "@/data/templateData";
@@ -112,15 +116,24 @@ function PersonalDetils({ showError }) {
                 Description{" "}
               </label>
               <div className="relative">
-                <textarea
-                  name="summary"
+                <ReactQuill
+                  theme="snow"
                   value={personal.summary || ""}
-                  onChange={(e) =>
-                    dispatch(updatePersonal({ summary: e.target.value }))
+                  onChange={(value) =>
+                    dispatch(updatePersonal({ summary: value }))
                   }
-                  className={getInputClass(personal.summary, true)}
-                  placeholder="e.g. 5 years of experience in software development"
-                  type="text"
+                  className="bg-white rounded-xl [&_.ql-editor]:min-h-[150px]"
+                  modules={{
+                    toolbar: [
+                      ["bold", "italic", "underline", "strike"],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["clean"],
+                    ],
+                    clipboard: {
+                      matchVisual: false,
+                    },
+                  }}
+                  formats={["bold", "italic", "underline", "strike", "list"]}
                 />
               </div>
             </div>

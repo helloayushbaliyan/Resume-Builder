@@ -181,9 +181,10 @@ const AboutSection = React.forwardRef(({ summary }, ref) => {
       <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] mb-4 border-b pb-1 border-gray-300">
         About Me
       </h3>
-      <p className="text-sm text-gray-600 leading-relaxed text-justify">
-        {summary}
-      </p>
+      <div
+        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        dangerouslySetInnerHTML={{ __html: summary }}
+      />
     </div>
   );
 });
@@ -209,9 +210,10 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
     <p className="text-sm font-medium text-gray-500 mb-2 italic">
       {exp.company} | {exp.location}
     </p>
-    <p className="text-sm text-gray-600 leading-relaxed text-justify">
-      {exp.description}
-    </p>
+    <div
+      className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+      dangerouslySetInnerHTML={{ __html: exp.description }}
+    />
   </div>
 ));
 ExperienceItem.displayName = "ExperienceItem";

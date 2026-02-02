@@ -140,9 +140,10 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
       {personal.role || "Professional Title"}
     </p>
     {personal.summary && (
-      <p className="text-sm text-gray-600 leading-relaxed text-justify">
-        {personal.summary}
-      </p>
+      <div
+        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        dangerouslySetInnerHTML={{ __html: personal.summary }}
+      />
     )}
   </div>
 ));
@@ -172,7 +173,10 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
       <p className="text-sm font-medium text-gray-500 italic mb-2">
         {exp.company}
       </p>
-      <p className="text-sm text-gray-600 leading-relaxed">{exp.description}</p>
+      <div
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        dangerouslySetInnerHTML={{ __html: exp.description }}
+      />
     </div>
   </div>
 ));

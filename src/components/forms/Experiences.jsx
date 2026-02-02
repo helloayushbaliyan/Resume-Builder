@@ -4,6 +4,9 @@ import {
   removeExperience,
 } from "@/redux/slices/resumeSlice";
 import React from "react";
+import dynamic from "next/dynamic";
+import "quill/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import { useDispatch, useSelector } from "react-redux";
 
 function Experiences({ showError }) {
@@ -212,19 +215,30 @@ function Experiences({ showError }) {
                   Key Responsibilities & Achievements
                 </label>
                 <div className="relative">
-                  <textarea
+                  <ReactQuill
+                    theme="snow"
                     value={exp.description || ""}
-                    onChange={(e) =>
+                    onChange={(value) =>
                       dispatch(
                         updateExperience({
                           id: exp.id,
                           field: "description",
-                          value: e.target.value,
+                          value: value,
                         }),
                       )
                     }
-                    className={getInputClass(exp.description, true)}
-                    placeholder="e.g. Led a team of 5 to develop a cloud-based infrastructure..."
+                    className="bg-white rounded-xl [&_.ql-editor]:min-h-[150px]"
+                    modules={{
+                      toolbar: [
+                        ["bold", "italic", "underline", "strike"],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["clean"],
+                      ],
+                      clipboard: {
+                        matchVisual: false,
+                      },
+                    }}
+                    formats={["bold", "italic", "underline", "strike", "list"]}
                   />
                 </div>
               </div>
