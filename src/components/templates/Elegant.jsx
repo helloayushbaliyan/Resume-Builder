@@ -126,17 +126,9 @@ const ContactSection = React.forwardRef(({ personal }, ref) => {
                   <LinkIcon size={14} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-                    {link.name || "Link"}:
-                  </span>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="break-all hover:text-[#484848] hover:underline transition-colors"
-                  >
+                  <span className="break-all text-[#484848] transition-colors">
                     {link.url.replace(/^https?:\/\/(www\.)?/, "")}
-                  </a>
+                  </span>
                 </div>
               </div>
             ))}

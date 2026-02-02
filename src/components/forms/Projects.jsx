@@ -6,7 +6,6 @@ import {
 import React from "react";
 import dynamic from "next/dynamic";
 import "quill/dist/quill.snow.css";
-import LinkInput from "./LinkInput";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import { useDispatch, useSelector } from "react-redux";
 
@@ -123,14 +122,20 @@ function Projects({ showError }) {
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
                   Link (Optional)
                 </label>
-                <LinkInput
+                <input
                   value={proj.link || ""}
-                  onChange={(val) =>
+                  onChange={(e) =>
                     dispatch(
-                      updateProject({ id: proj.id, field: "link", value: val }),
+                      updateProject({
+                        id: proj.id,
+                        field: "link",
+                        value: e.target.value,
+                      }),
                     )
                   }
+                  className={getInputClass(proj.link)}
                   placeholder="https://project-demo.com"
+                  type="url"
                 />
               </div>
 

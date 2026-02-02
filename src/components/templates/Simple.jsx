@@ -76,14 +76,9 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
         <div key={link.id || index} className="flex items-center gap-1">
           <span className="text-gray-300">•</span>
           <LinkIcon size={12} />
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            {link.name || link.url.replace(/^https?:\/\/(www\.)?/, "")}
-          </a>
+          <span className="break-all">
+            {link.url.replace(/^https?:\/\/(www\.)?/, "")}
+          </span>
         </div>
       ))}
     </div>

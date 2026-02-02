@@ -106,26 +106,10 @@ const ContactSection = React.forwardRef(({ personal }, ref) => (
               <div className="mt-1">
                 <LinkIcon size={14} />
               </div>
-              <div
-                key={link.id || index}
-                className="flex items-start gap-3 mb-3 last:mb-0"
-              >
-                <div className="mt-1">
-                  <LinkIcon size={14} />
-                </div>
-                <div>
-                  <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
-                    {link.name || "Link"}
-                  </p>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="break-all hover:text-white transition-colors"
-                  >
-                    {link.url.replace(/^https?:\/\/(www\.)?/, "")}
-                  </a>
-                </div>
+              <div>
+                <span className="break-all text-white transition-colors">
+                  {link.url.replace(/^https?:\/\/(www\.)?/, "")}
+                </span>
               </div>
             </div>
           ))}
@@ -217,7 +201,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
         {exp.currentlyWorking ? "Present" : exp.endDate}
       </span>
     </div>
-    <div className="pb-4">
+    <div className="pb-4 w-full">
       <h4 className="text-lg font-bold text-[#2e3b4e] leading-snug">
         {exp.position}
       </h4>
@@ -225,7 +209,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
         {exp.company}
       </p>
       <div
-        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: exp.description }}
       />
     </div>
@@ -268,7 +252,7 @@ const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
         {proj.role}
       </p>
       <div
-        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: proj.description }}
       />
     </div>

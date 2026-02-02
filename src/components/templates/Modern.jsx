@@ -78,17 +78,9 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
         {personal.socialLinks?.map((link, index) => (
           <div key={link.id || index} className="flex items-center gap-2">
             <LinkIcon size={12} className="shrink-0" />
-            <span className="font-semibold text-[#2d2d2d]">
-              {link.name ? `${link.name}:` : ""}
-            </span>
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline"
-            >
+            <span className="text-[#2d2d2d] break-all">
               {link.url.replace(/^https?:\/\/(www\.)?/, "")}
-            </a>
+            </span>
           </div>
         ))}
       </div>
