@@ -99,13 +99,16 @@ function BuilderClient() {
 
     const formContainerRef = useRef(null);
     const containerRef = useRef(null);
+    const resumeRef = useRef(null); // Ref for the actual content
     const [scale, setScale] = useState(1);
 
     // Resume A4 Dimensions
     const A4_WIDTH_MM = 210;
-    const A4_HEIGHT_MM = 297;
     const PX_PER_MM = 3.7795275591;
     const A4_WIDTH_PX = Math.floor(A4_WIDTH_MM * PX_PER_MM); // ~794px
+    const A4_HEIGHT_PX = 1123; // Standard A4 height in pixels
+
+    const [containerDimensions, setContainerDimensions] = useState({ width: A4_WIDTH_PX, height: A4_HEIGHT_PX });
 
     // Scroll to top on step change and clear error
     useEffect(() => {
@@ -138,6 +141,25 @@ function BuilderClient() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Observer to measure the actual content size
+    useEffect(() => {
+        const element = resumeRef.current;
+        if (!element) return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                // Update container dimensions based on the unscaled content size
+                setContainerDimensions({
+                    width: entry.contentRect.width,
+                    height: entry.contentRect.height
+                });
+            }
+        });
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [selectedTemplate]);
+
     const handleFinalSubmit = () => {
         if (validateCurrentStep()) {
             router.push("/preview");
@@ -152,6 +174,10 @@ function BuilderClient() {
 
     const ActiveComponent = activeTemplate?.component;
 
+    // Calculate wrapper dimensions based on content size and current scale
+    const wrapperWidth = containerDimensions.width * scale;
+    const wrapperHeight = containerDimensions.height * scale;
+
     return (
         <div>
             <main className="grid grid-cols-1 lg:grid-cols-2 h-screen overflow-hidden">
@@ -162,17 +188,27 @@ function BuilderClient() {
                     ref={containerRef}
                     className="hidden lg:flex bg-[#e2e2ec] items-start justify-center overflow-y-auto p-8 hide-scrollbar"
                 >
+                    {/* Sizing Wrapper */}
                     <div
                         style={{
-                            // Container scales to fit, but allows vertical scrolling for multiple pages
-                            transform: `scale(${scale})`,
-                            transformOrigin: 'top center',
+                            width: wrapperWidth,
+                            height: wrapperHeight,
+                            position: 'relative',
                             marginBottom: '2rem',
-                            paddingBottom: '2rem',
                         }}
                     >
-                        {/* Template renders its own pages now - no fixed height wrapper */}
-                        {ActiveComponent ? <ActiveComponent /> : <div className="text-gray-500">Loading template...</div>}
+                        {/* Scaled Content */}
+                        <div
+                            ref={resumeRef}
+                            style={{
+                                transform: `scale(${scale})`,
+                                transformOrigin: 'top left',
+                                width: 'fit-content',
+                            }}
+                        >
+                            {/* Template renders its own pages now - no fixed height wrapper */}
+                            {ActiveComponent ? <ActiveComponent /> : <div className="text-gray-500">Loading template...</div>}
+                        </div>
                     </div>
                 </section>
 
