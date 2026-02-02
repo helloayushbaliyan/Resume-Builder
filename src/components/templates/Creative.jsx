@@ -28,25 +28,29 @@ const SECTION_GAP = 24;
 // ============================================================================
 
 const PhotoSection = React.forwardRef(({ photo }, ref) => (
-  <div
-    ref={ref}
-    className="w-32 h-32 mx-auto bg-gray-400 rounded-full mb-12 overflow-hidden border-4 border-[#3e4b5e] shrink-0"
-  >
+  <div className="">
     {photo ? (
-      <img
-        className="w-full h-full object-cover object-center"
-        src={photo}
-        alt="photo"
-      />
-    ) : (
-      <svg
-        className="w-full h-full text-gray-300"
-        fill="currentColor"
-        viewBox="0 0 24 24"
+      <div
+        ref={ref}
+        className="w-32 h-32 mx-auto bg-gray-400 rounded-full mb-12 overflow-hidden border-4 border-[#3e4b5e] shrink-0"
       >
-        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 0 018 0z" />
-      </svg>
-    )}
+        {photo ? (
+          <img
+            className="w-full h-full object-cover object-center"
+            src={photo}
+            alt="photo"
+          />
+        ) : (
+          <svg
+            className="w-full h-full text-gray-300"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 0 018 0z" />
+          </svg>
+        )}
+      </div>
+    ) : null}
   </div>
 ));
 PhotoSection.displayName = "PhotoSection";

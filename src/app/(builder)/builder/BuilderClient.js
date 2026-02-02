@@ -73,9 +73,15 @@ function BuilderClient() {
         switch (step) {
             case 1: // Personal Details
                 const { name, email, phone, role, location, summary } = resumeData.personal || {};
+
+                const isQuillEmpty = (value) => {
+                    if (!value) return true;
+                    return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+                };
+
                 // Basic validation, summary not strictly required by some, but good to have
                 // User requirement said "mark fields as required", I'll enforce basic ones
-                if (!name || !email || !phone || !role || !location) {
+                if (!name || !email || !phone || !role || !location || isQuillEmpty(summary)) {
                     setError("Please fill in all required fields marked with *.");
                     return false;
                 }
