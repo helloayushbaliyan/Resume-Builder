@@ -517,7 +517,7 @@ const Creative = () => {
               pageNumber={pageIndex + 1}
               isLast={pageIndex === pages.length - 1}
             >
-              <div className="flex flex-row h-full -m-10">
+              <div className="flex flex-row min-h-[1123px] -m-10">
                 {/* Left Sidebar - only on first page */}
                 {pageIndex === 0 && (
                   <div className="w-[35%] bg-[#2e3b4e] text-white p-8 flex flex-col pt-12">
@@ -539,7 +539,7 @@ const Creative = () => {
           ))
         ) : (
           <ResumePage pageNumber={1} isLast={true}>
-            <div className="flex flex-row h-full -m-10">
+            <div className="flex flex-row min-h-[1123px] -m-10">
               <div className="w-[35%] bg-[#2e3b4e] text-white p-8 flex flex-col pt-12">
                 <PhotoSection photo={displayPersonal.photo} />
                 <ContactSection personal={displayPersonal} />

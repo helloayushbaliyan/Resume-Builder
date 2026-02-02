@@ -512,7 +512,7 @@ const Elegant = () => {
               pageNumber={pageIndex + 1}
               isLast={pageIndex === pages.length - 1}
             >
-              <div className="flex flex-col h-full -m-10">
+              <div className="flex flex-col min-h-[1123px] -m-10">
                 {/* Header only on first page */}
                 {pageIndex === 0 && (
                   <HeaderSection personal={displayPersonal} />
@@ -542,7 +542,7 @@ const Elegant = () => {
           ))
         ) : (
           <ResumePage pageNumber={1} isLast={true}>
-            <div className="flex flex-col h-full -m-10">
+            <div className="flex flex-col min-h-[1123px] -m-10">
               <HeaderSection personal={displayPersonal} />
               <div className="flex flex-1">
                 <div className="w-[33%] pl-8 pr-4 py-8 border-r border-gray-100/50">
