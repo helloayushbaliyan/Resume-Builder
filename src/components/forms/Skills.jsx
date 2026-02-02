@@ -31,39 +31,6 @@ function Skills({ showError }) {
 
   return (
     <div className="">
-      {/* <!-- Breadcrumbs --> */}
-      <div className="flex items-center gap-2 mb-6">
-        <a
-          className="text-sm font-medium text-[#4c4c9a] hover:text-primary transition-colors"
-          href="#"
-        >
-          Profile
-        </a>
-      </div>
-      {/* <!-- Progress Bar --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <div className="flex justify-between items-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
-            Step 4 of 4
-          </p>
-          <p className="text-sm font-bold text-primary">80% Complete</p>
-        </div>
-        <div className="h-2 w-full bg-[#cfcfe7] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#4c4c9a] rounded-full transition-all duration-500"
-            style={{ width: "80%" }}
-          ></div>
-        </div>
-      </div>
-      {/* <!-- Page Heading --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <h1 className="text-4xl font-black tracking-tight">Skills</h1>
-        <p className="text-[#4c4c9a]">
-          Add your technical and professional skills to your resume. Press Enter
-          to add a skill.
-        </p>
-      </div>
-
       <div
         className={`bg-white border-2 rounded-xl p-3 flex flex-wrap gap-2 min-h-[48px] focus-within:ring-primary focus-within:border-primary ${
           showError && skills.length === 0

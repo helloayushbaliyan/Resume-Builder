@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
  * Modern Resume Template with Automatic Multi-Page Pagination
@@ -56,9 +57,40 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
         {personal.role || "Professional Title"}
       </p>
       <div className="text-xs text-gray-500 space-y-1">
-        {personal.location && <p>{personal.location}</p>}
-        {personal.email && <p>{personal.email}</p>}
-        {personal.phone && <p>{personal.phone}</p>}
+        {personal.location && (
+          <div className="flex items-center gap-2">
+            <MapPin size={12} className="shrink-0" />
+            <p>{personal.location}</p>
+          </div>
+        )}
+        {personal.email && (
+          <div className="flex items-center gap-2">
+            <Mail size={12} className="shrink-0" />
+            <p>{personal.email}</p>
+          </div>
+        )}
+        {personal.phone && (
+          <div className="flex items-center gap-2">
+            <Phone size={12} className="shrink-0" />
+            <p>{personal.phone}</p>
+          </div>
+        )}
+        {personal.socialLinks?.map((link, index) => (
+          <div key={link.id || index} className="flex items-center gap-2">
+            <LinkIcon size={12} className="shrink-0" />
+            <span className="font-semibold text-[#2d2d2d]">
+              {link.name ? `${link.name}:` : ""}
+            </span>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              {link.url.replace(/^https?:\/\/(www\.)?/, "")}
+            </a>
+          </div>
+        ))}
       </div>
     </div>
   </div>
@@ -76,7 +108,7 @@ const SummarySection = React.forwardRef(({ summary }, ref) => {
         Summary
       </h3>
       <div
-        className="text-xs text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        className="text-xs text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: summary }}
       />
     </div>
@@ -163,12 +195,58 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
       <h4 className="text-sm text-[#2d2d2d]">{exp.position}</h4>
     </div>
     <div
-      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
       dangerouslySetInnerHTML={{ __html: exp.description }}
     />
   </div>
 ));
 ExperienceItem.displayName = "ExperienceItem";
+
+/**
+ * Projects Header
+ */
+const ProjectsHeader = React.forwardRef((props, ref) => (
+  <div ref={ref} className="mb-5">
+    <h3 className="text-sm font-bold uppercase tracking-widest text-[#2d2d2d]">
+      Projects
+    </h3>
+  </div>
+));
+ProjectsHeader.displayName = "ProjectsHeader";
+
+/**
+ * Single Project Item
+ */
+const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
+  <div ref={ref} className={!isFirst ? "mt-6" : ""}>
+    <div className="mb-3">
+      <div className="flex justify-between items-baseline">
+        <h4 className="text-lg font-bold text-[#2d2d2d]">
+          {proj.name}
+          {proj.link && (
+            <a
+              href={proj.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 text-xs font-normal text-blue-600 hover:underline"
+            >
+              [Link]
+            </a>
+          )}
+        </h4>
+        <span className="text-xs text-gray-500 italic">
+          {proj.startDate} – {proj.currentlyWorking ? "Present" : proj.endDate}
+        </span>
+      </div>
+      <h4 className="text-sm text-[#2d2d2d]">{proj.role}</h4>
+    </div>
+    <div
+      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+      dangerouslySetInnerHTML={{ __html: proj.description }}
+    />
+  </div>
+));
+ProjectItem.displayName = "ProjectItem";
 
 /**
  * Education Header
@@ -259,6 +337,7 @@ const Modern = () => {
   const {
     personal,
     experience,
+    projects,
     education,
     skills,
     certifications,
@@ -268,6 +347,7 @@ const Modern = () => {
 
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
+  const displayProjects = projects || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
   const displayCertifications = certifications || [];
@@ -298,6 +378,22 @@ const Modern = () => {
           type: "experience-item",
           key: `experience-${index}`,
           content: { exp, isFirst: index === 0 },
+        });
+      });
+    }
+
+    // Projects
+    if (displayProjects.length > 0) {
+      result.push({
+        type: "projects-header",
+        key: "projects-header",
+        content: {},
+      });
+      displayProjects.forEach((proj, index) => {
+        result.push({
+          type: "project-item",
+          key: `project-${index}`,
+          content: { proj, isFirst: index === 0 },
         });
       });
     }
@@ -339,6 +435,7 @@ const Modern = () => {
     return result;
   }, [
     displayExperience,
+    displayProjects,
     displayEducation,
     displayCertifications,
     displayReferences,
@@ -363,6 +460,17 @@ const Modern = () => {
             key={key}
             ref={(el) => registerRef(key, el)}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} ref={(el) => registerRef(key, el)} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );
@@ -408,6 +516,16 @@ const Modern = () => {
           <ExperienceItem
             key={key}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );

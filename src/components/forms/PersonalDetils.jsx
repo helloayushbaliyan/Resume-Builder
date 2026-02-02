@@ -4,8 +4,14 @@ import "quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import { useDispatch, useSelector } from "react-redux";
-import { updatePersonal } from "../../redux/slices/resumeSlice";
+import {
+  updatePersonal,
+  addSocialLink,
+  updateSocialLink,
+  removeSocialLink,
+} from "../../redux/slices/resumeSlice";
 import { templates } from "@/data/templateData";
+import LinkInput from "./LinkInput";
 
 function PersonalDetils({ showError }) {
   const dispatch = useDispatch();
@@ -43,43 +49,13 @@ function PersonalDetils({ showError }) {
   };
   return (
     <div className="">
-      {/* <!-- Breadcrumbs --> */}
-      <div className="flex items-center gap-2 mb-6">
-        <a
-          className="text-sm font-medium text-[#4c4c9a] hover:text-primary transition-colors"
-          href="#"
-        >
-          Profile
-        </a>
-      </div>
-      {/* <!-- Progress Bar --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <div className="flex justify-between items-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
-            Step 1 of 4
-          </p>
-          <p className="text-sm font-bold text-primary">20% Complete</p>
-        </div>
-        <div className="h-2 w-full bg-[#cfcfe7] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#4c4c9a] rounded-full transition-all duration-500"
-            style={{ width: "20%" }}
-          ></div>
-        </div>
-      </div>
-      {/* <!-- Page Heading --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <h1 className="text-4xl font-black tracking-tight">Personal Details</h1>
-        <p className="text-[#4c4c9a]"></p>
-      </div>
-
       {/* detils form */}
       <div className="space-y-8 ">
         <div className="bg-[#f6f6f8]  border border-[#e7e7f3] rounded-xl p-8">
           <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2 flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Full Name
+                Full Name <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -208,6 +184,36 @@ function PersonalDetils({ showError }) {
                 </div>
               </div>
             )}
+
+            {/* Social Links Section */}
+            <div className="md:col-span-2 flex flex-col gap-3 mt-4">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
+                Social Links / Websites
+              </label>
+              <div className="space-y-3">
+                {personal.socialLinks?.map((link) => (
+                  <LinkInput
+                    key={link.id}
+                    value={link.url}
+                    name={link.name}
+                    onChange={(field, val) =>
+                      dispatch(
+                        updateSocialLink({ id: link.id, field, value: val }),
+                      )
+                    }
+                    onRemove={() => dispatch(removeSocialLink(link.id))}
+                    placeholder="https://linkedin.com/in/..."
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => dispatch(addSocialLink())}
+                className="text-sm text-primary font-bold hover:underline flex items-center gap-1 w-fit"
+              >
+                + Add Link
+              </button>
+            </div>
           </form>
         </div>
       </div>

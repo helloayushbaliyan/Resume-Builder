@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
  * Elegant Resume Template with Automatic Multi-Page Pagination
@@ -76,27 +77,69 @@ const ContactSection = React.forwardRef(({ personal }, ref) => {
       </h3>
       <div className="space-y-3 text-sm text-gray-600 font-medium">
         {personal.phone && (
-          <div className="flex flex-col">
-            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-              Phone:
-            </span>
-            <span>{personal.phone}</span>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 text-[#484848]">
+              <Phone size={14} />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+                Phone:
+              </span>
+              <span>{personal.phone}</span>
+            </div>
           </div>
         )}
         {personal.email && (
-          <div className="flex flex-col">
-            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-              E-Mail:
-            </span>
-            <span className="break-all">{personal.email}</span>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 text-[#484848]">
+              <Mail size={14} />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+                E-Mail:
+              </span>
+              <span className="break-all">{personal.email}</span>
+            </div>
           </div>
         )}
         {personal.location && (
-          <div className="flex flex-col">
-            <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
-              Address:
-            </span>
-            <span>{personal.location}</span>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 text-[#484848]">
+              <MapPin size={14} />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+                Address:
+              </span>
+              <span>{personal.location}</span>
+            </div>
+          </div>
+        )}
+        {personal.socialLinks?.length > 0 && (
+          <div className="pt-2 border-t border-gray-300 mt-2">
+            {personal.socialLinks.map((link, index) => (
+              <div
+                key={link.id || index}
+                className="flex items-start gap-3 mb-2 last:mb-0"
+              >
+                <div className="mt-0.5 text-[#484848]">
+                  <LinkIcon size={14} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold text-[#484848] text-xs uppercase mb-0.5">
+                    {link.name || "Link"}:
+                  </span>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="break-all hover:text-[#484848] hover:underline transition-colors"
+                  >
+                    {link.url.replace(/^https?:\/\/(www\.)?/, "")}
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -182,7 +225,7 @@ const AboutSection = React.forwardRef(({ summary }, ref) => {
         About Me
       </h3>
       <div
-        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: summary }}
       />
     </div>
@@ -211,7 +254,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
       {exp.company} | {exp.location}
     </p>
     <div
-      className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+      className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
       dangerouslySetInnerHTML={{ __html: exp.description }}
     />
   </div>
@@ -282,6 +325,50 @@ const ReferencesSection = React.forwardRef(({ references }, ref) => {
 });
 ReferencesSection.displayName = "ReferencesSection";
 
+/**
+ * Projects Header
+ */
+const ProjectsHeader = React.forwardRef((props, ref) => (
+  <div ref={ref} className="mb-4">
+    <h3 className="text-base font-bold uppercase tracking-wider text-[#484848] border-b pb-1 border-gray-300">
+      Projects
+    </h3>
+  </div>
+));
+ProjectsHeader.displayName = "ProjectsHeader";
+
+/**
+ * Single Project Item
+ */
+const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
+  <div ref={ref} className={!isFirst ? "mt-5" : ""}>
+    <div className="flex justify-between items-baseline mb-1">
+      <h4 className="text-base font-bold text-[#2d2d2d]">
+        {proj.name}
+        {proj.link && (
+          <a
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 text-xs font-normal text-blue-600 hover:underline"
+          >
+            [Link]
+          </a>
+        )}
+      </h4>
+      <span className="text-xs text-gray-500 font-medium">
+        {proj.startDate} – {proj.currentlyWorking ? "Present" : proj.endDate}
+      </span>
+    </div>
+    <div className="text-sm font-semibold text-gray-600 mb-2">{proj.role}</div>
+    <div
+      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+      dangerouslySetInnerHTML={{ __html: proj.description }}
+    />
+  </div>
+));
+ProjectItem.displayName = "ProjectItem";
+
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
@@ -290,6 +377,7 @@ const Elegant = () => {
   const {
     personal,
     experience,
+    projects,
     education,
     skills,
     certifications,
@@ -299,6 +387,7 @@ const Elegant = () => {
 
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
+  const displayProjects = projects || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
   const displayCertifications = certifications || [];
@@ -334,6 +423,22 @@ const Elegant = () => {
           type: "experience-item",
           key: `experience-${index}`,
           content: { exp, isFirst: index === 0 },
+        });
+      });
+    }
+
+    // Projects
+    if (displayProjects.length > 0) {
+      result.push({
+        type: "projects-header",
+        key: "projects-header",
+        content: {},
+      });
+      displayProjects.forEach((proj, index) => {
+        result.push({
+          type: "project-item",
+          key: `project-${index}`,
+          content: { proj, isFirst: index === 0 },
         });
       });
     }
@@ -392,6 +497,17 @@ const Elegant = () => {
             isFirst={content.isFirst}
           />
         );
+      case "projects-header":
+        return <ProjectsHeader key={key} ref={(el) => registerRef(key, el)} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            proj={content.proj}
+            isFirst={content.isFirst}
+          />
+        );
       case "certifications":
         return (
           <CertificationsSection
@@ -425,6 +541,16 @@ const Elegant = () => {
           <ExperienceItem
             key={key}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );

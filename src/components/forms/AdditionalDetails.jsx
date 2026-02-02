@@ -103,36 +103,6 @@ function AdditionalDetails({ showError }) {
 
   return (
     <div className="">
-      {/* <!-- Breadcrumbs --> */}
-      <div className="flex items-center gap-2 mb-6">
-        <a
-          className="text-sm font-medium text-[#4c4c9a] hover:text-primary transition-colors"
-          href="#"
-        >
-          Additional Sections
-        </a>
-      </div>
-      {/* <!-- Progress Bar --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <div className="flex justify-between items-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-[#4c4c9a]">
-            Step 5 of 5
-          </p>
-          <p className="text-sm font-bold text-primary">100% Complete</p>
-        </div>
-        <div className="h-2 w-full bg-[#cfcfe7] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#4c4c9a] rounded-full transition-all duration-500"
-            style={{ width: "100%" }}
-          ></div>
-        </div>
-      </div>
-      {/* <!-- Page Heading --> */}
-      <div className="flex flex-col gap-2 mb-10">
-        <h1 className="text-4xl font-black tracking-tight">Add More Details</h1>
-        <p className="text-[#4c4c9a]">Choose sections to add to your resume.</p>
-      </div>
-
       <div className="space-y-6">
         {/* CERTIFICATIONS */}
         <div className="bg-white border border-[#e7e7f3] rounded-xl overflow-hidden shadow-sm">
@@ -176,7 +146,8 @@ function AdditionalDetails({ showError }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                        Certification Name
+                        Certification Name{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
                         value={cert.name || ""}

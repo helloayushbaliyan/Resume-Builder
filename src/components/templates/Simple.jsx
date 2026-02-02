@@ -36,6 +36,11 @@ const SECTION_GAP = 24;
 /**
  * Header Section - Always appears first on Page 1
  */
+import { MapPin, Mail, Phone, Globe, Link as LinkIcon } from "lucide-react";
+
+/**
+ * Header Section - Always appears first on Page 1
+ */
 const HeaderSection = React.forwardRef(({ personal }, ref) => (
   <div ref={ref} className="text-center border-b-2 border-gray-300 pb-5 mb-5">
     <h1 className="text-3xl font-bold uppercase tracking-wide mb-1">
@@ -45,19 +50,42 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
       {personal.role || "Professional Title"}
     </p>
     <div className="flex justify-center items-center gap-3 text-xs text-gray-500 font-medium flex-wrap">
-      {personal.location && <span>{personal.location}</span>}
+      {personal.location && (
+        <div className="flex items-center gap-1">
+          <MapPin size={12} />
+          <span>{personal.location}</span>
+        </div>
+      )}
       {personal.email && (
-        <>
-          {personal.location && <span>•</span>}
+        <div className="flex items-center gap-1">
+          {personal.location && <span className="text-gray-300">•</span>}
+          <Mail size={12} />
           <span>{personal.email}</span>
-        </>
+        </div>
       )}
       {personal.phone && (
-        <>
-          {(personal.location || personal.email) && <span>•</span>}
+        <div className="flex items-center gap-1">
+          {(personal.location || personal.email) && (
+            <span className="text-gray-300">•</span>
+          )}
+          <Phone size={12} />
           <span>{personal.phone}</span>
-        </>
+        </div>
       )}
+      {personal.socialLinks?.map((link, index) => (
+        <div key={link.id || index} className="flex items-center gap-1">
+          <span className="text-gray-300">•</span>
+          <LinkIcon size={12} />
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            {link.name || link.url.replace(/^https?:\/\/(www\.)?/, "")}
+          </a>
+        </div>
+      ))}
     </div>
   </div>
 ));
@@ -74,7 +102,7 @@ const SummarySection = React.forwardRef(({ summary }, ref) => {
         Summary
       </h3>
       <div
-        className="text-sm text-gray-700 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        className="text-sm text-gray-700 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: summary }}
       />
     </div>
@@ -114,12 +142,60 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
       <span className="text-xs text-gray-400">{exp.location}</span>
     </div>
     <div
-      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
       dangerouslySetInnerHTML={{ __html: exp.description }}
     />
   </div>
 ));
 ExperienceItem.displayName = "ExperienceItem";
+
+/**
+ * Projects Section Header
+ */
+const ProjectsHeader = React.forwardRef((props, ref) => (
+  <div ref={ref} className="mb-4">
+    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-1 text-center">
+      Projects
+    </h3>
+  </div>
+));
+ProjectsHeader.displayName = "ProjectsHeader";
+
+/**
+ * Single Project Item
+ */
+const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
+  <div ref={ref} className={`flex flex-col ${!isFirst ? "mt-4" : ""}`}>
+    <div className="flex justify-between items-baseline mb-1">
+      <h4 className="text-sm font-bold text-gray-800">
+        {proj.name}
+        {proj.link && (
+          <a
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 text-xs font-normal text-blue-600 hover:underline"
+          >
+            [Link]
+          </a>
+        )}
+      </h4>
+      <span className="text-xs text-gray-500 whitespace-nowrap">
+        {proj.startDate} – {proj.currentlyWorking ? "Present" : proj.endDate}
+      </span>
+    </div>
+    <div className="flex justify-between items-center mb-2">
+      <span className="text-xs font-semibold text-gray-600 italic">
+        {proj.role}
+      </span>
+    </div>
+    <div
+      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+      dangerouslySetInnerHTML={{ __html: proj.description }}
+    />
+  </div>
+));
+ProjectItem.displayName = "ProjectItem";
 
 /**
  * Education Section Header
@@ -268,6 +344,7 @@ function Simple() {
   const {
     personal,
     experience,
+    projects,
     education,
     skills,
     certifications,
@@ -278,6 +355,7 @@ function Simple() {
   // Fallback to empty values
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
+  const displayProjects = projects || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
   const displayCertifications = certifications || [];
@@ -347,6 +425,23 @@ function Simple() {
       });
     }
 
+    // Projects - split into header + individual items
+    if (displayProjects.length > 0) {
+      result.push({
+        type: "projects-header",
+        key: "projects-header",
+        content: {},
+      });
+
+      displayProjects.forEach((proj, index) => {
+        result.push({
+          type: "project-item",
+          key: `project-${index}`,
+          content: { proj, isFirst: index === 0 },
+        });
+      });
+    }
+
     // Certifications as single section
     if (displayCertifications.length > 0) {
       result.push({
@@ -387,6 +482,7 @@ function Simple() {
   }, [
     displayPersonal,
     displayExperience,
+    displayProjects,
     displayEducation,
     displaySkills,
     displayCertifications,
@@ -436,6 +532,17 @@ function Simple() {
             key={key}
             ref={(el) => registerRef(key, el)}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} ref={(el) => registerRef(key, el)} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );
@@ -505,6 +612,16 @@ function Simple() {
           <ExperienceItem
             key={key}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );

@@ -10,9 +10,12 @@ const initialState = {
     step: 1,
 
     resumeData: {
-        personal: {},
+        personal: {
+            socialLinks: [], // { id, url }
+        },
         education: [],
         experience: [],
+        projects: [], // { id, name, role, description, technologies, link, startDate, endDate, currentlyWorking }
         skills: [],
         certifications: [],
         languages: [],
@@ -38,6 +41,31 @@ const resumeSlice = createSlice({
         updatePersonal(state, action) {
             state.resumeData.personal = { ...state.resumeData.personal, ...action.payload }
         },
+        // Social Links (Personal)
+        addSocialLink(state, action) {
+            if (!state.resumeData.personal.socialLinks) state.resumeData.personal.socialLinks = [];
+            state.resumeData.personal.socialLinks.push({
+                id: nanoid(),
+                url: "",
+                name: "", // Added name field
+            });
+        },
+        updateSocialLink(state, action) {
+            const { id, field, value } = action.payload; // Changed to accept field and value
+            const link = state.resumeData.personal.socialLinks.find(l => l.id === id);
+            if (link) {
+                if (field) {
+                    link[field] = value;
+                } else {
+                    // Fallback for old calls just sending value for url
+                    link.url = value;
+                }
+            }
+        },
+        removeSocialLink(state, action) {
+            state.resumeData.personal.socialLinks = state.resumeData.personal.socialLinks.filter(l => l.id !== action.payload);
+        },
+
         addEducation(state, action) {
             state.resumeData.education.push({
                 id: nanoid(),
@@ -80,6 +108,30 @@ const resumeSlice = createSlice({
         removeExperience(state, action) {
             state.resumeData.experience = state.resumeData.experience.filter(exp => exp.id !== action.payload);
         },
+
+        // Projects
+        addProject(state, action) {
+            state.resumeData.projects.push({
+                id: nanoid(),
+                name: "",
+                role: "",
+                description: "",
+                technologies: "",
+                link: "", // Single link for project as per requirements
+                startDate: "",
+                endDate: "",
+                currentlyWorking: false,
+            });
+        },
+        updateProject(state, action) {
+            const { id, field, value } = action.payload;
+            const proj = state.resumeData.projects.find((p) => p.id === id);
+            if (proj) proj[field] = value;
+        },
+        removeProject(state, action) {
+            state.resumeData.projects = state.resumeData.projects.filter((p) => p.id !== action.payload);
+        },
+
 
         addSkills(state, action) {
             const skill = action.payload;
@@ -178,7 +230,13 @@ export const {
     removeLanguage,
     addReference,
     updateReference,
-    removeReference
+    removeReference,
+    addSocialLink,
+    updateSocialLink,
+    removeSocialLink,
+    addProject,
+    updateProject,
+    removeProject,
 } = resumeSlice.actions
 
 

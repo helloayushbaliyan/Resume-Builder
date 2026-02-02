@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
  * Creative Resume Template with Automatic Multi-Page Pagination
@@ -57,27 +58,77 @@ const ContactSection = React.forwardRef(({ personal }, ref) => (
     </h3>
     <div className="space-y-4 text-sm font-light text-gray-300">
       {personal.phone && (
-        <div>
-          <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
-            Phone
-          </p>
-          <p>{personal.phone}</p>
+        <div className="flex items-start gap-3">
+          <div className="mt-1">
+            <Phone size={14} />
+          </div>
+          <div>
+            <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
+              Phone
+            </p>
+            <p>{personal.phone}</p>
+          </div>
         </div>
       )}
       {personal.email && (
-        <div>
-          <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
-            Email
-          </p>
-          <p className="break-all">{personal.email}</p>
+        <div className="flex items-start gap-3">
+          <div className="mt-1">
+            <Mail size={14} />
+          </div>
+          <div>
+            <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
+              Email
+            </p>
+            <p className="break-all">{personal.email}</p>
+          </div>
         </div>
       )}
       {personal.location && (
-        <div>
-          <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
-            Address
-          </p>
-          <p>{personal.location}</p>
+        <div className="flex items-start gap-3">
+          <div className="mt-1">
+            <MapPin size={14} />
+          </div>
+          <div>
+            <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
+              Address
+            </p>
+            <p>{personal.location}</p>
+          </div>
+        </div>
+      )}
+      {personal.socialLinks?.length > 0 && (
+        <div className="pt-2 border-t border-gray-500/30 mt-2">
+          {personal.socialLinks.map((link, index) => (
+            <div
+              key={link.id || index}
+              className="flex items-start gap-3 mb-3 last:mb-0"
+            >
+              <div className="mt-1">
+                <LinkIcon size={14} />
+              </div>
+              <div
+                key={link.id || index}
+                className="flex items-start gap-3 mb-3 last:mb-0"
+              >
+                <div className="mt-1">
+                  <LinkIcon size={14} />
+                </div>
+                <div>
+                  <p className="font-bold text-white text-xs uppercase mb-0.5 opacity-80">
+                    {link.name || "Link"}
+                  </p>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="break-all hover:text-white transition-colors"
+                  >
+                    {link.url.replace(/^https?:\/\/(www\.)?/, "")}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -141,7 +192,7 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
     </p>
     {personal.summary && (
       <div
-        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: personal.summary }}
       />
     )}
@@ -161,7 +212,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
   <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
     <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
       <span className="whitespace-nowrap">{exp.startDate}</span>
-      <div className="h-full w-[1px] bg-gray-300 my-1"></div>
+      <div className="h-full w-px bg-gray-300 my-1"></div>
       <span className="whitespace-nowrap">
         {exp.currentlyWorking ? "Present" : exp.endDate}
       </span>
@@ -174,13 +225,56 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
         {exp.company}
       </p>
       <div
-        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 break-words whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: exp.description }}
       />
     </div>
   </div>
 ));
 ExperienceItem.displayName = "ExperienceItem";
+
+const ProjectsHeader = React.forwardRef((props, ref) => (
+  <div ref={ref} className="mb-6 mt-10">
+    <h3 className="text-xl font-bold text-[#2e3b4e] mb-2">Projects</h3>
+    <div className="w-10 h-1 bg-[#2e3b4e]"></div>
+  </div>
+));
+ProjectsHeader.displayName = "ProjectsHeader";
+
+const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
+  <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
+    <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
+      <span className="whitespace-nowrap">{proj.startDate}</span>
+      <div className="h-full w-px bg-gray-300 my-1"></div>
+      <span className="whitespace-nowrap">
+        {proj.currentlyWorking ? "Present" : proj.endDate}
+      </span>
+    </div>
+    <div className="pb-4">
+      <h4 className="text-lg font-bold text-[#2e3b4e] leading-snug">
+        {proj.name}
+        {proj.link && (
+          <a
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 text-xs font-normal text-blue-600 hover:underline"
+          >
+            [Link]
+          </a>
+        )}
+      </h4>
+      <p className="text-sm font-medium text-gray-500 italic mb-2">
+        {proj.role}
+      </p>
+      <div
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        dangerouslySetInnerHTML={{ __html: proj.description }}
+      />
+    </div>
+  </div>
+));
+ProjectItem.displayName = "ProjectItem";
 
 const EducationHeader = React.forwardRef((props, ref) => (
   <div ref={ref} className="mb-6 mt-10">
@@ -194,7 +288,7 @@ const EducationItem = React.forwardRef(({ edu, isFirst }, ref) => (
   <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
     <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
       <span className="whitespace-nowrap">{edu.startDate}</span>
-      <div className="h-full w-[1px] bg-gray-300 my-1"></div>
+      <div className="h-full w-px bg-gray-300 my-1"></div>
       <span className="whitespace-nowrap">
         {edu.currentlyStudying ? "Present" : edu.endDate}
       </span>
@@ -268,6 +362,7 @@ const Creative = () => {
   const {
     personal,
     experience,
+    projects,
     education,
     skills,
     certifications,
@@ -277,6 +372,7 @@ const Creative = () => {
 
   const displayPersonal = personal || {};
   const displayExperience = experience || [];
+  const displayProjects = projects || [];
   const displayEducation = education || [];
   const displaySkills = skills || [];
   const displayCertifications = certifications || [];
@@ -310,6 +406,22 @@ const Creative = () => {
           type: "experience-item",
           key: `experience-${index}`,
           content: { exp, isFirst: index === 0 },
+        });
+      });
+    }
+
+    // Projects
+    if (displayProjects.length > 0) {
+      result.push({
+        type: "projects-header",
+        key: "projects-header",
+        content: {},
+      });
+      displayProjects.forEach((proj, index) => {
+        result.push({
+          type: "project-item",
+          key: `project-${index}`,
+          content: { proj, isFirst: index === 0 },
         });
       });
     }
@@ -385,6 +497,17 @@ const Creative = () => {
             isFirst={content.isFirst}
           />
         );
+      case "projects-header":
+        return <ProjectsHeader key={key} ref={(el) => registerRef(key, el)} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            proj={content.proj}
+            isFirst={content.isFirst}
+          />
+        );
       case "education-header":
         return <EducationHeader key={key} ref={(el) => registerRef(key, el)} />;
       case "education-item":
@@ -429,6 +552,16 @@ const Creative = () => {
           <ExperienceItem
             key={key}
             exp={content.exp}
+            isFirst={content.isFirst}
+          />
+        );
+      case "projects-header":
+        return <ProjectsHeader key={key} />;
+      case "project-item":
+        return (
+          <ProjectItem
+            key={key}
+            proj={content.proj}
             isFirst={content.isFirst}
           />
         );
