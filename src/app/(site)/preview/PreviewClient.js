@@ -11,8 +11,8 @@ import { A4_WIDTH_PX, A4_HEIGHT_PX } from '@/components/layout/ResumePage'
  * PreviewClient Component
  * 
  * Displays the resume preview and handles PDF export.
- * Supports multi-page resumes by capturing each page separately
- * and combining them into a single PDF document.
+ * Uses a responsive scaling strategy with dynamic height measurement
+ * to ensure perfect layout on all screen sizes.
  */
 
 function PreviewClient() {
@@ -20,14 +20,12 @@ function PreviewClient() {
     const resumeRef = useRef(null)
     const [loading, setLoading] = useState(false)
     const [scale, setScale] = useState(1);
+    const [containerDimensions, setContainerDimensions] = useState({ width: A4_WIDTH_PX, height: A4_HEIGHT_PX });
 
-    // Resume A4 Dimensions in mm
-    const A4_WIDTH_MM = 210;
-    const A4_HEIGHT_MM = 297;
-
+    // Handle Window Resize to determine Scale Factor
     useEffect(() => {
         const handleResize = () => {
-            const margin = 40; // Space around the resume
+            const margin = 32; // 16px padding on each side (mobile)
             const availableWidth = window.innerWidth - margin;
 
             // If screen is smaller than A4 Width, scale down
@@ -42,6 +40,26 @@ function PreviewClient() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // Observer to measure the actual content size
+    useEffect(() => {
+        const element = resumeRef.current;
+        if (!element) return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                // Update container dimensions based on the unscaled content size
+                setContainerDimensions({
+                    width: entry.contentRect.width,
+                    height: entry.contentRect.height
+                });
+            }
+        });
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [selectedTemplate]); // Re-attach if template changes (though ref stays same usually)
+
 
     /**
      * Handles multi-page PDF download
@@ -110,21 +128,41 @@ function PreviewClient() {
     const activeTemplate = templates.find((t) => t.id === selectedTemplate)
     const ActiveComponent = activeTemplate ? activeTemplate.component : templates[0]?.component;
 
-    return (
-        <main className="flex flex-col justify-center items-center min-h-screen bg-gray-100 relative py-8">
+    // Calculate wrapper dimensions based on content size and current scale
+    const wrapperWidth = containerDimensions.width * scale;
+    const wrapperHeight = containerDimensions.height * scale;
 
-            {/* Container for the scaled resume */}
-            <section className="flex bg-[#e2e2ec] relative items-start justify-center overflow-y-auto p-8 hide-scrollbar w-full flex-1">
+    return (
+        <main className="flex flex-col items-center min-h-screen bg-gray-100 relative py-6 md:py-8">
+
+            {/* Scrollable Container */}
+            <section className="flex  relative items-start justify-center p-4 md:p-8 hide-scrollbar w-full overflow-y-hidden py-20">
+
+                {/* 
+                    Sizing Wrapper 
+                    This div enforces the visual size in the DOM, preventing extra whitespace.
+                */}
                 <div
-                    ref={resumeRef}
                     style={{
-                        transform: `scale(${scale})`,
-                        transformOrigin: 'top center',
-                        marginBottom: '2rem',
+                        width: wrapperWidth,
+                        height: wrapperHeight,
+                        position: 'relative'
                     }}
                 >
-                    {/* Template renders multiple pages internally */}
-                    <ActiveComponent />
+                    {/* 
+                        Scaled Content 
+                        Origin Top-Left ensures it aligns perfectly with the sizing wrapper.
+                    */}
+                    <div
+                        ref={resumeRef}
+                        style={{
+                            transform: `scale(${scale})`,
+                            transformOrigin: 'top left',
+                            width: 'fit-content', // Allow it to take natural size
+                        }}
+                    >
+                        <ActiveComponent />
+                    </div>
                 </div>
             </section>
 
@@ -132,7 +170,7 @@ function PreviewClient() {
             <button
                 onClick={handleDownload}
                 disabled={loading}
-                className="z-50 mt-5 mb-5 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="z-50 mt-6 mb-6 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm md:text-base"
             >
                 {loading ? (
                     <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
