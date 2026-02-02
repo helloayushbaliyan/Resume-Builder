@@ -100,7 +100,7 @@ const SkillsSection = React.forwardRef(({ skills }, ref) => {
             key={index}
             className="text-xs list-disc list-inside font-semibold text-gray-600"
           >
-            {skill.skill}
+            {skill}
           </li>
         ))}
       </ul>

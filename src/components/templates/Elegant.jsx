@@ -141,7 +141,7 @@ const SkillsSection = React.forwardRef(({ skills }, ref) => {
       <div className="space-y-2 text-sm text-gray-600">
         {skills.map((skill, index) => (
           <div key={index} className="block">
-            <span className="font-medium">{skill.skill}</span>
+            <span className="font-medium">{skill}</span>
           </div>
         ))}
       </div>

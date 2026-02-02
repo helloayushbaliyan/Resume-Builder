@@ -96,7 +96,7 @@ const ExpertiseSection = React.forwardRef(({ skills }, ref) => {
         {skills.map((skill, index) => (
           <li key={index} className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-white rounded-full opacity-80"></span>
-            {skill.skill}
+            {skill}
           </li>
         ))}
       </ul>

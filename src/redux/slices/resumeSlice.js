@@ -82,20 +82,14 @@ const resumeSlice = createSlice({
         },
 
         addSkills(state, action) {
-            state.resumeData.skills.push({
-                id: nanoid(),
-                skill: "",
-            })
-        },
-        updateSkills(state, action) {
-            const { id, field, value } = action.payload;
-            const skill = state.resumeData.skills.find((e) => e.id === id);
-            if (skill) {
-                skill[field] = value;
+            const skill = action.payload;
+            if (skill && !state.resumeData.skills.includes(skill)) {
+                state.resumeData.skills.push(skill);
             }
         },
+        // Removed updateSkills as strings are immutable - user should remove and re-add or we could implement index-based update if needed but not required for tag input
         removeSkills(state, action) {
-            state.resumeData.skills = state.resumeData.skills.filter(skill => skill.id !== action.payload);
+            state.resumeData.skills = state.resumeData.skills.filter(s => s !== action.payload);
         },
 
         // Certifications
@@ -170,7 +164,7 @@ export const {
     removeEducation,
     updateExperience,
     removeExperience,
-    updateSkills,
+    // updateSkills, // Removed
     addEducation,
     addExperience,
     addSkills,
