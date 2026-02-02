@@ -18,7 +18,7 @@ function Experiences({ showError }) {
     return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
   };
 
-  const getInputClass = (value, isTextArea = false) => {
+  const getInputClass = (value, isTextArea = false, isRequired = true) => {
     const baseClass = isTextArea
       ? "w-full resize-none bg-white border-2 rounded-xl text-sm font-medium flex flex-col"
       : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
@@ -26,7 +26,8 @@ function Experiences({ showError }) {
     // For Text Area (Quill), we want specific height handling
     const heightClass = isTextArea ? "h-[200px]" : "";
 
-    const isInvalid = showError && (isTextArea ? isQuillEmpty(value) : !value);
+    const isInvalid =
+      isRequired && showError && (isTextArea ? isQuillEmpty(value) : !value);
 
     return `${baseClass} ${heightClass} focus:ring-primary ${
       isInvalid
@@ -90,7 +91,7 @@ function Experiences({ showError }) {
               </div>
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Job Title
+                  Job Title <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -112,7 +113,7 @@ function Experiences({ showError }) {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Start Date
+                  Start Date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -134,7 +135,7 @@ function Experiences({ showError }) {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  End Date
+                  End Date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -190,7 +191,10 @@ function Experiences({ showError }) {
               </div>
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Key Responsibilities & Achievements
+                  Key Responsibilities & Achievements{" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <div className="relative">
                   <ReactQuill
@@ -208,6 +212,7 @@ function Experiences({ showError }) {
                     className={`${getInputClass(
                       exp.description,
                       true,
+                      false,
                     )} [&_.ql-toolbar]:border-none [&_.ql-container]:border-none`}
                     modules={{
                       toolbar: [

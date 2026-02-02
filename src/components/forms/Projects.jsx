@@ -18,7 +18,7 @@ function Projects({ showError }) {
     return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
   };
 
-  const getInputClass = (value, isTextArea = false) => {
+  const getInputClass = (value, isTextArea = false, isRequired = true) => {
     const baseClass = isTextArea
       ? "w-full resize-none bg-white border-2 rounded-xl text-sm font-medium flex flex-col"
       : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
@@ -26,7 +26,8 @@ function Projects({ showError }) {
     // For Text Area (Quill), we want specific height handling
     const heightClass = isTextArea ? "h-[200px]" : "";
 
-    const isInvalid = showError && (isTextArea ? isQuillEmpty(value) : !value);
+    const isInvalid =
+      isRequired && showError && (isTextArea ? isQuillEmpty(value) : !value);
 
     return `${baseClass} ${heightClass} focus:ring-primary ${
       isInvalid
@@ -67,7 +68,7 @@ function Projects({ showError }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Project Name *
+                  Project Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   value={proj.name || ""}
@@ -88,7 +89,7 @@ function Projects({ showError }) {
 
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Role / Contribution (Optional)
+                  Role / Contribution <span className="text-red-500">*</span>
                 </label>
                 <input
                   value={proj.role || ""}
@@ -109,7 +110,10 @@ function Projects({ showError }) {
 
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Technologies Used (Comma Separated)
+                  Technologies Used (Comma Separated){" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <input
                   value={proj.technologies || ""}
@@ -122,7 +126,7 @@ function Projects({ showError }) {
                       }),
                     )
                   }
-                  className={getInputClass(proj.technologies)}
+                  className={getInputClass(proj.technologies, false, false)}
                   placeholder="e.g. React, Redux, Node.js"
                   type="text"
                 />
@@ -130,7 +134,10 @@ function Projects({ showError }) {
 
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Link (Optional)
+                  Link{" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <input
                   value={proj.link || ""}
@@ -143,7 +150,7 @@ function Projects({ showError }) {
                       }),
                     )
                   }
-                  className={getInputClass(proj.link)}
+                  className={getInputClass(proj.link, false, false)}
                   placeholder="https://project-demo.com"
                   type="url"
                 />
@@ -152,7 +159,10 @@ function Projects({ showError }) {
               {/* Dates */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Start Date
+                  Start Date{" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <input
                   value={proj.startDate || ""}
@@ -165,13 +175,16 @@ function Projects({ showError }) {
                       }),
                     )
                   }
-                  className={getInputClass(proj.startDate)}
+                  className={getInputClass(proj.startDate, false, false)}
                   type="month"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  End Date
+                  End Date{" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <input
                   value={proj.endDate || ""}
@@ -185,7 +198,7 @@ function Projects({ showError }) {
                       }),
                     )
                   }
-                  className={getInputClass(proj.endDate)}
+                  className={getInputClass(proj.endDate, false, false)}
                   type="month"
                 />
                 <div className="flex items-center gap-2 mt-2">
@@ -224,7 +237,7 @@ function Projects({ showError }) {
 
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Description
+                  Description <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <ReactQuill
@@ -242,6 +255,7 @@ function Projects({ showError }) {
                     className={`${getInputClass(
                       proj.description,
                       true,
+                      false,
                     )} [&_.ql-toolbar]:border-none [&_.ql-container]:border-none`}
                     modules={{
                       toolbar: [

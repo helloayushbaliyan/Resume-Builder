@@ -69,15 +69,15 @@ function BuilderClient() {
     const validateCurrentStep = useCallback(() => {
         setError(""); // Clear previous errors
 
+        const isQuillEmpty = (value) => {
+            if (!value) return true;
+            return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+        };
+
         // We can eventually move this validation logic to the step config object itself for full dynamism
         switch (step) {
             case 1: // Personal Details
                 const { name, email, phone, role, location, summary } = resumeData.personal || {};
-
-                const isQuillEmpty = (value) => {
-                    if (!value) return true;
-                    return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
-                };
 
                 // Basic validation, summary not strictly required by some, but good to have
                 // User requirement said "mark fields as required", I'll enforce basic ones
@@ -95,7 +95,8 @@ function BuilderClient() {
                     if (
                         !edu.school ||
                         !edu.degree ||
-                        !edu.startDate
+                        !edu.startDate ||
+                        (!edu.endDate && !edu.currentlyStudying)
                     ) {
                         setError("Please fill in required fields for education.");
                         return false;
@@ -107,9 +108,11 @@ function BuilderClient() {
                 for (const exp of resumeData.experience) {
                     if (
                         !exp.company ||
-                        !exp.position
+                        !exp.position ||
+                        !exp.startDate ||
+                        (!exp.endDate && !exp.currentlyWorking)
                     ) {
-                        setError("Please fill in required fields for experience (Company, Job Title).");
+                        setError("Please fill in required fields for experience.");
                         return false;
                     }
                 }
@@ -117,8 +120,8 @@ function BuilderClient() {
             case 4: // Projects
                 // Optional
                 for (const proj of resumeData.projects) {
-                    if (!proj.name || isQuillEmpty(proj.description)) {
-                        setError("Please fill in required fields for projects.");
+                    if (!proj.name || !proj.role || isQuillEmpty(proj.description)) {
+                        setError("Please fill in required fields for projects (Name, Role, Description).");
                         return false;
                     }
                 }

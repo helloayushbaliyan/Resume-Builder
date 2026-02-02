@@ -10,9 +10,9 @@ function Education({ showError }) {
   const dispatch = useDispatch();
   const education = useSelector((state) => state.resume.resumeData.education);
 
-  const getInputClass = (value) => {
+  const getInputClass = (value, isRequired = true) => {
     return `w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12 focus:ring-primary ${
-      showError && !value
+      isRequired && showError && !value
         ? "border-red-500 focus:border-red-500"
         : "border-[#e7e7f3] focus:border-primary"
     }`;
@@ -76,7 +76,8 @@ function Education({ showError }) {
 
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Degree / Field of Study
+                  Degree / Field of Study{" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -99,7 +100,7 @@ function Education({ showError }) {
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Start Date
+                  Start Date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -121,7 +122,7 @@ function Education({ showError }) {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  End Date
+                  End Date <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input

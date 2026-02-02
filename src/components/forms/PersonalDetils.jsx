@@ -29,7 +29,7 @@ function PersonalDetils({ showError }) {
     return value.replace(/<(.|\n)*?>/g, "").trim().length === 0;
   };
 
-  const getInputClass = (value, isTextArea = false) => {
+  const getInputClass = (value, isTextArea = false, isRequired = true) => {
     const baseClass = isTextArea
       ? "w-full resize-none bg-white border-2 rounded-xl text-sm font-medium flex flex-col"
       : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
@@ -37,7 +37,9 @@ function PersonalDetils({ showError }) {
     // For Text Area (Quill), we want specific height handling
     const heightClass = isTextArea ? "h-[200px]" : "";
 
-    const isInvalid = showError && (isTextArea ? isQuillEmpty(value) : !value);
+    // Only validate if it's required
+    const isInvalid =
+      isRequired && showError && (isTextArea ? isQuillEmpty(value) : !value);
 
     return `${baseClass} ${heightClass} focus:ring-primary ${
       isInvalid
@@ -81,7 +83,7 @@ function PersonalDetils({ showError }) {
             </div>
             <div className="md:col-span-2 flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Professional Title
+                Professional Title <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -98,7 +100,7 @@ function PersonalDetils({ showError }) {
             </div>
             <div className="md:col-span-2 flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Description{" "}
+                Description <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <ReactQuill
@@ -127,7 +129,7 @@ function PersonalDetils({ showError }) {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Email Address
+                Email Address <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -144,7 +146,7 @@ function PersonalDetils({ showError }) {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Phone Number
+                Phone Number <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -161,7 +163,7 @@ function PersonalDetils({ showError }) {
             </div>
             <div className="md:col-span-2 flex flex-col gap-1.5">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Location
+                Location <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -181,7 +183,10 @@ function PersonalDetils({ showError }) {
             {showPhotoUpload && (
               <div className="md:col-span-2 flex flex-col gap-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                  Photo
+                  Photo{" "}
+                  <span className="text-gray-500 font-medium normal-case">
+                    (Optional)
+                  </span>
                 </label>
                 <div className="relative">
                   <input
@@ -200,7 +205,10 @@ function PersonalDetils({ showError }) {
             {/* Social Links Section */}
             <div className="md:col-span-2 flex flex-col gap-3 mt-4">
               <label className="text-xs font-bold uppercase tracking-wider text-[#4c4c9a]">
-                Social Links / Websites
+                Social Links / Websites{" "}
+                <span className="text-gray-500 font-medium normal-case">
+                  (Optional)
+                </span>
               </label>
               <div className="space-y-3">
                 {personal.socialLinks?.map((link) => (
