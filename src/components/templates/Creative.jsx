@@ -180,7 +180,7 @@ const HeaderSection = React.forwardRef(({ personal }, ref) => (
     </p>
     {personal.summary && (
       <div
-        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word [&_li]:text-left"
         dangerouslySetInnerHTML={{ __html: personal.summary }}
       />
     )}
@@ -213,7 +213,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
         {exp.company}
       </p>
       <div
-        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word [&_li]:text-left"
         dangerouslySetInnerHTML={{ __html: exp.description }}
       />
     </div>
@@ -256,7 +256,7 @@ const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
         {proj.role}
       </p>
       <div
-        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-sm text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word [&_li]:text-left"
         dangerouslySetInnerHTML={{ __html: proj.description }}
       />
     </div>

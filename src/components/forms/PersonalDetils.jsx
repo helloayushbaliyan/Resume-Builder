@@ -35,7 +35,7 @@ function PersonalDetils({ showError }) {
       : "w-full bg-white border-2 p-3 rounded-xl text-sm font-medium h-12";
 
     // For Text Area (Quill), we want specific height handling
-    const heightClass = isTextArea ? "h-[200px]" : "";
+    const heightClass = isTextArea ? "h-auto min-h-[200px]" : "";
 
     // Only validate if it's required
     const isInvalid =
@@ -112,7 +112,7 @@ function PersonalDetils({ showError }) {
                   className={`${getInputClass(
                     personal.summary,
                     true,
-                  )} [&_.ql-toolbar]:border-none [&_.ql-container]:border-none`}
+                  )} [&_.ql-toolbar]:border-none [&_.ql-container]:border-none [&_.ql-container]:h-auto [&_.ql-editor]:min-h-[160px] [&_.ql-editor]:break-words`}
                   modules={{
                     toolbar: [
                       ["bold", "italic", "underline", "strike"],
