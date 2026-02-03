@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { formatDate } from "@/utils/dateFormatter";
 import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
@@ -199,10 +200,10 @@ ExperienceHeader.displayName = "ExperienceHeader";
 const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
   <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
     <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
-      <span className="whitespace-nowrap">{exp.startDate}</span>
+      <span className="whitespace-nowrap">{formatDate(exp.startDate)}</span>
       <div className="h-full w-px bg-gray-300 my-1"></div>
       <span className="whitespace-nowrap">
-        {exp.currentlyWorking ? "Present" : exp.endDate}
+        {exp.currentlyWorking ? "Present" : formatDate(exp.endDate)}
       </span>
     </div>
     <div className="pb-4 flex-1 min-w-0">
@@ -232,10 +233,10 @@ ProjectsHeader.displayName = "ProjectsHeader";
 const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
   <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
     <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
-      <span className="whitespace-nowrap">{proj.startDate}</span>
+      <span className="whitespace-nowrap">{formatDate(proj.startDate)}</span>
       <div className="h-full w-px bg-gray-300 my-1"></div>
       <span className="whitespace-nowrap">
-        {proj.currentlyWorking ? "Present" : proj.endDate}
+        {proj.currentlyWorking ? "Present" : formatDate(proj.endDate)}
       </span>
     </div>
     <div className="pb-4 flex-1 min-w-0">
@@ -275,10 +276,10 @@ EducationHeader.displayName = "EducationHeader";
 const EducationItem = React.forwardRef(({ edu, isFirst }, ref) => (
   <div ref={ref} className={`flex gap-6 ${!isFirst ? "mt-6" : ""}`}>
     <div className="w-24 text-xs font-bold text-gray-400 flex flex-col items-center shrink-0 pt-1">
-      <span className="whitespace-nowrap">{edu.startDate}</span>
+      <span className="whitespace-nowrap">{formatDate(edu.startDate)}</span>
       <div className="h-full w-px bg-gray-300 my-1"></div>
       <span className="whitespace-nowrap">
-        {edu.currentlyStudying ? "Present" : edu.endDate}
+        {edu.currentlyStudying ? "Present" : formatDate(edu.endDate)}
       </span>
     </div>
     <div>

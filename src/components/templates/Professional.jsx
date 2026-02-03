@@ -15,72 +15,64 @@ import ResumePage, {
 import { formatDateRange } from "@/utils/dateFormatter";
 
 /**
- * Simple Resume Template with Automatic Multi-Page Pagination
+ * Professional Resume Template with Automatic Multi-Page Pagination
  *
- * This template implements a production-ready pagination system that:
- * 1. Measures each section's real DOM height
- * 2. Distributes sections across multiple A4 pages
- * 3. Never clips or hides content
- * 4. Supports unlimited pages dynamically
- *
- * Compatible with PDF export via react-to-print, html2pdf, jsPDF
+ * Clean, professional design with:
+ * - Name and contact info in header with blue links
+ * - Summary section
+ * - Professional Experience
+ * - Projects
+ * - Education
+ * - Skills (categorized)
  */
 
-// Section gap between items
-const SECTION_GAP = 24;
+const SECTION_GAP = 20;
 
 // ============================================================================
 // SECTION COMPONENTS
-// Each section is extracted as a separate component for measurement
 // ============================================================================
 
 /**
- * Header Section - Always appears first on Page 1
- */
-import { MapPin, Mail, Phone, Globe, Link as LinkIcon } from "lucide-react";
-
-/**
- * Header Section - Always appears first on Page 1
+ * Header Section
  */
 const HeaderSection = React.forwardRef(({ personal }, ref) => (
-  <div ref={ref} className="text-center border-b-2 border-gray-300 pb-5 mb-5">
-    <h1 className="text-3xl font-bold uppercase tracking-wide mb-1">
-      {personal.name || "Your Name"}
+  <div ref={ref} className="border-b border-black pb-2 mb-3">
+    <h1 className="text-2xl font-bold text-center mb-1">
+      {personal.name || "William Daniel"}
     </h1>
-    <p className="text-lg font-medium text-gray-600 mb-2">
-      {personal.role || "Professional Title"}
-    </p>
-    <div className="flex justify-center items-center gap-3 text-xs text-gray-500 font-medium flex-wrap">
+    <div className="flex justify-center items-center flex-wrap gap-2 text-[10px] text-blue-600">
       {personal.location && (
-        <div className="flex items-center gap-1">
-          <MapPin size={12} />
+        <>
           <span>{personal.location}</span>
-        </div>
-      )}
-      {personal.email && (
-        <div className="flex items-center gap-1">
-          {personal.location && <span className="text-gray-300">•</span>}
-          <Mail size={12} />
-          <span>{personal.email}</span>
-        </div>
+          <span>|</span>
+        </>
       )}
       {personal.phone && (
-        <div className="flex items-center gap-1">
-          {(personal.location || personal.email) && (
-            <span className="text-gray-300">•</span>
-          )}
-          <Phone size={12} />
+        <>
           <span>{personal.phone}</span>
-        </div>
+          <span>|</span>
+        </>
+      )}
+      {personal.email && (
+        <>
+          <a href={`mailto:${personal.email}`} className="hover:underline">
+            {personal.email}
+          </a>
+          <span>|</span>
+        </>
       )}
       {personal.socialLinks?.map((link, index) => (
-        <div key={link.id || index} className="flex items-center gap-1">
-          <span className="text-gray-300">•</span>
-          <LinkIcon size={12} />
-          <span className="break-all">
-            {link.url.replace(/^https?:\/\/(www\.)?/, "")}
-          </span>
-        </div>
+        <React.Fragment key={link.id || index}>
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            {link.name || link.url.replace(/^https?:\/\/(www\.)?/, "")}
+          </a>
+          {index < personal.socialLinks.length - 1 && <span>|</span>}
+        </React.Fragment>
       ))}
     </div>
   </div>
@@ -93,12 +85,12 @@ HeaderSection.displayName = "HeaderSection";
 const SummarySection = React.forwardRef(({ summary }, ref) => {
   if (!summary) return null;
   return (
-    <div ref={ref} className="mb-6 section">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2 text-center">
-        Summary
-      </h3>
+    <div ref={ref} className="mb-4">
+      <h2 className="text-sm font-bold uppercase border-b border-black mb-2">
+        SUMMARY
+      </h2>
       <div
-        className="text-sm text-gray-700 leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+        className="text-[10px] leading-relaxed text-justify [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
         dangerouslySetInnerHTML={{ __html: summary }}
       />
     </div>
@@ -110,35 +102,31 @@ SummarySection.displayName = "SummarySection";
  * Experience Section Header
  */
 const ExperienceHeader = React.forwardRef((props, ref) => (
-  <div ref={ref} className="mb-4">
-    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-1 text-center">
-      Experience
-    </h3>
+  <div ref={ref} className="mb-2">
+    <h2 className="text-sm font-bold uppercase border-b border-black">
+      Professional Experience
+    </h2>
   </div>
 ));
 ExperienceHeader.displayName = "ExperienceHeader";
 
 /**
- * Single Experience Item - Each item can move to a new page independently
+ * Single Experience Item
  */
 const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
-  <div ref={ref} className={`flex flex-col ${!isFirst ? "mt-4" : ""}`}>
-    <div className="flex justify-between items-baseline mb-1">
-      <h4 className="text-sm font-bold text-gray-800">
-        {exp.role || exp.position}
-      </h4>
-      <span className="text-xs text-gray-500 whitespace-nowrap">
-        {formatDateRange(exp.startDate, exp.endDate, exp.currentlyWorking)}
+  <div ref={ref} className={`${!isFirst ? "mt-3" : ""}`}>
+    <div className="flex justify-between items-baseline mb-0.5">
+      <h3 className="text-xs font-bold">{exp.role || exp.position}</h3>
+      <span className="text-[10px] font-bold whitespace-nowrap">
+        {formatDateRange(exp.startDate, exp.endDate, exp.currentlyWorking)},{" "}
+        {exp.location}
       </span>
     </div>
-    <div className="flex justify-between items-center mb-2">
-      <span className="text-xs font-semibold text-gray-600 italic">
-        {exp.company}
-      </span>
-      <span className="text-xs text-gray-400">{exp.location}</span>
+    <div className="mb-1">
+      <span className="text-xs font-bold">{exp.company}</span>
     </div>
     <div
-      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+      className="text-[10px] leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
       dangerouslySetInnerHTML={{ __html: exp.description }}
     />
   </div>
@@ -149,10 +137,10 @@ ExperienceItem.displayName = "ExperienceItem";
  * Projects Section Header
  */
 const ProjectsHeader = React.forwardRef((props, ref) => (
-  <div ref={ref} className="mb-4">
-    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-1 text-center">
+  <div ref={ref} className="mb-2">
+    <h2 className="text-sm font-bold uppercase border-b border-black">
       Projects
-    </h3>
+    </h2>
   </div>
 ));
 ProjectsHeader.displayName = "ProjectsHeader";
@@ -161,32 +149,25 @@ ProjectsHeader.displayName = "ProjectsHeader";
  * Single Project Item
  */
 const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
-  <div ref={ref} className={`flex flex-col ${!isFirst ? "mt-4" : ""}`}>
-    <div className="flex justify-between items-baseline mb-1">
-      <h4 className="text-sm font-bold text-gray-800">
+  <div ref={ref} className={`${!isFirst ? "mt-3" : ""}`}>
+    <div className="mb-1">
+      <h3 className="text-xs font-bold inline">
         {proj.name}
         {proj.link && (
           <a
             href={proj.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 text-xs font-normal text-blue-600 hover:underline"
+            className="ml-2 text-[10px] font-normal text-blue-600 hover:underline"
           >
             [Link]
           </a>
         )}
-      </h4>
-      <span className="text-xs text-gray-500 whitespace-nowrap">
-        {formatDateRange(proj.startDate, proj.endDate, proj.currentlyWorking)}
-      </span>
-    </div>
-    <div className="flex justify-between items-center mb-2">
-      <span className="text-xs font-semibold text-gray-600 italic">
-        {proj.role}
-      </span>
+      </h3>
+      <span className="text-xs font-bold"> – {proj.role}</span>
     </div>
     <div
-      className="text-xs text-gray-600 leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
+      className="text-[10px] leading-relaxed [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 wrap-break-word whitespace-pre-wrap"
       dangerouslySetInnerHTML={{ __html: proj.description }}
     />
   </div>
@@ -197,10 +178,10 @@ ProjectItem.displayName = "ProjectItem";
  * Education Section Header
  */
 const EducationHeader = React.forwardRef((props, ref) => (
-  <div ref={ref} className="mb-4">
-    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-1 text-center">
+  <div ref={ref} className="mb-2">
+    <h2 className="text-sm font-bold uppercase border-b border-black">
       Education
-    </h3>
+    </h2>
   </div>
 ));
 EducationHeader.displayName = "EducationHeader";
@@ -209,20 +190,38 @@ EducationHeader.displayName = "EducationHeader";
  * Single Education Item
  */
 const EducationItem = React.forwardRef(({ edu, isFirst }, ref) => (
-  <div
-    ref={ref}
-    className={`flex justify-between items-start ${!isFirst ? "mt-3" : ""}`}
-  >
-    <div>
-      <h4 className="text-sm font-bold text-gray-800">{edu.school}</h4>
-      <p className="text-xs text-gray-600 italic">{edu.degree}</p>
+  <div ref={ref} className={`${!isFirst ? "mt-2" : ""}`}>
+    <h3 className="text-xs font-bold">{edu.degree}</h3>
+    <div className="flex justify-between items-baseline">
+      <span className="text-[10px] italic">{edu.school}</span>
+      <span className="text-[10px] whitespace-nowrap">
+        {formatDateRange(edu.startDate, edu.endDate, edu.currentlyStudying)}
+      </span>
     </div>
-    <span className="text-xs text-gray-500 whitespace-nowrap">
-      {formatDateRange(edu.startDate, edu.endDate, edu.currentlyStudying)}
-    </span>
   </div>
 ));
 EducationItem.displayName = "EducationItem";
+
+/**
+ * Skills Section
+ */
+const SkillsSection = React.forwardRef(({ skills }, ref) => {
+  if (!skills || skills.length === 0) return null;
+
+  return (
+    <div ref={ref} className="mb-4">
+      <h2 className="text-sm font-bold uppercase border-b border-black mb-2">
+        Skills
+      </h2>
+      <ul className="list-disc list-inside text-[10px] leading-relaxed space-y-0.5">
+        {skills.map((skill, index) => (
+          <li key={index}>{skill}</li>
+        ))}
+      </ul>
+    </div>
+  );
+});
+SkillsSection.displayName = "SkillsSection";
 
 /**
  * Certifications Section
@@ -230,20 +229,18 @@ EducationItem.displayName = "EducationItem";
 const CertificationsSection = React.forwardRef(({ certifications }, ref) => {
   if (!certifications || certifications.length === 0) return null;
   return (
-    <div ref={ref} className="mb-6 section">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+    <div ref={ref} className="mb-4">
+      <h2 className="text-sm font-bold uppercase border-b border-black mb-2">
         Certifications
-      </h3>
-      <div className="space-y-3">
+      </h2>
+      <div className="space-y-2">
         {certifications.map((cert, index) => (
           <div key={index} className="flex justify-between items-start">
             <div>
-              <h4 className="text-sm font-bold text-gray-800">{cert.name}</h4>
-              <p className="text-xs text-gray-600 italic">{cert.issuer}</p>
+              <h4 className="text-xs font-bold">{cert.name}</h4>
+              <p className="text-[10px] italic">{cert.issuer}</p>
             </div>
-            <span className="text-xs text-gray-500 whitespace-nowrap">
-              {cert.date}
-            </span>
+            <span className="text-[10px] whitespace-nowrap">{cert.date}</span>
           </div>
         ))}
       </div>
@@ -258,25 +255,19 @@ CertificationsSection.displayName = "CertificationsSection";
 const LanguagesSection = React.forwardRef(({ languages }, ref) => {
   if (!languages || languages.length === 0) return null;
   return (
-    <div ref={ref} className="mb-6 section">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+    <div ref={ref} className="mb-4">
+      <h2 className="text-sm font-bold uppercase border-b border-black mb-2">
         Languages
-      </h3>
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+      </h2>
+      <div className="text-[10px]">
         {languages.map((lang, index) => (
-          <li
-            key={index}
-            className="text-xs list-disc list-inside text-gray-700"
-          >
-            <span className="font-semibold">{lang.language}</span>
-            {lang.proficiency && (
-              <span className="text-gray-500 text-[10px] ml-2">
-                ({lang.proficiency})
-              </span>
-            )}
-          </li>
+          <span key={index}>
+            <span className="font-bold">{lang.language}</span>
+            {lang.proficiency && ` (${lang.proficiency})`}
+            {index < languages.length - 1 && ", "}
+          </span>
         ))}
-      </ul>
+      </div>
     </div>
   );
 });
@@ -288,17 +279,17 @@ LanguagesSection.displayName = "LanguagesSection";
 const ReferencesSection = React.forwardRef(({ references }, ref) => {
   if (!references || references.length === 0) return null;
   return (
-    <div ref={ref} className="mb-6 section">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-100 pb-1 text-center">
+    <div ref={ref} className="mb-4">
+      <h2 className="text-sm font-bold uppercase border-b border-black mb-2">
         References
-      </h3>
+      </h2>
       <div className="grid grid-cols-2 gap-4">
         {references.map((refItem, index) => (
           <div key={index}>
-            <h4 className="text-sm font-bold text-gray-800">{refItem.name}</h4>
-            <p className="text-xs text-gray-600 italic">{refItem.position}</p>
-            <p className="text-xs text-gray-500 mt-1">{refItem.email}</p>
-            <p className="text-xs text-gray-500">{refItem.phone}</p>
+            <h4 className="text-xs font-bold">{refItem.name}</h4>
+            <p className="text-[10px] italic">{refItem.position}</p>
+            <p className="text-[10px]">{refItem.email}</p>
+            <p className="text-[10px]">{refItem.phone}</p>
           </div>
         ))}
       </div>
@@ -307,36 +298,11 @@ const ReferencesSection = React.forwardRef(({ references }, ref) => {
 });
 ReferencesSection.displayName = "ReferencesSection";
 
-/**
- * Skills Section
- */
-const SkillsSection = React.forwardRef(({ skills }, ref) => {
-  if (!skills || skills.length === 0) return null;
-  return (
-    <div ref={ref} className="section">
-      <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 border-b border-gray-100 pb-1 text-center">
-        Skills
-      </h3>
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
-        {skills.map((skill, index) => (
-          <li
-            key={index}
-            className="text-xs list-disc list-inside text-gray-700"
-          >
-            <span className="font-semibold">{skill}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-});
-SkillsSection.displayName = "SkillsSection";
-
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
-function Simple() {
+function Professional() {
   const {
     personal,
     experience,
@@ -366,7 +332,6 @@ function Simple() {
 
   /**
    * Build the sections array for measurement
-   * Each section is an object with type, content, and key
    */
   const sections = useMemo(() => {
     const result = [];
@@ -404,6 +369,23 @@ function Simple() {
       });
     }
 
+    // Projects - split into header + individual items
+    if (displayProjects.length > 0) {
+      result.push({
+        type: "projects-header",
+        key: "projects-header",
+        content: {},
+      });
+
+      displayProjects.forEach((proj, index) => {
+        result.push({
+          type: "project-item",
+          key: `project-${index}`,
+          content: { proj, isFirst: index === 0 },
+        });
+      });
+    }
+
     // Education - split into header + individual items
     if (displayEducation.length > 0) {
       result.push({
@@ -421,20 +403,12 @@ function Simple() {
       });
     }
 
-    // Projects - split into header + individual items
-    if (displayProjects.length > 0) {
+    // Skills as single section
+    if (displaySkills.length > 0) {
       result.push({
-        type: "projects-header",
-        key: "projects-header",
-        content: {},
-      });
-
-      displayProjects.forEach((proj, index) => {
-        result.push({
-          type: "project-item",
-          key: `project-${index}`,
-          content: { proj, isFirst: index === 0 },
-        });
+        type: "skills",
+        key: "skills",
+        content: { skills: displaySkills },
       });
     }
 
@@ -462,15 +436,6 @@ function Simple() {
         type: "references",
         key: "references",
         content: { references: displayReferences },
-      });
-    }
-
-    // Skills as single section
-    if (displaySkills.length > 0) {
-      result.push({
-        type: "skills",
-        key: "skills",
-        content: { skills: displaySkills },
       });
     }
 
@@ -553,6 +518,14 @@ function Simple() {
             isFirst={content.isFirst}
           />
         );
+      case "skills":
+        return (
+          <SkillsSection
+            key={key}
+            ref={(el) => registerRef(key, el)}
+            skills={content.skills}
+          />
+        );
       case "certifications":
         return (
           <CertificationsSection
@@ -575,14 +548,6 @@ function Simple() {
             key={key}
             ref={(el) => registerRef(key, el)}
             references={content.references}
-          />
-        );
-      case "skills":
-        return (
-          <SkillsSection
-            key={key}
-            ref={(el) => registerRef(key, el)}
-            skills={content.skills}
           />
         );
       default:
@@ -631,6 +596,8 @@ function Simple() {
             isFirst={content.isFirst}
           />
         );
+      case "skills":
+        return <SkillsSection key={key} skills={content.skills} />;
       case "certifications":
         return (
           <CertificationsSection
@@ -642,8 +609,6 @@ function Simple() {
         return <LanguagesSection key={key} languages={content.languages} />;
       case "references":
         return <ReferencesSection key={key} references={content.references} />;
-      case "skills":
-        return <SkillsSection key={key} skills={content.skills} />;
       default:
         return null;
     }
@@ -703,7 +668,7 @@ function Simple() {
 
   return (
     <>
-      {/* Hidden measurement container - required for DOM height calculation */}
+      {/* Hidden measurement container */}
       <div
         ref={measureContainerRef}
         style={{
@@ -718,7 +683,7 @@ function Simple() {
         {sections.map(renderSectionForMeasurement)}
       </div>
 
-      {/* Rendered pages - stacked vertically with gap for visual separation */}
+      {/* Rendered pages */}
       <div
         className="resume-pages-container flex flex-col"
         style={{ gap: "32px" }}
@@ -749,4 +714,4 @@ function Simple() {
   );
 }
 
-export default Simple;
+export default Professional;

@@ -2,6 +2,7 @@ import Simple from "@/components/templates/Simple";
 import Modern from "@/components/templates/Modern";
 import Creative from "@/components/templates/Creative";
 import Elegant from "@/components/templates/Elegant";
+import Professional from "@/components/templates/Professional";
 
 export const templates = [
     {
@@ -35,6 +36,14 @@ export const templates = [
         description: "Sophisticated & polished. Ideal for executives.",
         image: "/images/elegant-template.png",
         hasPhoto: true, // Elegant has photo in header
+    },
+    {
+        id: "template-professional",
+        name: "professional",
+        component: Professional,
+        description: "Clean & modern. Perfect for tech professionals.",
+        image: "/images/professional-template.png",
+        hasPhoto: false, // Professional template doesn't have a photo
     }
 ];
 

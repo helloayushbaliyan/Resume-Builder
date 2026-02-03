@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { formatDateRange } from "@/utils/dateFormatter";
 import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
@@ -155,8 +156,11 @@ const SidebarEducationSection = React.forwardRef(({ education }, ref) => {
             </p>
             <p className="text-[#484848] font-medium mb-0.5">{edu.school}</p>
             <p className="text-gray-500 text-xs">
-              {edu.startDate} -{" "}
-              {edu.currentlyStudying ? "Present" : edu.endDate}
+              {formatDateRange(
+                edu.startDate,
+                edu.endDate,
+                edu.currentlyStudying,
+              )}
             </p>
           </div>
         ))}
@@ -239,7 +243,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
     <div className="flex justify-between items-baseline mb-1">
       <h4 className="text-base font-bold text-[#484848]">{exp.position}</h4>
       <span className="text-sm font-medium text-[#484848]">
-        {exp.startDate} – {exp.currentlyWorking ? "Present" : exp.endDate}
+        {formatDateRange(exp.startDate, exp.endDate, exp.currentlyWorking)}
       </span>
     </div>
     <p className="text-sm font-medium text-gray-500 mb-2 italic">
@@ -349,7 +353,7 @@ const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
         )}
       </h4>
       <span className="text-xs text-gray-500 font-medium">
-        {proj.startDate} – {proj.currentlyWorking ? "Present" : proj.endDate}
+        {formatDateRange(proj.startDate, proj.endDate, proj.currentlyWorking)}
       </span>
     </div>
     <div className="text-sm font-semibold text-gray-600 mb-2">{proj.role}</div>

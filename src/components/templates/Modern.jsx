@@ -12,6 +12,7 @@ import ResumePage, {
   USABLE_HEIGHT_PX,
   PAGE_PADDING_PX,
 } from "@/components/layout/ResumePage";
+import { formatDateRange } from "@/utils/dateFormatter";
 import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
 
 /**
@@ -181,7 +182,7 @@ const ExperienceItem = React.forwardRef(({ exp, isFirst }, ref) => (
       <div className="flex justify-between items-baseline">
         <h4 className="text-lg font-bold text-[#2d2d2d]">{exp.company}</h4>
         <span className="text-xs text-gray-500 italic">
-          {exp.startDate} – {exp.currentlyWorking ? "Present" : exp.endDate}
+          {formatDateRange(exp.startDate, exp.endDate, exp.currentlyWorking)}
         </span>
       </div>
       <h4 className="text-sm text-[#2d2d2d]">{exp.position}</h4>
@@ -227,7 +228,7 @@ const ProjectItem = React.forwardRef(({ proj, isFirst }, ref) => (
           )}
         </h4>
         <span className="text-xs text-gray-500 italic">
-          {proj.startDate} – {proj.currentlyWorking ? "Present" : proj.endDate}
+          {formatDateRange(proj.startDate, proj.endDate, proj.currentlyWorking)}
         </span>
       </div>
       <h4 className="text-sm text-[#2d2d2d]">{proj.role}</h4>
@@ -260,7 +261,7 @@ const EducationItem = React.forwardRef(({ edu, isFirst }, ref) => (
     <div className="flex justify-between items-baseline mb-1">
       <h4 className="text-lg font-bold text-[#2d2d2d]">{edu.school}</h4>
       <span className="text-xs text-gray-500 italic">
-        {edu.startDate} – {edu.currentlyStudying ? "Present" : edu.endDate}
+        {formatDateRange(edu.startDate, edu.endDate, edu.currentlyStudying)}
       </span>
     </div>
     <h4 className="text-sm text-[#2d2d2d]">{edu.degree}</h4>
