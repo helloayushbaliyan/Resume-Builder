@@ -14,6 +14,7 @@ import ResumePage, {
 } from "@/components/layout/ResumePage";
 import { formatDate } from "@/utils/dateFormatter";
 import { MapPin, Mail, Phone, Link as LinkIcon } from "lucide-react";
+import Image from "next/image";
 
 /**
  * Creative Resume Template with Automatic Multi-Page Pagination
@@ -36,10 +37,12 @@ const PhotoSection = React.forwardRef(({ photo }, ref) => (
         className="w-32 h-32 mx-auto bg-gray-400 rounded-full mb-12 overflow-hidden border-4 border-[#3e4b5e] shrink-0"
       >
         {photo ? (
-          <img
+          <Image
             className="w-full h-full object-cover object-center"
             src={photo}
             alt="photo"
+            width={128}
+            height={128}
           />
         ) : (
           <svg

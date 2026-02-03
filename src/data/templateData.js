@@ -42,7 +42,7 @@ export const templates = [
         name: "professional",
         component: Professional,
         description: "Clean & modern. Perfect for tech professionals.",
-        image: "/images/professional-template.png",
+        image: "/images/professional-template-1.png",
         hasPhoto: false, // Professional template doesn't have a photo
     }
 ];
