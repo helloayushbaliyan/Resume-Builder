@@ -6,6 +6,7 @@ import jsPDF from 'jspdf'
 import { FaDownload } from "react-icons/fa";
 import { templates } from '@/data/templateData'
 import { A4_WIDTH_PX, A4_HEIGHT_PX } from '@/components/layout/ResumePage'
+import FeedbackForm from '@/components/FeedbackForm'
 
 /**
  * PreviewClient Component
@@ -21,6 +22,7 @@ function PreviewClient() {
     const [loading, setLoading] = useState(false)
     const [scale, setScale] = useState(1);
     const [containerDimensions, setContainerDimensions] = useState({ width: A4_WIDTH_PX, height: A4_HEIGHT_PX });
+    const [showFeedback, setShowFeedback] = useState(false);
 
     // Handle Window Resize to determine Scale Factor
     useEffect(() => {
@@ -62,10 +64,35 @@ function PreviewClient() {
 
 
     /**
+     * Handle download button click - show feedback form first
+     */
+    const handleDownloadClick = () => {
+        setShowFeedback(true);
+    };
+
+    /**
+     * Handle feedback form submission
+     */
+    const handleFeedbackSubmit = async (feedbackData) => {
+        console.log('Feedback submitted:', feedbackData);
+        // You can send this data to your backend here
+        setShowFeedback(false);
+        await performDownload();
+    };
+
+    /**
+     * Handle feedback form close
+     */
+    const handleFeedbackClose = async () => {
+        setShowFeedback(false);
+        await performDownload();
+    };
+
+    /**
      * Handles multi-page PDF download
      * Captures each .resume-page element separately and adds to PDF
      */
-    const handleDownload = async () => {
+    const performDownload = async () => {
         const container = resumeRef.current;
         if (!container) return;
 
@@ -168,7 +195,7 @@ function PreviewClient() {
 
             {/* Download Button */}
             <button
-                onClick={handleDownload}
+                onClick={handleDownloadClick}
                 disabled={loading}
                 className="z-50 mt-6 mb-6 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm md:text-base"
             >
@@ -179,6 +206,13 @@ function PreviewClient() {
                 )}
                 {loading ? "Generating..." : "Download PDF"}
             </button>
+
+            {/* Feedback Form Popup */}
+            <FeedbackForm
+                isOpen={showFeedback}
+                onClose={handleFeedbackClose}
+                onSubmit={handleFeedbackSubmit}
+            />
         </main>
     )
 }
