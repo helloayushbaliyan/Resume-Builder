@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { resetResume } from "@/redux/slices/resumeSlice";
+import Review from "./Review";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -268,6 +269,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* <!-- Testimonials Section --> */}
+      <Review />
 
       {/* <!-- CTA Banner --> */}
       <section className=" container px-4 md:mx-auto  py-10">
