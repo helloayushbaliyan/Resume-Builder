@@ -578,45 +578,148 @@ const Creative = () => {
     }
   };
 
+  // State for tracking remaining sections that need full-width measurement
+  const [remainingSectionsToMeasure, setRemainingSectionsToMeasure] = useState(
+    [],
+  );
+  const sectionRefsFullWidth = useRef({});
+
+  /**
+   * Register refs for full-width measurement (Page 2+)
+   */
+  const registerRefFullWidth = useCallback((key, element) => {
+    if (element) sectionRefsFullWidth.current[key] = element;
+  }, []);
+
+  /**
+   * TWO-PHASE PAGINATION EFFECT
+   *
+   * Phase 1: Measure all sections at 65% width, fill Page 1
+   * Phase 2: Re-measure remaining sections at 100% width, fill Pages 2+
+   */
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       requestAnimationFrame(() => {
-        const measurements = mainSections.map((section) => {
+        // PHASE 1: Measure all sections at 65% width (Page 1 content area)
+        const measurements65 = mainSections.map((section) => {
           const element = sectionRefs.current[section.key];
           return { ...section, height: element ? element.offsetHeight : 0 };
         });
 
-        const pageHeight = USABLE_HEIGHT_PX - 64; // Account for padding
-        const paginatedPages = [];
-        let currentPage = [];
-        let currentPageHeight = 0;
+        // Fill Page 1 using 65% width measurements
+        const page1Sections = [];
+        let page1Height = 0;
+        const maxHeight = USABLE_HEIGHT_PX;
 
-        for (const section of measurements) {
-          const gapHeight = currentPage.length > 0 ? SECTION_GAP : 0;
+        for (let i = 0; i < measurements65.length; i++) {
+          const section = measurements65[i];
+          const gapHeight = page1Sections.length > 0 ? SECTION_GAP : 0;
           const totalRequired = section.height + gapHeight;
 
-          if (currentPageHeight + totalRequired <= pageHeight) {
-            currentPage.push(section);
-            currentPageHeight += totalRequired;
+          if (page1Height + totalRequired <= maxHeight) {
+            page1Sections.push(section);
+            page1Height += totalRequired;
           } else {
-            if (currentPage.length > 0) paginatedPages.push(currentPage);
-            currentPage = [section];
-            currentPageHeight = section.height;
+            // Page 1 is full, stop here
+            break;
           }
         }
 
-        if (currentPage.length > 0) paginatedPages.push(currentPage);
-        setPages(paginatedPages.length > 0 ? paginatedPages : [[]]);
-        setIsReady(true);
+        // Determine which sections didn't fit on Page 1
+        const remainingSections = mainSections.slice(page1Sections.length);
+
+        if (remainingSections.length > 0) {
+          // Trigger Phase 2 measurement
+          setRemainingSectionsToMeasure(remainingSections);
+        } else {
+          // All content fits on Page 1
+          setPages([page1Sections]);
+          setIsReady(true);
+        }
       });
     }, 50);
 
     return () => clearTimeout(timeoutId);
   }, [mainSections]);
 
+  /**
+   * PHASE 2: Measure remaining sections at 100% width and paginate Pages 2+
+   */
+  useEffect(() => {
+    if (remainingSectionsToMeasure.length === 0) return;
+
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(() => {
+        // Measure remaining sections at 100% width
+        const measurements100 = remainingSectionsToMeasure.map((section) => {
+          const element = sectionRefsFullWidth.current[section.key];
+          return { ...section, height: element ? element.offsetHeight : 0 };
+        });
+
+        // Get Page 1 sections (already measured at 65% width)
+        const measurements65 = mainSections
+          .slice(0, mainSections.length - remainingSectionsToMeasure.length)
+          .map((section) => {
+            const element = sectionRefs.current[section.key];
+            return { ...section, height: element ? element.offsetHeight : 0 };
+          });
+
+        const page1Sections = [];
+        let page1Height = 0;
+        const maxHeight = USABLE_HEIGHT_PX;
+
+        for (const section of measurements65) {
+          const gapHeight = page1Sections.length > 0 ? SECTION_GAP : 0;
+          const totalRequired = section.height + gapHeight;
+
+          if (page1Height + totalRequired <= maxHeight) {
+            page1Sections.push(section);
+            page1Height += totalRequired;
+          } else {
+            break;
+          }
+        }
+
+        // Paginate remaining sections (100% width) across Pages 2+
+        const additionalPages = [];
+        let currentPage = [];
+        let currentPageHeight = 0;
+
+        for (const section of measurements100) {
+          const gapHeight = currentPage.length > 0 ? SECTION_GAP : 0;
+          const totalRequired = section.height + gapHeight;
+
+          if (currentPageHeight + totalRequired <= maxHeight) {
+            currentPage.push(section);
+            currentPageHeight += totalRequired;
+          } else {
+            // Start new page
+            if (currentPage.length > 0) {
+              additionalPages.push(currentPage);
+            }
+            currentPage = [section];
+            currentPageHeight = section.height;
+          }
+        }
+
+        // Add final page
+        if (currentPage.length > 0) {
+          additionalPages.push(currentPage);
+        }
+
+        // Combine: Page 1 + Pages 2+
+        const allPages = [page1Sections, ...additionalPages];
+        setPages(allPages);
+        setIsReady(true);
+      });
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [remainingSectionsToMeasure, mainSections]);
+
   return (
     <>
-      {/* Hidden measurement container */}
+      {/* Hidden measurement container for Page 1 (65% width) */}
       <div
         ref={measureContainerRef}
         style={{
@@ -631,6 +734,98 @@ const Creative = () => {
         {mainSections.map(renderSectionForMeasurement)}
       </div>
 
+      {/* Hidden measurement container for Pages 2+ (100% width) */}
+      <div
+        style={{
+          position: "absolute",
+          visibility: "hidden",
+          width: `${A4_WIDTH_PX - PAGE_PADDING_PX * 2}px`,
+          padding: 0,
+          margin: 0,
+        }}
+        aria-hidden="true"
+      >
+        {remainingSectionsToMeasure.map((section) => {
+          const { type, key, content } = section;
+          switch (type) {
+            case "header":
+              return (
+                <HeaderSection
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  personal={content.personal}
+                />
+              );
+            case "experience-header":
+              return (
+                <ExperienceHeader
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                />
+              );
+            case "experience-item":
+              return (
+                <ExperienceItem
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  exp={content.exp}
+                  isFirst={content.isFirst}
+                />
+              );
+            case "projects-header":
+              return (
+                <ProjectsHeader
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                />
+              );
+            case "project-item":
+              return (
+                <ProjectItem
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  proj={content.proj}
+                  isFirst={content.isFirst}
+                />
+              );
+            case "education-header":
+              return (
+                <EducationHeader
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                />
+              );
+            case "education-item":
+              return (
+                <EducationItem
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  edu={content.edu}
+                  isFirst={content.isFirst}
+                />
+              );
+            case "certifications":
+              return (
+                <CertificationsSection
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  certifications={content.certifications}
+                />
+              );
+            case "references":
+              return (
+                <ReferencesSection
+                  key={key}
+                  ref={(el) => registerRefFullWidth(key, el)}
+                  references={content.references}
+                />
+              );
+            default:
+              return null;
+          }
+        })}
+      </div>
+
       {/* Rendered pages */}
       <div
         className="resume-pages-container flex flex-col"
@@ -643,24 +838,28 @@ const Creative = () => {
               pageNumber={pageIndex + 1}
               isLast={pageIndex === pages.length - 1}
             >
-              <div className="flex flex-row min-h-[1123px] -m-10">
-                {/* Left Sidebar - only on first page */}
-                {pageIndex === 0 && (
-                  <div className="w-[35%] bg-[#2e3b4e] text-white p-8 flex flex-col pt-12">
+              {pageIndex === 0 ? (
+                // Page 1: Two-column layout with sidebar
+                <div className="flex flex-row min-h-[1123px] -m-10">
+                  {/* Left Sidebar - only on Page 1 */}
+                  <div className="w-[35%] bg-[#2e3b4e] text-white p-8 flex flex-col pt-12 shrink-0">
                     <PhotoSection photo={displayPersonal.photo} />
                     <ContactSection personal={displayPersonal} />
                     <ExpertiseSection skills={displaySkills} />
                     <SidebarLanguagesSection languages={displayLanguages} />
                   </div>
-                )}
 
-                {/* Right Content */}
-                <div
-                  className={`${pageIndex === 0 ? "w-[65%]" : "w-full"} bg-white p-10 flex flex-col pt-16`}
-                >
+                  {/* Right Content - 65% width on Page 1 */}
+                  <div className="w-[65%] bg-white p-10 flex flex-col pt-16">
+                    {pageSections.map(renderSection)}
+                  </div>
+                </div>
+              ) : (
+                // Pages 2+: Full-width layout
+                <div className="-m-10 bg-white p-10 pt-16">
                   {pageSections.map(renderSection)}
                 </div>
-              </div>
+              )}
             </ResumePage>
           ))
         ) : (
