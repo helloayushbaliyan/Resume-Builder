@@ -1,33 +1,75 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { supabase } from "@/lib/supabase";
 
 function FeedbackForm({ isOpen, onClose, onSubmit }) {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  // Get user data from Redux
+  const personal = useSelector(
+    (state) => state.resume?.resumeData?.personal || {},
+  );
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
 
-    // Create feedback data with timestamp
+    // Combine Redux data + form data
     const feedbackData = {
-      rating,
+      name: personal.name || null,
+      role: personal.role || null,
+      email: personal.email || null,
+      rating: rating || null,
       feedback: feedback || null,
-      timestamp: new Date().toISOString(),
     };
 
-    // Call parent submit handler
-    onSubmit(feedbackData);
+    try {
+      // Insert to Supabase
+      const { data, error } = await supabase
+        .from("feedbacks")
+        .insert([feedbackData]);
 
-    // Show success message
-    setSubmitted(true);
+      if (error) {
+        console.error("Supabase error:", error);
+      }
 
-    // Auto-close after 2 seconds
-    setTimeout(() => {
-      handleClose();
-    }, 2000);
+      // Show success message
+      setSubmitted(true);
+
+      // Call parent submit handler AFTER showing success
+      onSubmit(feedbackData);
+
+      // Reset form and close after 2 seconds
+      setTimeout(() => {
+        // Just reset internal state, don't call onClose (would trigger download again)
+        setRating(0);
+        setHoveredRating(0);
+        setFeedback("");
+        setSubmitted(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Submit error:", err);
+      // Still show success to user even if there's an error
+      setSubmitted(true);
+
+      // Call submit anyway so download happens
+      onSubmit(feedbackData);
+
+      setTimeout(() => {
+        setRating(0);
+        setHoveredRating(0);
+        setFeedback("");
+        setSubmitted(false);
+      }, 2000);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -72,7 +114,7 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
             <div className="text-center py-8 animate-fadeIn">
               <div className="text-6xl mb-4">❤️</div>
               <h3 className="text-2xl font-black text-[#0d0d1b] mb-2">
-                Thanks for your feedback!
+                Thank you for your feedback!
               </h3>
               <p className="text-slate-600">
                 Your input helps us improve ResumePro.
@@ -99,7 +141,9 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                 <div>
                   <label className="block text-sm font-semibold text-[#0d0d1b] mb-3 text-center">
                     How was your experience?{" "}
-                    <span className="text-red-500">*</span>
+                    <span className="text-slate-400 font-normal">
+                      (optional)
+                    </span>
                   </label>
                   <div className="flex justify-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -110,6 +154,7 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                         onMouseEnter={() => setHoveredRating(star)}
                         onMouseLeave={() => setHoveredRating(0)}
                         className="transition-transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#1617e8] rounded"
+                        disabled={submitting}
                       >
                         <svg
                           className={`w-10 h-10 sm:w-12 sm:h-12 transition-colors ${
@@ -141,14 +186,18 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                     htmlFor="feedback"
                     className="block text-sm font-semibold text-[#0d0d1b] mb-2"
                   >
-                    Feedback (Optional)
+                    Feedback{" "}
+                    <span className="text-slate-400 font-normal">
+                      (optional)
+                    </span>
                   </label>
                   <textarea
                     id="feedback"
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-[#0d0d1b] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1617e8] focus:border-transparent transition-all resize-none"
+                    disabled={submitting}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-[#0d0d1b] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1617e8] focus:border-transparent transition-all resize-none disabled:opacity-50"
                     placeholder="Tell us what you liked or what we can improve"
                   />
                 </div>
@@ -156,14 +205,14 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={rating === 0}
+                  disabled={submitting}
                   className={`w-full px-6 py-4 text-white text-base sm:text-lg font-bold rounded-xl shadow-lg transition-all ${
-                    rating === 0
-                      ? "bg-gray-300 cursor-not-allowed"
+                    submitting
+                      ? "bg-gray-400 cursor-not-allowed"
                       : "bg-[#1617e8] hover:bg-[#1417d8] hover:shadow-xl active:scale-[0.98]"
                   }`}
                 >
-                  Submit Feedback
+                  {submitting ? "Submitting..." : "Submit Feedback"}
                 </button>
               </form>
             </>
