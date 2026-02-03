@@ -5,7 +5,6 @@ import React, { useState } from "react";
 function FeedbackForm({ isOpen, onClose, onSubmit }) {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [email, setEmail] = useState("");
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -15,7 +14,6 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
     // Create feedback data with timestamp
     const feedbackData = {
       rating,
-      email: email || null,
       feedback: feedback || null,
       timestamp: new Date().toISOString(),
     };
@@ -36,7 +34,6 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
     // Reset form
     setRating(0);
     setHoveredRating(0);
-    setEmail("");
     setFeedback("");
     setSubmitted(false);
     onClose();
@@ -46,7 +43,7 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[95vh] overflow-y-auto relative animate-slideUp">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md relative animate-slideUp">
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -136,27 +133,6 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                       {rating === 1 && "We'll do better"}
                     </p>
                   )}
-                </div>
-
-                {/* Email Input */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-[#0d0d1b] mb-2"
-                  >
-                    Email (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-[#0d0d1b] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1617e8] focus:border-transparent transition-all"
-                    placeholder="your@email.com"
-                  />
-                  <p className="text-xs text-slate-500 mt-1">
-                    Only used to follow up on feedback
-                  </p>
                 </div>
 
                 {/* Feedback Description */}
