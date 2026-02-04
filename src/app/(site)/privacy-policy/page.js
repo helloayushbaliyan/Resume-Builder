@@ -1,8 +1,12 @@
 import React from "react";
 
+// Title: 42 chars, Description: 157 chars
 export const metadata = {
-    title: "Privacy Policy - ResumePro",
-    description: "Privacy Policy for ResumePro",
+    title: "Privacy Policy - Cvee Resume Builder",
+    description: "Read our privacy policy to understand how Cvee handles your data. We prioritize your privacy and security while you create your professional resume.",
+    alternates: {
+        canonical: "/privacy-policy",
+    },
 };
 
 export default function PrivacyPolicy() {

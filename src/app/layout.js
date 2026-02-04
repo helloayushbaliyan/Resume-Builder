@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { defaultSEO } from "@/config/seo";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -8,11 +9,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: {
-    template: '%s | Cvee',
-    default: 'Cvee Resume Builder',
-  },
-  description: 'Cvee is a resume builder that helps you create professional resumes in minutes.',
+  ...defaultSEO,
 };
 
 export default function RootLayout({ children }) {

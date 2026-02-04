@@ -120,11 +120,10 @@ function Templates() {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`relative px-5 py-2.5 rounded-lg text-[15px] font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                    activeCategory === category.id
-                      ? "text-gray-900 bg-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`relative px-5 py-2.5 rounded-lg text-[15px] font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${activeCategory === category.id
+                    ? "text-gray-900 bg-white shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   {category.label}
                   {activeCategory === category.id && (
@@ -144,9 +143,8 @@ function Templates() {
             <div
               data-animate
               id="featured"
-              className={`space-y-10 transition-all duration-1000 ${
-                isVisible.featured ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`space-y-10 transition-all duration-1000 ${isVisible.featured ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
             >
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
@@ -223,16 +221,15 @@ function Templates() {
           <div
             data-animate
             id="gallery"
-            className={`space-y-10 transition-all duration-1000 delay-100 ${
-              isVisible.gallery ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`space-y-10 transition-all duration-1000 delay-100 ${isVisible.gallery ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <div className="space-y-2">
               <h2 className="text-[28px] md:text-[36px] font-bold tracking-[-0.02em] text-gray-900">
                 {activeCategory === "All" ? "More templates" : `${activeCategory} templates`}
               </h2>
               <p className="text-[16px] text-gray-600">
-                {filteredTemplates.length } more professional {filteredTemplates.length === 1 ? "template" : "templates"} to choose from
+                {filteredTemplates.length} more professional {filteredTemplates.length === 1 ? "template" : "templates"} to choose from
               </p>
             </div>
 
@@ -288,9 +285,8 @@ function Templates() {
           <div
             data-animate
             id="helper"
-            className={`transition-all duration-1000 delay-100 ${
-              isVisible.helper ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`transition-all duration-1000 delay-100 ${isVisible.helper ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <div className="p-8 md:p-10 rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-100">
               <div className="space-y-6">
@@ -343,9 +339,8 @@ function Templates() {
           <div
             data-animate
             id="quality"
-            className={`text-center space-y-8 transition-all duration-1000 delay-100 ${
-              isVisible.quality ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`text-center space-y-8 transition-all duration-1000 delay-100 ${isVisible.quality ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <div className="space-y-3">
               <h2 className="text-[28px] md:text-[36px] font-bold tracking-[-0.02em] text-gray-900">

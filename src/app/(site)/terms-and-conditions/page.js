@@ -1,8 +1,13 @@
 import React from "react";
+import TermsAndConditions from "@/components/legal/TermsAndConditions";
 
+// Title: 50 chars, Description: 155 chars
 export const metadata = {
-    title: "Terms and Conditions - ResumePro",
-    description: "Terms and Conditions for ResumePro",
+    title: "Terms and Conditions - Cvee Resume Builder",
+    description: "Read the terms and conditions for using Cvee resume builder. Understand your rights and responsibilities when creating your professional resume.",
+    alternates: {
+        canonical: "/terms-and-conditions",
+    },
 };
 
 export default function TermsConditions() {

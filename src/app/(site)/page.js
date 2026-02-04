@@ -1,6 +1,4 @@
 import HomePage from "@/components/HomePage";
-import { Metadata } from "next";
-
 
 export default function Home() {
   return (
@@ -15,7 +13,11 @@ export default function Home() {
   );
 }
 
+// Title: 52 chars, Description: 158 chars
 export const metadata = {
-  title: "Create Your Resume",
-  description: "Start building your professional resume today. Choose a template and customize it to your needs.",
-}; 
+  title: "Free Resume Builder - Create Professional CVs",
+  description: "Create professional resumes for free with Cvee. Choose from ATS-friendly templates, customize instantly, and download as PDF. No sign-up required.",
+  alternates: {
+    canonical: "/",
+  },
+};
