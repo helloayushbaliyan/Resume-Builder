@@ -13,7 +13,8 @@ function Header() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Templates", href: "/templates" },
-    { name: "About Us", href: "/about-us" },
+    { name: "FAQ", href: "/faq" },
+    { name: "About", href: "/about-us" },
   ];
 
   const isActive = (href) => {
@@ -74,8 +75,8 @@ function Header() {
           href="/"
           className="flex items-center gap-2.5 hover:opacity-70 transition-opacity z-50"
         >
-          <div className="size-7 text-[#111827]">
-             <img src="/logo.png" alt="Cvee Logo" className="cvee__logo" />
+          <div className="#">
+             <img src="/logo.png" alt="Cvee Logo" className="w-24" />
           </div>
         </Link>
 

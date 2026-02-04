@@ -10,11 +10,12 @@ function Footer() {
           <div className="col-span-1 md:col-span-5">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="#">
-              <img src="/logo.png" alt="Cvee Logo" className="w-12" />
+              <img src="/logo.png" alt="Cvee Logo" className="w-24" />
               </div>
             </div>
             <p className="text-[#6B7280] text-[15px] leading-relaxed max-w-[360px]">
-              Professional resume templates. Free to use, no signup required.
+              Cvee helps you create clean, professional resumes without unnecessary complexity.
+              Free to use, with no sign-up required.
             </p>
           </div>
 
