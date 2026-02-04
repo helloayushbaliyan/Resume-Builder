@@ -22,38 +22,38 @@ function Footer() {
           {/* Links Section */}
           <div className="col-span-1 md:col-span-7 grid grid-cols-2 gap-8">
             <div>
-              <h3 className="font-medium text-[15px] mb-4 text-[#111827]">Product</h3>
+              <h3 className="font-medium text-[15px] mb-4 text-[#111827]">Important Links</h3>
               <ul className="space-y-3 text-[#6B7280] text-[14px]">
                 <li>
                   <Link
-                    href="/templates"
+                    href="/blog"
                     className="hover:text-[#111827] transition-colors"
                   >
-                    Templates
+                    Blog
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/templates"
+                    href="/faq"
                     className="hover:text-[#111827] transition-colors"
                   >
-                    Resume Builder
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/about-us"
+                    className="hover:text-[#111827] transition-colors"
+                  >
+                    About Us
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="font-medium text-[15px] mb-4 text-[#111827]">Company</h3>
+              <h3 className="font-medium text-[15px] mb-4 text-[#111827]">Legal Information</h3>
               <ul className="space-y-3 text-[#6B7280] text-[14px]">
-                <li>
-                  <Link
-                    href="/about-us"
-                    className="hover:text-[#111827] transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
                 <li>
                   <Link
                     href="/privacy-policy"
