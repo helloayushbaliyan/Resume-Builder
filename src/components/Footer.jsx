@@ -77,7 +77,7 @@ function Footer() {
 
         <div className="border-t border-[#E5E7EB] pt-8">
           <p className="text-[#9CA3AF] text-[14px]">
-            © {new Date().getFullYear()} Cvee. All rights reserved.
+            © {new Date().getFullYear()} Cvee. All rights reserved. Website designed & Developed by <strong>Ayush Baliyan</strong> & <a href="https://stintlieftechnologies.com" target="_blank"> Stintlief Technologies</a>.
           </p>
         </div>
       </div>
