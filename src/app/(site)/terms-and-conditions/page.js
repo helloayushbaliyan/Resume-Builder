@@ -1,5 +1,4 @@
 import React from "react";
-import TermsAndConditions from "@/components/legal/TermsAndConditions";
 
 // Title: 50 chars, Description: 155 chars
 export const metadata = {
