@@ -6,44 +6,49 @@ import Professional from "@/components/templates/Professional";
 
 export const templates = [
     {
-        id: "template-simple",
-        name: "simple",
-        component: Simple,
-        description: "Structured &amp; Reliable. Best for Finance and Law.",
-        image: "/images/simple-template.png",
-        hasPhoto: false, // Simple template doesn't have a photo
-    },
-    {
-        id: "template-modern",
-        name: "modern",
-        component: Modern,
-        description: "Structured &amp; Reliable. Best for Finance and Law.",
-        image: "/images/modern-template.png",
-        hasPhoto: true, // Modern has photo in header
-    },
-    {
-        id: "template-creative",
-        name: "creative",
-        component: Creative,
-        description: "Bold & Professional. High impact design.",
-        image: "/images/creative-template.png",
-        hasPhoto: true, // Creative has photo in sidebar
-    },
-    {
-        id: "template-elegant",
-        name: "elegant",
-        component: Elegant,
-        description: "Sophisticated & polished. Ideal for executives.",
-        image: "/images/elegant-template.png",
-        hasPhoto: true, // Elegant has photo in header
-    },
-    {
-        id: "template-professional",
-        name: "professional",
+        id: 1,
+        name: "Professional",
         component: Professional,
-        description: "Clean & modern. Perfect for tech professionals.",
+        category: "Modern",
+        description: "Clean, modern layout perfect for tech and corporate roles",
         image: "/images/professional-template-1.png",
-        hasPhoto: false, // Professional template doesn't have a photo
+        hasPhoto: false,
+    },
+    {
+        id: 2,
+        name: "Modern",
+        component: Modern,
+        category: "Modern",
+        description: "Contemporary design with clear hierarchy for all industries",
+        image: "/images/modern-template.png",
+        hasPhoto: true,
+    },
+    {
+        id: 3,
+        name: "Elegant",
+        component: Elegant,
+        category: "Executive",
+        description: "Sophisticated and polished, ideal for senior positions",
+        image: "/images/elegant-template.png",
+        hasPhoto: true,
+    },
+    {
+        id: 4,
+        name: "Creative",
+        component: Creative,
+        category: "Modern",
+        description: "Bold professional design with strong visual impact",
+        image: "/images/creative-template.png",
+        hasPhoto: true,
+    },
+    {
+        id: 5,
+        name: "Simple",
+        component: Simple,
+        category: "Minimal",
+        description: "Structured and reliable, perfect for traditional fields",
+        image: "/images/simple-template.png",
+        hasPhoto: false,
     }
 ];
 

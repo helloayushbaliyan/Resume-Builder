@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReviewCard from "./ReviewCard";
 import { fetchApprovedFeedbacks } from "@/lib/feedbackService";
 
@@ -8,30 +8,29 @@ function Review() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Default testimonials (fallback if no approved feedbacks)
-  const defaultTestimonials = [
+  const getDefaultTestimonials = useCallback(() => [
     {
       rating: 5,
       quote:
-        "ResumePro transformed my job search! The templates are professional and the builder is incredibly easy to use. I got 3 interview calls within a week of updating my resume.",
-      name: "Sarah Johnson",
-      title: "SOFTWARE ENGINEER, TECH CORP",
+        "Clean templates that actually look professional. Used it for my software engineering applications and got consistent interview callbacks.",
+      name: "Sarah Chen",
+      title: "SOFTWARE ENGINEER",
     },
     {
       rating: 5,
       quote:
-        "The ATS-optimized templates made all the difference. My resume finally started getting past the screening bots. Landed my dream job within a month!",
-      name: "Michael Chen",
-      title: "PRODUCT MANAGER, STARTUP",
+        "Finally, a resume builder that doesn't feel like it's trying to upsell me. Simple, fast, and the PDF quality is excellent.",
+      name: "Michael Rodriguez",
+      title: "PRODUCT MANAGER",
     },
     {
       rating: 5,
       quote:
-        "Professional, clean, and modern designs. The PDF export quality is exceptional. Best free resume builder I've used. Highly recommend to anyone job hunting.",
-      name: "Emily Rodriguez",
-      title: "MARKETING DIRECTOR, AGENCY",
+        "The ATS-friendly formatting made a noticeable difference. My resume started getting past the screening stage consistently.",
+      name: "Emily Thompson",
+      title: "MARKETING LEAD",
     },
-  ];
+  ], []);
 
   useEffect(() => {
     async function loadFeedbacks() {
@@ -48,40 +47,35 @@ function Review() {
         setFeedbacks(transformedData);
       } else {
         // Use default testimonials if no approved feedbacks
-        setFeedbacks(defaultTestimonials);
+        setFeedbacks(getDefaultTestimonials());
       }
 
       setLoading(false);
     }
 
     loadFeedbacks();
-  }, []);
+  }, [getDefaultTestimonials]);
 
   return (
-    <section className="container px-4 md:mx-auto py-20">
-      <div className="flex flex-col gap-12">
+    <section className="container px-6 md:px-8 lg:px-12 mx-auto py-24 md:py-32">
+      <div className="flex flex-col gap-16">
         {/* Section Header */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 text-[#1617e8] text-sm font-bold uppercase tracking-widest">
-            <span className="text-[#1617e8]">//</span>
-            <span>TESTIMONIALS</span>
-          </div>
-          <h2 className="text-3xl md:text-[48px] font-black tracking-tight text-[#0d0d1b] leading-tight">
-            What Our Users Say.
+        <div className="text-center space-y-4 max-w-2xl mx-auto">
+          <h2 className="text-[36px] md:text-[44px] font-semibold tracking-[-0.02em] text-[#111827]">
+            Trusted by professionals
           </h2>
-          <p className="text-slate-600 text-lg max-w-[720px] mx-auto">
-            Join thousands of job seekers who've successfully landed their dream
-            roles with ResumePro.
+          <p className="text-[17px] text-[#6B7280] leading-relaxed">
+            Used by job seekers across industries to create resumes that get results.
           </p>
         </div>
 
         {/* Testimonials Grid */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#1617e8] border-t-transparent"></div>
+            <div className="inline-block animate-spin rounded-full h-10 w-10 border-2 border-[#111827] border-t-transparent"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {feedbacks.map((testimonial, index) => (
               <ReviewCard
                 key={index}

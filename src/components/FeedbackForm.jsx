@@ -206,7 +206,7 @@ function FeedbackForm({ isOpen, onClose, onSubmit }) {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`w-full px-6 py-4 text-white text-base sm:text-lg font-bold rounded-xl shadow-lg transition-all ${
+                  className={`w-full px-6 py-4 text-white text-base sm:text-lg font-bold rounded-xl shadow-lg transition-all cursor-pointer ${
                     submitting
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-[#1617e8] hover:bg-[#1417d8] hover:shadow-xl active:scale-[0.98]"

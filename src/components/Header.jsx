@@ -47,7 +47,10 @@ function Header() {
 
   // Close menu on route change
   useEffect(() => {
-    setIsMenuOpen(false);
+    const closeMenu = () => {
+      setIsMenuOpen(false);
+    };
+    closeMenu();
   }, [pathname]);
 
   // Prevent body scroll when menu is open
@@ -64,63 +67,67 @@ function Header() {
   }, [isMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-solid border-[#e7e7f3] bg-white/80 backdrop-blur-md">
-      <div className="container px-4 md:mx-auto h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
+      <div className="container px-6 md:px-8 lg:px-12 mx-auto h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity z-50"
+          className="flex items-center gap-2.5 hover:opacity-70 transition-opacity z-50"
         >
-          <div className="size-8 text-[#1617e8]">
-            <svg
-              fill="currentColor"
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
-            </svg>
+          <div className="size-7 text-[#111827]">
+             <img src="/logo.png" alt="Cvee Logo" className="cvee__logo" />
           </div>
-          <h2 className="text-xl font-extrabold tracking-tight">ResumePro</h2>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                isActive(link.href)
-                  ? "bg-[#1617e8] text-white shadow-sm"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#1617e8]"
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 rounded-md text-[15px] font-medium transition-colors duration-150 ${
+                  isActive(link.href)
+                    ? "bg-[#F3F4F6] text-[#111827]"
+                    : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F9FAFB]"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Trust Cue Badge */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+            </span>
+            <span className="text-[12px] font-medium text-blue-900">Free. No signup</span>
+          </div>
         </nav>
 
         {/* Mobile Hamburger Button */}
         <button
           ref={buttonRef}
-          className="md:hidden z-50 p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1617e8] focus:ring-opacity-50"
+          className="md:hidden z-50 p-2 rounded-md hover:bg-[#F9FAFB] transition-colors focus:outline-none focus:ring-2 focus:ring-[#E5E7EB]"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <div className="w-6 h-5 flex flex-col justify-between">
+          <div className="w-5 h-4 flex flex-col justify-between">
             <span
-              className={`block h-0.5 w-full bg-gray-700 transition-all duration-300 ease-in-out ${
-                isMenuOpen ? "rotate-45 translate-y-2" : ""
+              className={`block h-0.5 w-full bg-[#374151] transition-all duration-300 ease-in-out ${
+                isMenuOpen ? "rotate-45 translate-y-1.5" : ""
               }`}
             ></span>
             <span
-              className={`block h-0.5 w-full bg-gray-700 transition-all duration-300 ease-in-out ${
+              className={`block h-0.5 w-full bg-[#374151] transition-all duration-300 ease-in-out ${
                 isMenuOpen ? "opacity-0" : ""
               }`}
             ></span>
             <span
-              className={`block h-0.5 w-full bg-gray-700 transition-all duration-300 ease-in-out ${
-                isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+              className={`block h-0.5 w-full bg-[#374151] transition-all duration-300 ease-in-out ${
+                isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
               }`}
             ></span>
           </div>
@@ -129,28 +136,28 @@ function Header() {
         {/* Mobile Dropdown Menu */}
         <div
           ref={menuRef}
-          className={`fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-[#e7e7f3] shadow-lg md:hidden transition-all duration-300 ease-in-out transform ${
+          className={`fixed top-16 left-0 right-0 bg-white/98 backdrop-blur-sm border-b border-[#E5E7EB] md:hidden transition-all duration-300 ease-in-out transform ${
             isMenuOpen
               ? "opacity-100 translate-y-0 visible"
               : "opacity-0 -translate-y-4 invisible"
           }`}
         >
-          <nav className="container px-4 py-6 flex flex-col gap-2">
+          <nav className="container px-6 py-5 flex flex-col gap-1">
             {navLinks.map((link, index) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 transform ${
+                className={`px-4 py-3 rounded-md text-[15px] font-medium transition-all duration-200 ${
                   isActive(link.href)
-                    ? "bg-[#1617e8] text-white shadow-md scale-[1.02]"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-[#1617e8] hover:scale-[1.02]"
+                    ? "bg-[#F3F4F6] text-[#111827]"
+                    : "text-[#6B7280] hover:text-[#111827] hover:bg-[#F9FAFB]"
                 } ${
                   isMenuOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 -translate-x-4"
                 }`}
                 style={{
-                  transitionDelay: isMenuOpen ? `${index * 50}ms` : "0ms",
+                  transitionDelay: isMenuOpen ? `${index * 40}ms` : "0ms",
                 }}
               >
                 {link.name}
@@ -162,7 +169,7 @@ function Header() {
         {/* Mobile Overlay */}
         {isMenuOpen && (
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/10 z-40 md:hidden"
             style={{ top: "64px" }}
             onClick={() => setIsMenuOpen(false)}
           />
