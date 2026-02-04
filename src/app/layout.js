@@ -9,10 +9,10 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    template: '%s | Resume Builder',
-    default: 'Resume Builder',
+    template: '%s | Cvee',
+    default: 'Cvee Resume Builder',
   },
-  description: 'Create professional resumes in minutes with our easy-to-use resume builder.',
+  description: 'Cvee is a resume builder that helps you create professional resumes in minutes.',
 };
 
 export default function RootLayout({ children }) {

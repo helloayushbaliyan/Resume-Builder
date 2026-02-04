@@ -15,7 +15,6 @@ function Templates() {
   const categories = [
     { id: "All", label: "All templates" },
     { id: "Modern", label: "Modern" },
-    { id: "Minimal", label: "Minimal" },
     { id: "Executive", label: "Executive" },
     { id: "Fresher", label: "Fresher" },
   ];
@@ -52,8 +51,8 @@ function Templates() {
   };
 
   const filteredTemplates = activeCategory === "All"
-    ? templates
-    : templates.filter(t => t.category === activeCategory);
+    ? templates.filter(t => !featuredTemplateIds.includes(t.id))
+    : templates.filter(t => t.category === activeCategory && !featuredTemplateIds.includes(t.id));
 
   const featuredTemplates = templates.filter(t =>
     featuredTemplateIds.includes(t.id)
@@ -121,7 +120,7 @@ function Templates() {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`relative px-5 py-2.5 rounded-lg text-[15px] font-medium transition-all duration-200 whitespace-nowrap ${
+                  className={`relative px-5 py-2.5 rounded-lg text-[15px] font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
                     activeCategory === category.id
                       ? "text-gray-900 bg-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
@@ -179,7 +178,7 @@ function Templates() {
                           src={template.image}
                           alt={template.name}
                           fill
-                          className="object-cover"
+                          className="object-contain group-hover:scale-105 transition-transform duration-500"
                         />
                         {/* Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -230,10 +229,10 @@ function Templates() {
           >
             <div className="space-y-2">
               <h2 className="text-[28px] md:text-[36px] font-bold tracking-[-0.02em] text-gray-900">
-                {activeCategory === "All" ? "All templates" : `${activeCategory} templates`}
+                {activeCategory === "All" ? "More templates" : `${activeCategory} templates`}
               </h2>
               <p className="text-[16px] text-gray-600">
-                {filteredTemplates.length} professional {filteredTemplates.length === 1 ? "template" : "templates"} to choose from
+                {filteredTemplates.length } more professional {filteredTemplates.length === 1 ? "template" : "templates"} to choose from
               </p>
             </div>
 
@@ -252,7 +251,7 @@ function Templates() {
                         src={template.image}
                         alt={template.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-contain group-hover:scale-101 transition-transform duration-500 "
                       />
 
                       {/* Overlay */}
@@ -262,7 +261,7 @@ function Templates() {
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <button
                           onClick={() => handleTemplate(template.id)}
-                          className="px-6 py-3 bg-white text-gray-900 text-[15px] font-semibold rounded-lg shadow-xl hover:scale-105 transition-transform duration-200"
+                          className="px-6 py-3 bg-white text-gray-900 text-[15px] font-semibold rounded-lg shadow-xl hover:scale-105 transition-transform duration-200 cursor-pointer"
                         >
                           Use template
                         </button>
