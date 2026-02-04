@@ -74,8 +74,6 @@ function PreviewClient() {
      * Handle feedback form submission
      */
     const handleFeedbackSubmit = async (feedbackData) => {
-        console.log('Feedback submitted:', feedbackData);
-        // You can send this data to your backend here
         setShowFeedback(false);
         await performDownload();
     };
@@ -103,7 +101,6 @@ function PreviewClient() {
             const pages = container.querySelectorAll('.resume-page');
 
             if (pages.length === 0) {
-                console.error("No resume pages found");
                 alert("No pages found to export");
                 setLoading(false);
                 return;
