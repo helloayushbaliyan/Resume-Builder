@@ -21,6 +21,11 @@ function BuilderClient() {
     const [error, setError] = useState("");
     const [showErrors, setShowErrors] = useState(false);
 
+    const formContainerRef = useRef(null);
+    const containerRef = useRef(null);
+    const resumeRef = useRef(null);
+    const [scale, setScale] = useState(1);
+
     // Dynamic Step Configuration
     const STEPS = [
         {
@@ -136,6 +141,13 @@ function BuilderClient() {
         }
     }, [step, resumeData, setError]);
 
+    const scrollToTop = useCallback(() => {
+        if (formContainerRef.current) {
+            formContainerRef.current.scrollTop = 0;
+        }
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, []);
+
     const handleSubmit = useCallback(() => {
         if (validateCurrentStep()) {
             if (step < totalSteps) {
@@ -143,8 +155,9 @@ function BuilderClient() {
             }
         } else {
             setShowErrors(true);
+            scrollToTop();
         }
-    }, [dispatch, step, validateCurrentStep, totalSteps])
+    }, [dispatch, step, validateCurrentStep, totalSteps, scrollToTop])
 
     const handlePrevious = useCallback(() => {
         setError(""); // Clear error when going back
@@ -154,10 +167,7 @@ function BuilderClient() {
         }
     }, [dispatch, step])
 
-    const formContainerRef = useRef(null);
-    const containerRef = useRef(null);
-    const resumeRef = useRef(null); // Ref for the actual content
-    const [scale, setScale] = useState(1);
+
 
     // Resume A4 Dimensions
     const A4_WIDTH_MM = 210;
@@ -169,13 +179,10 @@ function BuilderClient() {
 
     // Scroll to top on step change and clear error
     useEffect(() => {
-        formContainerRef.current?.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+        scrollToTop();
         setError("");
         setShowErrors(false);
-    }, [step]);
+    }, [step, scrollToTop]);
 
     // Handle Scaling for Preview Section
     useEffect(() => {
@@ -244,7 +251,7 @@ function BuilderClient() {
                 {/* <-- Left Side: Live Preview (Sticky) --> */}
                 <section
                     ref={containerRef}
-                    className="hidden lg:flex bg-[#e2e2ec] items-start justify-center overflow-y-auto p-8 hide-scrollbar"
+                    className="hidden lg:flex bg-[#e2e2ec] items-start justify-center overflow-x-hidden lg:overflow-y-auto p-8 hide-scrollbar"
                 >
                     {/* Sizing Wrapper */}
                     <div
@@ -272,7 +279,7 @@ function BuilderClient() {
 
                 {/* <!-- Right Side: Editor Form --> */}
                 <section className="flex flex-col h-full bg-white relative overflow-hidden">
-                    <div ref={formContainerRef} className="flex-1 overflow-y-auto p-6 md:p-12">
+                    <div ref={formContainerRef} className="flex-1 overflow-y-auto p-6 md:p-12 hide-scrollbar">
 
                         {/* Centralized Progress Bar & Header */}
                         <div className="">

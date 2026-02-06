@@ -112,9 +112,9 @@ function Templates() {
       </section>
 
       {/* Category Filter */}
-      <section className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 py-4">
+      <section className=" z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 py-4">
         <div className="container px-6 md:px-8 lg:px-12 mx-auto max-w-6xl">
-          <div className="flex items-center justify-center overflow-x-auto">
+          <div className="flex items-center sm:justify-center overflow-x-auto">
             <div className="inline-flex items-center gap-2 p-1 rounded-xl bg-gray-100">
               {categories.map((category) => (
                 <button
